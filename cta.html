@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GITEX Circular Tech Hub — Sales Intelligence</title>
+    
+    <!-- Tabler Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+    
+    <!-- Inter Font (closest to Apple's San Francisco available on Google Fonts) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Apple Premium Inspired Root Variables */
+        :root {
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            --color-bg-app: #f5f5f7; /* Classic Apple light grey background */
+            --color-bg-panel: #ffffff;
+            --color-bg-hover: #f0f0f2;
+            
+            --color-text-primary: #1d1d1f;
+            --color-text-secondary: #86868b;
+            --color-text-tertiary: #a1a1a6;
+            
+            --color-border: #e5e5ea;
+            --color-accent: #0071e3; /* Apple Blue */
+            
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            
+            --shadow-subtle: 0 4px 24px rgba(0,0,0,0.04);
+            --shadow-hover: 0 10px 40px rgba(0,0,0,0.08);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { 
+            font-family: var(--font-sans); 
+            color: var(--color-text-primary);
+            background-color: var(--color-bg-app);
+            height: 100vh;
+            overflow: hidden; /* Prevent body scroll, layout handles scrolling */
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* CRM Layout Structure */
+        .app-container {
+            display: flex;
+            height: 100vh;
+            width: 100%;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 280px;
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-right: 1px solid var(--color-border);
+            display: flex;
+            flex-direction: column;
+            padding: 24px 16px;
+            z-index: 10;
+        }
+
+        .logo-container {
+            padding: 0 12px;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            max-width: 160px;
+            height: auto;
+            display: block;
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            border-radius: var(--radius-sm);
+            border: none;
+            background: transparent;
+            color: var(--color-text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .nav-item i {
+            font-size: 18px;
+        }
+
+        .nav-item:hover {
+            background-color: var(--color-bg-hover);
+            color: var(--color-text-primary);
+        }
+
+        .nav-item.active {
+            background-color: var(--color-accent);
+            color: #ffffff;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 32px 48px;
+            position: relative;
+        }
+
+        /* Hero Banner */
+        .hero-banner {
+            width: 100%;
+            height: 240px;
+            border-radius: var(--radius-lg);
+            background-image: url('hero.jpg');
+            background-size: cover;
+            background-position: center;
+            background-color: #1d1d1f; /* Fallback */
+            position: relative;
+            margin-bottom: 32px;
+            overflow: hidden;
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 100%);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: #ffffff;
+        }
+
+        .hero-overlay h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .hero-overlay p {
+            font-size: 16px;
+            opacity: 0.85;
+            font-weight: 400;
+        }
+
+        /* Stats Row */
+        .stat-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .stat {
+            background: var(--color-bg-panel);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .stat-val {
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .stat-val.green { color: #34c759; } /* Apple Green */
+        .stat-val.orange { color: #ff9500; } /* Apple Orange */
+        .stat-val.red { color: #ff3b30; } /* Apple Red */
+
+        /* Filters & Search */
+        .filters {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+            align-items: center;
+        }
+
+        .search {
+            flex: 1;
+            min-width: 220px;
+            padding: 10px 16px;
+            font-size: 14px;
+            border: 1px solid var(--color-border);
+            border-radius: 20px;
+            background: var(--color-bg-panel);
+            color: var(--color-text-primary);
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .search:focus {
+            border-color: var(--color-accent);
+            box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.2);
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            border: 1px solid var(--color-border);
+            border-radius: 20px;
+            cursor: pointer;
+            background: var(--color-bg-panel);
+            color: var(--color-text-secondary);
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .filter-btn:hover {
+            background: var(--color-bg-hover);
+        }
+
+        .filter-btn.active {
+            background: var(--color-text-primary);
+            color: #ffffff;
+            border-color: var(--color-text-primary);
+        }
+
+        /* Grid & Cards */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .company-card, .script-card, .template-card, .pb-section {
+            background: var(--color-bg-panel);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: var(--shadow-subtle);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 1px solid rgba(0,0,0,0.02);
+        }
+
+        .company-card:hover, .template-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .company-name {
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+            margin-bottom: 4px;
+        }
+
+        .company-site {
+            font-size: 13px;
+            color: var(--color-accent);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .badges {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .badge {
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+        }
+
+        .badge-geo { background: #f0f4f8; color: #102a43; }
+        .badge-cat { background: #e3f2fd; color: #0d47a1; }
+        .badge-pkg { background: #fff3e0; color: #e65100; }
+
+        .card-section {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--color-text-secondary);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .card-val {
+            font-size: 14px;
+            color: var(--color-text-primary);
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .card-val strong { font-weight: 600; }
+
+        .card-val a {
+            color: var(--color-accent);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .divider {
+            border: none;
+            border-top: 1px solid var(--color-border);
+            margin: 16px 0;
+        }
+
+        .fit-score {
+            text-align: right;
+        }
+
+        .fit-label {
+            font-size: 11px;
+            color: var(--color-text-secondary);
+            margin-bottom: 2px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .fit-value {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        /* Playbook & Content Elements */
+        .pb-section { margin-bottom: 20px; }
+        .pb-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: -0.3px;
+        }
+        .pb-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+        .pb-item {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--color-text-secondary);
+            padding-left: 18px;
+            position: relative;
+            margin-bottom: 10px;
+        }
+        .pb-item::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--color-accent);
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .pb-item strong { color: var(--color-text-primary); font-weight: 600; }
+
+        .objection {
+            background: var(--color-bg-app);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid var(--color-border);
+        }
+        .obj-q { font-size: 14px; font-weight: 600; color: #d93025; margin-bottom: 6px; }
+        .obj-a { font-size: 14px; line-height: 1.6; color: var(--color-text-secondary); }
+
+        .cadence-row {
+            display: flex;
+            margin-bottom: 4px;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            border: 1px solid var(--color-border);
+        }
+        .cadence-day {
+            width: 80px;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 12px;
+            background: #f0f4f8;
+            color: #102a43;
+            border-right: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+        }
+        .cadence-action {
+            flex: 1;
+            font-size: 14px;
+            padding: 12px 16px;
+            background: var(--color-bg-panel);
+            line-height: 1.5;
+            color: var(--color-text-secondary);
+        }
+
+        /* Script & Template Tabs */
+        .script-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+        .script-tab {
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            border: 1px solid var(--color-border);
+            border-radius: 20px;
+            cursor: pointer;
+            background: var(--color-bg-panel);
+            color: var(--color-text-secondary);
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+        .script-tab.active {
+            background: var(--color-text-primary);
+            color: #ffffff;
+            border-color: var(--color-text-primary);
+        }
+
+        .script-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .script-title { font-size: 16px; font-weight: 600; }
+        .channel-badge {
+            font-size: 11px;
+            padding: 4px 12px;
+            border-radius: 12px;
+            background: var(--color-bg-app);
+            color: var(--color-text-secondary);
+            font-weight: 600;
+        }
+        .script-body {
+            font-size: 14px;
+            line-height: 1.8;
+            color: var(--color-text-primary);
+            white-space: pre-wrap;
+            background: var(--color-bg-app);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            border: 1px solid var(--color-border);
+        }
+        .script-note {
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            margin-top: 16px;
+            font-style: italic;
+            display: flex;
+            align-items: center;
+        }
+
+        .copy-btn {
+            padding: 6px 14px;
+            font-size: 13px;
+            font-weight: 500;
+            border: 1px solid var(--color-border);
+            border-radius: 14px;
+            cursor: pointer;
+            background: var(--color-bg-panel);
+            color: var(--color-text-primary);
+            display: flex;
+            align-items: center;
+            font-family: inherit;
+            transition: all 0.2s;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        .copy-btn:hover { background: var(--color-bg-hover); }
+
+        .templates-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .template-type {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 12px;
+            background: #f0f4f8;
+            color: #102a43;
+            margin-bottom: 0;
+            display: inline-block;
+        }
+        .template-subject {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--color-text-primary);
+        }
+        .template-body {
+            font-size: 13px;
+            line-height: 1.7;
+            color: var(--color-text-secondary);
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d1d1d6; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #c7c7cc; }
+
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    
+    <!-- CRM Left Sidebar -->
+    <aside class="sidebar">
+        <div class="logo-container">
+            <!-- Using the requested logo -->
+            <img src="mobihubevent.png" alt="Mobihub Events" class="logo" onerror="this.onerror=null; this.src='https://via.placeholder.com/150x40/f5f5f7/86868b?text=Mobihub+Events';">
+        </div>
+        
+        <nav class="nav-menu" id="mainTabs">
+            <button class="nav-item active" onclick="showTab('companies')">
+                <i class="ti ti-building-skyscraper" aria-hidden="true"></i> Intelligence
+            </button>
+            <button class="nav-item" onclick="showTab('playbook')">
+                <i class="ti ti-book" aria-hidden="true"></i> Sales Playbook
+            </button>
+            <button class="nav-item" onclick="showTab('scripts')">
+                <i class="ti ti-message-2" aria-hidden="true"></i> Outreach Scripts
+            </button>
+            <button class="nav-item" onclick="showTab('templates')">
+                <i class="ti ti-mail" aria-hidden="true"></i> Email Templates
+            </button>
+        </nav>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        
+        <!-- Hero Banner Section -->
+        <div class="hero-banner">
+            <div class="hero-overlay">
+                <h1>GITEX Berlin — Circular Tech Hub</h1>
+                <p>Sales Intelligence System &middot; 30-Day Close Engine</p>
+            </div>
+        </div>
+        
+        <!-- Top Stats Row -->
+        <div class="stat-row">
+            <div class="stat">
+                <div class="stat-label">Target Revenue</div>
+                <div class="stat-val">€345,700</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">Confirmed</div>
+                <div class="stat-val green">€96,200</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">To Close</div>
+                <div class="stat-val orange">€249,500</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">Days Remaining</div>
+                <div class="stat-val red">30</div>
+            </div>
+        </div>
+        
+        <!-- Tab 1: Companies -->
+        <div id="tab-companies">
+            <div class="filters">
+                <input class="search" type="text" placeholder="Search companies..." oninput="filterCompanies(this.value)" id="searchBox">
+                <button class="filter-btn active" onclick="filterCat('all',this)">All</button>
+                <button class="filter-btn" onclick="filterCat('Refurbisher',this)">Refurbishers</button>
+                <button class="filter-btn" onclick="filterCat('ITAD',this)">ITAD</button>
+                <button class="filter-btn" onclick="filterCat('Marketplace',this)">Marketplaces</button>
+                <button class="filter-btn" onclick="filterCat('Telecom',this)">Telecom</button>
+                <button class="filter-btn" onclick="filterCat('OEM',this)">OEM</button>
+                <button class="filter-btn" onclick="filterCat('ESG',this)">ESG</button>
+            </div>
+            <div class="grid" id="companyGrid"></div>
+        </div>
+        
+        <!-- Tab 2: Playbook -->
+        <div id="tab-playbook" style="display:none">
+            <div class="playbook">
+                <div class="pb-section">
+                    <div class="pb-title"><i class="ti ti-target" aria-hidden="true" style="color:var(--color-accent)"></i>Ideal Customer Profile</div>
+                    <div class="pb-grid">
+                        <div>
+                            <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:12px;font-weight:600;letter-spacing:0.5px;">COMPANY SIGNALS</div>
+                            <div class="pb-item"><strong>Revenue €5M–€500M+</strong> in circular tech / refurb / ITAD</div>
+                            <div class="pb-item"><strong>Has a marketing / BD budget</strong> for events and sponsorships</div>
+                            <div class="pb-item"><strong>Already attends</strong> MWC, CES, IFA, eReBirth, Tech.AD</div>
+                            <div class="pb-item"><strong>Has ESG goals</strong> or circular economy mandate</div>
+                            <div class="pb-item"><strong>Expanding into Europe</strong> or hiring in DE/UK/FR</div>
+                            <div class="pb-item"><strong>Active on LinkedIn</strong> — posts about circularity, refurb, sustainability</div>
+                        </div>
+                        <div>
+                            <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:12px;font-weight:600;letter-spacing:0.5px;">BUYER PERSONAS</div>
+                            <div class="pb-item"><strong>CMO / Head of Marketing</strong> — owns events budget, wants brand visibility</div>
+                            <div class="pb-item"><strong>CEO / Founder (SMEs)</strong> — decides fast, motivated by deal flow</div>
+                            <div class="pb-item"><strong>VP Partnerships / BD</strong> — wants stage access, industry relationships</div>
+                            <div class="pb-item"><strong>Head of Sustainability</strong> — needs ESG positioning wins</div>
+                            <div class="pb-item"><strong>VP Sales / Revenue</strong> — motivated by qualified buyer access</div>
+                            <div class="pb-item"><strong>Country Manager DACH/EU</strong> — needs regional presence fast</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pb-section">
+                    <div class="pb-title"><i class="ti ti-flame" aria-hidden="true" style="color:#ff9500"></i>Pain Points & Value Alignment</div>
+                    <div class="pb-grid">
+                        <div>
+                            <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:12px;font-weight:600;letter-spacing:0.5px;">THEIR PAINS</div>
+                            <div class="pb-item">Hard to reach <strong>qualified circular economy buyers</strong> in one room</div>
+                            <div class="pb-item">Generic tech events have <strong>wrong audience</strong> — no vertical fit</div>
+                            <div class="pb-item">Building brand in Europe is <strong>expensive and slow</strong></div>
+                            <div class="pb-item">Want to <strong>close deals at events</strong>, not just collect cards</div>
+                            <div class="pb-item">Need <strong>speaking credibility</strong> to win enterprise contracts</div>
+                            <div class="pb-item"><strong>Regulatory pressure</strong> on sustainability is creating urgency to be seen</div>
+                        </div>
+                        <div>
+                            <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:12px;font-weight:600;letter-spacing:0.5px;">YOUR VALUE PROPOSITION</div>
+                            <div class="pb-item"><strong>Only dedicated circular tech hub</strong> inside GITEX Europe Berlin</div>
+                            <div class="pb-item"><strong>2,000+ targeted visitors</strong> — buyers, investors, regulators</div>
+                            <div class="pb-item"><strong>Stage time = category authority</strong> — position as industry voice</div>
+                            <div class="pb-item"><strong>GITEX brand</strong> — €0 to build the same credibility independently</div>
+                            <div class="pb-item"><strong>1 week of meetings</strong> compressed into 2 days of curated access</div>
+                            <div class="pb-item"><strong>Circular Show media</strong> — content that lives beyond the event</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pb-section">
+                    <div class="pb-title"><i class="ti ti-shield-check" aria-hidden="true" style="color:#34c759"></i>Objection Handling</div>
+                    <div class="objection">
+                        <div class="obj-q">"We don't have budget right now."</div>
+                        <div class="obj-a">"I hear you — and that's exactly why I want to talk now, not next quarter. The companies locking in spots this week are doing it because they know the circular tech conversation at GITEX Berlin will define partnerships for 2026–27. This isn't a cost, it's a pipeline investment. What does one new enterprise client mean to your revenue?"</div>
+                    </div>
+                    <div class="objection">
+                        <div class="obj-q">"We're not sure GITEX Berlin is the right fit."</div>
+                        <div class="obj-a">"That's a fair question — and it's exactly why I wanted to reach out personally. The Circular Hub is the only vertical hub at GITEX EU dedicated to this industry. It's not a general tech floor — it's your buyers, your competitors, and your future partners in 6 sqm of focused space. Who do you currently target at events?"</div>
+                    </div>
+                    <div class="objection">
+                        <div class="obj-q">"We already attend MWC / IFA / CES."</div>
+                        <div class="obj-a">"Those are great for broad reach. This is different — it's the only event in Europe built specifically around circular tech, refurb and device lifecycle. The audience here is your ICP, not noise. I'd argue this is a complement, not a competition."</div>
+                    </div>
+                    <div class="objection">
+                        <div class="obj-q">"Can we get a discount?"</div>
+                        <div class="obj-a">"I respect you for asking directly. We don't do personal discounts — the packages are built around value, not negotiation. But what I can do is make sure you get the right package for your goals. If €15K feels heavy, the €10K Exhibitor gives you a solid floor presence with great ROI. Want me to walk you through it?"</div>
+                    </div>
+                    <div class="objection">
+                        <div class="obj-q">"Send me the deck and I'll have a look."</div>
+                        <div class="obj-a">"Happy to — but I want to save you time. The deck is 6 pages, but your decision really comes down to one thing: is getting in front of 2,000 circular tech buyers in Berlin in July worth the investment? Can we do a 10-minute call first so I can match you to the right option?"</div>
+                    </div>
+                </div>
+                <div class="pb-section">
+                    <div class="pb-title"><i class="ti ti-clock-bolt" aria-hidden="true" style="color:#ff3b30"></i>Follow-up Cadence (per lead)</div>
+                    <div class="cadence-row"><div class="cadence-day">Day 0</div><div class="cadence-action">LinkedIn connection + personalised intro note OR cold email with specific hook</div></div>
+                    <div class="cadence-row"><div class="cadence-day">Day 2</div><div class="cadence-action">LinkedIn DM follow-up — reference their content or recent company news</div></div>
+                    <div class="cadence-row"><div class="cadence-day">Day 4</div><div class="cadence-action">Email follow-up — add social proof (Sunstrike, confirmed partners), light urgency</div></div>
+                    <div class="cadence-row"><div class="cadence-day">Day 6</div><div class="cadence-action">WhatsApp voice note (30–45 sec) — personal, warm, not a pitch</div></div>
+                    <div class="cadence-row"><div class="cadence-day">Day 8</div><div class="cadence-action">Cold call — use the opener script, keep to 3 min discovery</div></div>
+                    <div class="cadence-row"><div class="cadence-day">Day 11</div><div class="cadence-action">Final value email — new angle (e.g. their competitor is confirmed / 2 spots left)</div></div>
+                    <div class="cadence-row"><div class="cadence-day">Day 14</div><div class="cadence-action">FOMO close — final message, remove from active sequence if no response</div></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tab 3: Scripts -->
+        <div id="tab-scripts" style="display:none">
+            <div class="scripts">
+                <div class="script-tabs" id="scriptTabs"></div>
+                <div id="scriptContent"></div>
+            </div>
+        </div>
+        
+        <!-- Tab 4: Templates -->
+        <div id="tab-templates" style="display:none">
+            <div class="filters" id="templateFilters" style="margin-bottom: 24px;"></div>
+            <div class="templates-grid" id="templateGrid"></div>
+        </div>
+        
+    </main>
+</div>
+
+<script>
+const companies = [  {name:"Back Market",site:"backmarket.com",linkedin:"linkedin.com/company/back-market",geo:"France",cat:"Marketplace",pkg:"Core Partner / Stage Partner",fit:97,dm:[{name:"Thibaud Hug de Larauze",title:"CEO & Co-Founder",li:"linkedin.com/in/thibaud-hug-de-larauze"},{name:"Sophie Rouyer",title:"Chief Marketing Officer",li:"linkedin.com/in/sophie-rouyer"}],email:"partnerships@backmarket.com",why:"Europe's largest refurbished electronics marketplace. €500M+ raised. Brand credibility at GITEX Berlin is a natural expansion move.",hot:true},  {name:"Refurbed",site:"refurbed.com",linkedin:"linkedin.com/company/refurbed",geo:"Austria",cat:"Marketplace",pkg:"Core Partner",fit:94,dm:[{name:"Peter Windischhofer",title:"Co-Founder & CEO",li:"linkedin.com/in/peter-windischhofer"},{name:"Kilian Kaminski",title:"Co-Founder",li:"linkedin.com/in/kilian-kaminski"}],email:"business@refurbed.com",why:"Fast-growing EU marketplace. Active at sustainability events. DACH market leader — GITEX Berlin is home territory.",hot:true},  {name:"Swappie",site:"swappie.com",linkedin:"linkedin.com/company/swappie",geo:"Finland",cat:"Refurbisher",pkg:"Core Partner",fit:91,dm:[{name:"Sami Marttinen",title:"CEO & Co-Founder",li:"linkedin.com/in/sami-marttinen"},{name:"Jiri Bharwani",title:"Co-Founder",li:"linkedin.com/in/jiri-bharwani"}],email:"info@swappie.com",why:"iPhone-focused refurbisher expanding aggressively across Europe. Stage time would cement their brand as the #1 refurbished iPhone name in EU.",hot:true},  {name:"Reebelo",site:"reebelo.com",linkedin:"linkedin.com/company/reebelo",geo:"Singapore / EU",cat:"Marketplace",pkg:"Core Partner / Stage Partner",fit:90,dm:[{name:"Guillaume Principe",title:"CEO & Co-Founder",li:"linkedin.com/in/guillaume-principe"},{name:"Kevin Reffay",title:"Co-Founder & CTO",li:"linkedin.com/in/kevin-reffay"}],email:"partnerships@reebelo.com",why:"Global certified refurb marketplace expanding into Europe. GITEX Berlin gives them instant EU market credibility and B2B deal flow.",hot:false},  {name:"Rebuy",site:"rebuy.de",linkedin:"linkedin.com/company/rebuy",geo:"Germany",cat:"Marketplace",pkg:"Core Partner",fit:93,dm:[{name:"Philipp Gattner",title:"CEO",li:"linkedin.com/in/philipp-gattner"},{name:"Stefan Wenzel",title:"CMO",li:""}],email:"partner@rebuy.de",why:"Germany's leading recommerce platform. Local DACH dominance + GITEX Berlin stage = obvious category win. High event participation history.",hot:true},  {name:"Foxway",site:"foxway.com",linkedin:"linkedin.com/company/foxway",geo:"Sweden",cat:"Refurbisher",pkg:"Stage Partner",fit:92,dm:[{name:"Niklas Dohlberg",title:"CEO",li:"linkedin.com/in/niklas-dohlberg"},{name:"Marcus Nilsson",title:"VP Sales",li:""}],email:"sales@foxway.com",why:"Pan-European device lifecycle company. OEM-grade refurb + logistics. Perfect Stage Partner — they have the budget and need EU brand visibility.",hot:true},  {name:"Recommerce",site:"recommerce.com",linkedin:"linkedin.com/company/recommerce",geo:"France",cat:"Refurbisher",pkg:"Core Partner",fit:88,dm:[{name:"Gilles Delmas",title:"CEO",li:"linkedin.com/in/gilles-delmas-recommerce"},{name:"Romain Lhote",title:"Head of B2B",li:""}],email:"contact@recommerce.com",why:"French leader in buyback and trade-in, B2B focus. GITEX Berlin provides the pan-European retailer and operator audience they need."},  {name:"Blancco Technology Group",site:"blancco.com",linkedin:"linkedin.com/company/blancco",geo:"UK / Global",cat:"ITAD",pkg:"Core Partner / Exhibitor",fit:89,dm:[{name:"Jan Colpaert",title:"CEO",li:"linkedin.com/in/jan-colpaert"},{name:"Pat Clawson",title:"Chairman",li:""}],email:"info@blancco.com",why:"Global leader in certified data erasure. Critical enabler for every refurbisher and ITAD company. Massive audience overlap at Circular Hub.",hot:true},  {name:"NSYS Group",site:"nsys.biz",linkedin:"linkedin.com/company/nsys-group",geo:"Lithuania / Global",cat:"ITAD",pkg:"Core Partner / Exhibitor",fit:87,dm:[{name:"Anton Kozlov",title:"CEO",li:"linkedin.com/in/anton-kozlov-nsys"},{name:"Alina Ivanik",title:"Head of Partnerships",li:""}],email:"info@nsys.biz",why:"Mobile device diagnostics and ITAD software. Already in target list. Natural Core Partner — software-first company needs stage credibility.",hot:false},  {name:"Ingram Micro Lifecycle",site:"ingrammicro.com/lifecycle",linkedin:"linkedin.com/company/ingram-micro",geo:"US / Global",cat:"ITAD",pkg:"Stage Partner",fit:85,dm:[{name:"Paul Bay",title:"CEO",li:"linkedin.com/in/paul-bay"},{name:"Adnan Ziem",title:"VP Lifecycle Services",li:""}],email:"lifecycle@ingrammicro.com",why:"World's largest IT distributor with major lifecycle/refurb division. Stage partnership validates the hub's enterprise credibility globally.",hot:false},  {name:"TrenDevice",site:"trendevice.it",linkedin:"linkedin.com/company/trendevice",geo:"Italy",cat:"Refurbisher",pkg:"Core Partner",fit:86,dm:[{name:"Lorenzo Treré",title:"CEO & Co-Founder",li:"linkedin.com/in/lorenzo-trere"},{name:"Simone Treré",title:"Co-Founder",li:""}],email:"info@trendevice.it",why:"Italy's largest certified refurbisher. Expanding B2B. GITEX Berlin gives them North/West European distributor access and a platform for their brand narrative.",hot:false},  {name:"Grade Mobile",site:"grademobile.co.uk",linkedin:"linkedin.com/company/grade-mobile",geo:"UK",cat:"Refurbisher",pkg:"Core Partner",fit:84,dm:[{name:"Sam Wood",title:"CEO",li:""},{name:"",title:"Head of Trade",li:""}],email:"trade@grademobile.co.uk",why:"UK-based device grading and trade business. Core Partner aligns well — they need EU buyer relationships and brand positioning beyond the UK market.",hot:false},  {name:"Circulee",site:"circulee.com",linkedin:"linkedin.com/company/circulee",geo:"Germany",cat:"Refurbisher",pkg:"Core Partner",fit:83,dm:[{name:"Torsten Sieckmann",title:"CEO",li:"linkedin.com/in/torsten-sieckmann"},{name:"",title:"Head of Growth",li:""}],email:"info@circulee.com",why:"B2B circular device platform for enterprises. GITEX Berlin is their ideal room — corporate IT buyers, enterprise ITAD, procurement decision-makers."},  {name:"Furbify",site:"furbify.com",linkedin:"linkedin.com/company/furbify",geo:"Czech Republic",cat:"Marketplace",pkg:"Core Partner / SME",fit:80,dm:[{name:"Pavel Sucharda",title:"CEO",li:"linkedin.com/in/pavel-sucharda"},{name:"",title:"",li:""}],email:"info@furbify.com",why:"Fast-growing EU marketplace with marketplace API for refurb resellers. GITEX Berlin is a step-change visibility moment for their EU expansion."},  {name:"Phonecheck",site:"phonecheck.com",linkedin:"linkedin.com/company/phonecheck",geo:"US / EU",cat:"ITAD",pkg:"Exhibitor / Speaker",fit:82,dm:[{name:"Daniel Dönig",title:"CEO",li:"linkedin.com/in/daniel-doenig"},{name:"",title:"VP Business Development",li:""}],email:"info@phonecheck.com",why:"Industry standard for device certification. Partners with every major refurbisher and marketplace. Exhibitor or Speaker slot = high-value brand placement."},  {name:"Likewize (Brightstar)",site:"likewize.com",linkedin:"linkedin.com/company/likewize",geo:"UK / Global",cat:"Telecom",pkg:"Stage Partner",fit:88,dm:[{name:"Rod Millar",title:"CEO",li:"linkedin.com/in/rod-millar-likewize"},{name:"",title:"Chief Commercial Officer",li:""}],email:"info@likewize.com",why:"Global device lifecycle and insurance giant. Telco clients across EU and US. Stage Partner would give Likewize massive authority in the circular device space.",hot:true},  {name:"Vodafone",site:"vodafone.com",linkedin:"linkedin.com/company/vodafone",geo:"UK / Global",cat:"Telecom",pkg:"Stage Partner / Core Partner",fit:86,dm:[{name:"Margherita Della Valle",title:"CEO",li:"linkedin.com/in/margherita-della-valle"},{name:"Johannes Ametsreiter",title:"CEO Vodafone Germany",li:"linkedin.com/in/johannes-ametsreiter"}],email:"partnerships@vodafone.com",why:"Vodafone Germany is a key player in device-as-a-service and circular economy. GITEX Berlin is their home market — natural fit for a Stage Partner.",hot:false},  {name:"Orange",site:"orange.com",linkedin:"linkedin.com/company/orange",geo:"France / EU",cat:"Telecom",pkg:"Core Partner / Stage Partner",fit:83,dm:[{name:"Christel Heydemann",title:"CEO",li:"linkedin.com/in/christel-heydemann"},{name:"",title:"VP Sustainability & Circular Economy",li:""}],email:"partnerships@orange.com",why:"Orange has one of Europe's most active device circular economy programs. Stage Partner slot aligns perfectly with their sustainability KPIs."},  {name:"Carbon Trust",site:"carbontrust.com",linkedin:"linkedin.com/company/the-carbon-trust",geo:"UK / Global",cat:"ESG",pkg:"Speaker Only",fit:88,dm:[{name:"Tom Delay",title:"CEO",li:"linkedin.com/in/tom-delay-carbontrust"},{name:"Gareth Baker",title:"Director, Technology",li:""}],email:"enquiries@carbontrust.com",why:"Global authority on net zero and circular economy. Speaker slot gives the hub independent credibility and attracts enterprise ESG buyers. Named in the sales doc.",hot:true},  {name:"Circularise",site:"circularise.com",linkedin:"linkedin.com/company/circularise",geo:"Netherlands",cat:"ESG",pkg:"Exhibitor / Speaker",fit:81,dm:[{name:"Mesbah Sabur",title:"CEO & Co-Founder",li:"linkedin.com/in/mesbah-sabur"},{name:"Jordi de Vos",title:"Co-Founder & CTO",li:"linkedin.com/in/jordi-de-vos-circularise"}],email:"info@circularise.com",why:"Blockchain-based circular supply chain platform. Strong fit with enterprise ITAD and OEM brands attending. Exhibitor or Speaker would boost their EU BD.",hot:false},  {name:"GSMA",site:"gsma.com",linkedin:"linkedin.com/company/gsma",geo:"UK / Global",cat:"ESG",pkg:"Speaker Only",fit:85,dm:[{name:"John Hoffman",title:"CEO",li:"linkedin.com/in/john-hoffman-gsma"},{name:"",title:"Head of Connected Device Sustainability",li:""}],email:"info@gsma.com",why:"GSMA drives industry-wide sustainability and circular device programs across telcos. Named in the sales doc as ideal Speaker. Perfect credibility builder."},  {name:"Houlihan Lokey",site:"hl.com",linkedin:"linkedin.com/company/houlihan-lokey",geo:"US / EU",cat:"ESG",pkg:"Speaker Only",fit:80,dm:[{name:"Scott Beiser",title:"CEO",li:""},{name:"",title:"Managing Director, Technology M&A",li:""}],email:"info@hl.com",why:"Named in the sales doc. M&A advisor actively covering circular tech and device lifecycle deals in Europe. Speaker slot adds financial intelligence to the stage program.",hot:true},  {name:"HP Inc (HP Renew / ITAD)",site:"hp.com",linkedin:"linkedin.com/company/hewlett-packard",geo:"US / EU",cat:"OEM",pkg:"Stage Partner",fit:84,dm:[{name:"Enrique Lores",title:"CEO",li:"linkedin.com/in/enrique-lores"},{name:"",title:"VP Global Device Services",li:""}],email:"hprenew@hp.com",why:"HP Renew is one of the world's largest certified refurb OEM programs. Stage Partner would be a significant EU-facing brand play aligned to their sustainability goals.",hot:false},  {name:"Lenovo",site:"lenovo.com",linkedin:"linkedin.com/company/lenovo",geo:"China / EU",cat:"OEM",pkg:"Stage Partner",fit:82,dm:[{name:"Yang Yuanqing",title:"CEO",li:""},{name:"",title:"VP EMEA Device Lifecycle",li:""}],email:"partnerships@lenovo.com",why:"Lenovo has an active refurb and circular economy program in EMEA. Named in the sales doc. Stage Partner gives them premium ESG positioning in Berlin — their EU HQ city.",hot:true},  {name:"Sims Lifecycle Services",site:"simslifecycle.com",linkedin:"linkedin.com/company/sims-lifecycle-services",geo:"US / UK / EU",cat:"ITAD",pkg:"Core Partner / Exhibitor",fit:85,dm:[{name:"Alistair Field",title:"CEO, Sims Metal",li:""},{name:"",title:"VP Commercial, Lifecycle Services",li:""}],email:"info@simslifecycle.com",why:"Global ITAD and electronics recycling giant. Circular Hub is exactly their buyer base — enterprise procurement, telco, OEM. High event attendance history."},  {name:"eRecycle / ERI",site:"eridirect.com",linkedin:"linkedin.com/company/electronic-recyclers-international",geo:"US / EU",cat:"ITAD",pkg:"Exhibitor",fit:78,dm:[{name:"John Shegerian",title:"Co-Founder & CEO",li:"linkedin.com/in/john-shegerian"},{name:"",title:"VP European Operations",li:""}],email:"info@eridirect.com",why:"World's largest ITAD and e-waste recycler. EU expansion is a priority. Exhibitor booth gives instant access to enterprise and OEM accounts."},  {name:"Asurion",site:"asurion.com",linkedin:"linkedin.com/company/asurion",geo:"US / EU",cat:"Telecom",pkg:"Exhibitor / Core Partner",fit:79,dm:[{name:"Tony Detter",title:"CEO",li:""},{name:"",title:"VP European Partnerships",li:""}],email:"bizdev@asurion.com",why:"World's largest device insurance and repair company. Expanding EU presence. Circular Hub audience includes telco and retail buyers who drive their volume."},  {name:"Circular Connect",site:"circularconnect.eu",linkedin:"linkedin.com/company/circular-connect",geo:"EU",cat:"ESG",pkg:"Speaker Only / Exhibitor",fit:82,dm:[{name:"",title:"CEO",li:""},{name:"",title:"Head of Events & Partnerships",li:""}],email:"hello@circularconnect.eu",why:"Named in the sales doc. EU circular economy industry network. Speaker slot amplifies their platform and drives member awareness. Natural audience fit."},  {name:"Rubicon",site:"rubicon.com",linkedin:"linkedin.com/company/rubicon",geo:"US / EU",cat:"ESG",pkg:"Exhibitor / Speaker",fit:76,dm:[{name:"Marc Spiegel",title:"CEO",li:""},{name:"",title:"VP Sustainability Solutions",li:""}],email:"info@rubicon.com",why:"Smart waste and circular economy software. Strong ESG narrative. Exhibitor presence aligns with their enterprise sales motion targeting logistics and tech companies."},  {name:"Breezy",site:"breezy.com",linkedin:"linkedin.com/company/breezy",geo:"EU",cat:"Refurbisher",pkg:"SME / Core Partner",fit:75,dm:[{name:"",title:"CEO",li:""},{name:"",title:"Head of B2B",li:""}],email:"info@breezy.com",why:"Named in sales doc. Fast-growing refurb SME. SME pod is perfect entry point — high conversion probability at the right price point."},];
+
+const scripts = [  {id:"cold-email",label:"Cold Email",channel:"Email",title:"Cold email — Core Partner (refurbisher)",body:`Subject: Your position at GITEX Berlin — Circular Tech Hub
+Hi [First Name],
+I'm reaching out because [Company] came up in a conversation we were having about who should be on the stage at GITEX Europe Berlin in July.
+We're building the Circular Tech Hub — the only dedicated refurb and circular tech hub inside GITEX Berlin on 30 June–1 July. The partners already confirmed include Sunstrike and several of your European peers.
+We have a Core Partner position (€15K) that includes a 9sqm booth, a 10-minute stage slot on the Tech Talk Stage, logo across all screens and the event agenda, plus an interview clip on the Circular Tech Show.
+Honestly — this is the room where deals get done in this industry this summer.
+Happy to walk you through it in 10 minutes this week. Are you free Thursday or Friday?
+[Your name]Mobihub Events`,note:"Keep subject line specific. Mention the event name + a confirmed partner for social proof. Always close with a specific time ask."},  {id:"li-connect",label:"LinkedIn Connect",channel:"LinkedIn",title:"LinkedIn connection request note",body:`Hi [First Name],
+Following the circular tech space closely — [Company]'s work in [specific area, e.g. refurbished devices in DACH] is genuinely impressive.
+I'm helping build the Circular Hub at GITEX Berlin this July — would love to connect.
+[Your name]`,note:"Keep it under 250 characters for the connection note. Reference something specific about their company or recent post."},  {id:"li-followup",label:"LinkedIn Follow-up",channel:"LinkedIn",title:"LinkedIn DM after connection",body:`Hey [First Name], thanks for connecting.
+Quick context on why I reached out — we're finalising partners for the Circular Tech Hub at GITEX Europe Berlin (30 June–1 July), and [Company] came up as a natural fit given what you're building in [market/category].
+We have 6 Core Partner slots (€15K) — includes a booth, stage slot, and interview feature. Two are already gone.
+Worth 10 minutes to see if it makes sense for you?`,note:"Send within 24–48 hours of connection. Reference their company specifically. Use the scarcity signal naturally."},  {id:"whatsapp",label:"WhatsApp",channel:"WhatsApp",title:"WhatsApp outreach message",body:`Hi [First Name], hope you're well.
+I'm [Name] from Mobihub Events. We're building the Circular Tech Hub at GITEX Berlin — 30 June to 1 July — and [Company] came up as one of the companies we wanted to bring in.
+I'll send you a short overview — but basically it's a €15K Core Partner position with a stage slot and a 9sqm booth inside GITEX.
+Worth a 10-min call this week to see if it fits your plans for summer?`,note:"Keep WhatsApp messages short and direct. One question only. Follow with a voice note if no reply in 24 hours."},  {id:"voice-note",label:"Voice Note Script",channel:"WhatsApp / Voice",title:"30-second voice note script",body:`Hey [First Name], it's [Name] from Mobihub Events — just following up on my message from [yesterday/earlier this week].
+I know you're busy so I'll be quick — we're building the Circular Tech Hub at GITEX Berlin at the end of June and I genuinely think [Company] should have a position there.
+It's the only dedicated circular tech hub at GITEX Europe. The Core Partner slot is €15K and includes stage time, which I think would be really valuable for where you're taking the brand in Europe right now.
+If you're open to a 10-minute call this week I'll send you a calendar link. Cheers.`,note:"Record in one take. Sound relaxed and natural — not scripted. Mention the company name twice. End with a soft call-to-action."},  {id:"call-opener",label:"Call Opener",channel:"Phone",title:"Cold call opener script",body:`"Hi, is that [First Name]? 
+Great — [Your Name] from Mobihub here. I'll be straight with you — I'm calling about a partnership position for GITEX Berlin at the end of June. We're running the Circular Tech Hub inside GITEX Europe and [Company] came up as a company that should be in the room.
+Do you have literally 2 minutes? I'll get to the point fast — if it's not a fit I'll let you go immediately."
+[If yes:]"Perfect. We have a €15K Core Partner position left — includes a 9sqm booth and a speaking slot on our stage. The hub is already confirmed with [X] partners and we're finalising the floor this week.
+What I want to know from you is — who at [Company] owns the events and sponsorship budget, and is Berlin on your radar for this summer?"`,note:"Lead with transparency. Ask permission to pitch. Get to the qualifying question fast. Never pitch for more than 90 seconds on a cold call."},  {id:"fomo",label:"FOMO Close",channel:"Email / LinkedIn",title:"Final FOMO message — last chance",body:`Subject: Closing the floor this week — [First Name]
+Hi [First Name],
+I've reached out a couple of times about the Circular Tech Hub at GITEX Berlin and I don't want to keep chasing you — that's not how I work.
+But I'd be doing you a disservice if I didn't send this one last message:
+We're closing the floor plan this Friday. Three of the six Core Partner slots are gone. The companies that have confirmed are [Company A], [Company B] — brands doing serious volume in this space.
+If [Company] wants a position, this is the week to decide.
+If the timing genuinely isn't right, no hard feelings — I'll reach out again for our next event.
+But if there's any part of you thinking "we should be there" — let's talk before Friday.
+[Your Name] | +[Number]`,note:"Send on Day 12–14 of your sequence. Name real confirmed partners for social proof. Give a specific deadline. Do NOT apologise for following up."},  {id:"no-response",label:"No Response Follow-up",channel:"Email",title:"Follow-up after 7 days silence",body:`Subject: Quick one, [First Name]
+Hi [First Name],
+Tried a couple of times — guessing you're slammed or it landed in the wrong inbox.
+One line: we have 4 Core Partner positions left for the Circular Tech Hub at GITEX Berlin (30 June–1 July). It's €15K for a booth + speaking slot inside Europe's biggest tech event this summer.
+If it's relevant to where [Company] is headed in Europe, I can pull together a call in the next 48 hours.
+If not, just reply with a "not this time" and I won't chase further.
+[Your Name]`,note:"Short and honest. Acknowledge the silence without making it awkward. Give them an easy out — paradoxically this increases response rate."},];
+
+const templates = [
+  {type:"Refurbisher",subject:"Your stage at the Circular Hub — GITEX Berlin",body:`Hi [First Name],\nI've been following [Company]'s growth in [market] and the work you're doing with [specific product/service] is genuinely impressive.\nI'm building the Circular Tech Hub at GITEX Europe Berlin — 30 June to 1 July — and I want to offer you a Core Partner position before we close the floor.\nHere's why I think [Company] should be there:\n→ Your customers and partners are in that room. Buyers, distributors, telcos, enterprise procurement teams — all focused on circular and refurb.\n→ A 10-minute stage slot positions you as the European authority in your category — not just another booth.\n→ Your competitors are already in conversations with us. I'd rather you have the stronger position.\nThe Core Partner package (€15K) includes a 9sqm booth, speaking slot, agenda listing, and a media interview for the Circular Tech Show.\nWorth a 10-minute call this week to walk through it?\n[Name] | Mobihub Events`},
+  {type:"Distributor / Logistics",subject:"[Company] + Circular Hub Berlin — worth 10 minutes?",body:`Hi [First Name],\nI'm reaching out because [Company]'s position in device [logistics/distribution/reverse logistics] makes you exactly the kind of partner we want in the Circular Tech Hub at GITEX Berlin.\nThe hub runs 30 June–1 July inside GITEX Europe. Every major refurbisher, marketplace, and OEM device team in Europe will be there — and they're all looking for logistics and fulfilment intelligence.\nAn Exhibitor position (€10K) gives you a booth, your logo on stage screens, and access to 2,000+ circular tech professionals over two days.\nIf you're thinking about pipeline in the second half of 2025 — this is the room where those relationships start.\nHappy to send over the details. Are you the right person to talk to, or should I reach out to someone else on the commercial team?\n[Name] | Mobihub Events`},
+  {type:"Recycler / E-Waste",subject:"Your audience is at GITEX Berlin — let me show you",body:`Hi [First Name],\n[Company]'s work in [e-waste recycling/ITAD/data destruction] is exactly the kind of capability the circular tech industry needs to see more of.\nI'm finalising partners for the Circular Tech Hub at GITEX Europe Berlin on 30 June–1 July — and I think there's a real opportunity for [Company] here.\nThe companies attending include enterprise IT buyers, device refurbishers, OEMs, and telcos — everyone who either creates or needs to solve the end-of-life device challenge. Your services sit right at the centre of that conversation.\nA Core Partner or Exhibitor position gives you a physical presence, logo visibility across the event, and optional stage time to speak directly to this audience.\nWould it be useful to have a quick call to see if there's a fit?\n[Name] | Mobihub Events`},
+  {type:"OEM / Hardware Brand",subject:"Circular positioning at GITEX Berlin — [Company]",body:`Hi [First Name],\nWith the EU's Right to Repair regulations tightening and circular economy pressure growing, OEM brands that own this narrative publicly are pulling ahead of those that don't.\nThe Circular Hub at GITEX Europe Berlin on 30 June–1 July is built specifically for that conversation — and a Stage Partner position (€20K) would position [Company] as the leading OEM voice in circular tech at Europe's most-watched tech event this summer.\nIt includes a keynote slot, full hub branding, premium booth, and media coverage through the Circular Tech Show.\nIf sustainability and device lifecycle are part of your EMEA strategy for 2025–26, I'd love to walk you through what we're building. 15 minutes this week?\n[Name] | Mobihub Events`},
+  {type:"Telecom",subject:"Device lifecycle at GITEX Berlin — [Telco name]",body:`Hi [First Name],\nTelcos are increasingly owning the full device lifecycle — trade-in, refurb, buyback, insurance. [Company] is ahead of most on this.\nThe Circular Hub at GITEX Europe Berlin (30 June–1 July) is built entirely around that space. Our confirmed partners are the European names defining the next phase of device circularity — and I think [Company] should have a stage presence there.\nA Stage Partner slot (€20K) gives you a 20-minute speaking slot, branded presence across the hub, and access to every major refurbisher, ITAD company and marketplace operator in Europe.\nIs this on your radar for summer? Happy to send the pack and set up a 10-minute call.\n[Name] | Mobihub Events`},
+  {type:"ESG / Sustainability Leader",subject:"Platform opportunity — Circular Hub GITEX Berlin",body:`Hi [First Name],\n[Company]'s work at the intersection of [ESG/circular economy/sustainability tech] is directly relevant to what we're building at GITEX Europe this summer.\nThe Circular Tech Hub runs 30 June–1 July in Berlin — inside GITEX Europe — and we're looking for 3 Speaker Only partners who can add independent credibility and thought leadership to the stage programme.\nA Speaker Only slot (€7K) gives you a 10-minute stage position, agenda listing, and access to an audience of 2,000+ circular tech decision-makers — no booth required.\nGiven [Company]'s authority in this space, I think a speaking role would be genuinely valuable positioning for you in Q3 2025.\nWorth a quick conversation?\n[Name] | Mobihub Events`},
+  {type:"Marketplace Platform",subject:"[Company] at the Circular Hub — 2 Core Partner slots left",body:`Hi [First Name],\nI'll be direct — we're finalising the floor plan for the Circular Tech Hub at GITEX Berlin this week and [Company] came up as one of the platforms we specifically wanted to approach.\nThe hub runs 30 June–1 July inside GITEX Europe. As a marketplace, the people you most need to meet — enterprise sellers, logistics partners, ITAD vendors, OEM resellers — will all be there.\nA Core Partner position (€15K) includes a 9sqm booth, a 10-minute speaking slot, logo across all screens and the event agenda, and a media interview for the Circular Tech Show.\nYour platform being on that stage sends a message. And with 2 slots left, I wanted to reach out before those go.\nFree for 10 minutes this week?\n[Name] | Mobihub Events`},
+  {type:"Investor / M&A",subject:"GITEX Berlin — Circular Hub deal flow access",body:`Hi [First Name],\nI know your time is valuable so I'll be brief.\nWe're running the Circular Tech Hub at GITEX Europe Berlin on 30 June–1 July — it's the only dedicated hub for refurbished electronics, reverse logistics and circular tech inside GITEX Europe.\nThe partners, speakers, and attendees represent the best deal flow in European circular tech right now — growth-stage companies with real revenue, expanding across EMEA, many looking for capital or strategic partnership.\nA Speaker Only slot (€7K) puts [Company] on the stage as a credibility anchor and positions you as the financial intelligence voice for the industry — while giving you unfiltered access to every founder and operator in the room.\nWould this be useful for your deal sourcing pipeline in H2 2025?\n[Name] | Mobihub Events`}
+];
+
+let activeCat = 'all';let searchTerm = '';let activeScript = 0;
+
+function renderCompanies() {
+  const grid = document.getElementById('companyGrid');
+  const filtered = companies.filter(c => {
+    const catMatch = activeCat === 'all' || c.cat === activeCat;
+    const searchMatch = !searchTerm || c.name.toLowerCase().includes(searchTerm) || c.cat.toLowerCase().includes(searchTerm) || c.geo.toLowerCase().includes(searchTerm);
+    return catMatch && searchMatch;
+  });
+  grid.innerHTML = filtered.map(c => `
+    <div class="company-card">
+      <div class="card-top">
+        <div>
+          <div class="company-name">${c.name}${c.hot ? ' <i class="ti ti-flame" style="color:#ff3b30;font-size:16px" aria-hidden="true"></i>' : ''}</div>
+          <a href="https://${c.site}" target="_blank" class="company-site">${c.site} <i class="ti ti-external-link" style="font-size:11px" aria-hidden="true"></i></a>
+        </div>
+        <div class="fit-score">
+          <div class="fit-label">Fit</div>
+          <div class="fit-value" style="color:${c.fit>=90?'#34c759':c.fit>=80?'#ff9500':'#8e8e93'}">${c.fit}%</div>
+        </div>
+      </div>
+      <div class="badges">
+        <span class="badge badge-geo"><i class="ti ti-map-pin" aria-hidden="true" style="font-size:11px;margin-right:4px"></i>${c.geo}</span>
+        <span class="badge badge-cat">${c.cat}</span>
+        <span class="badge badge-pkg">${c.pkg}</span>
+      </div>
+      <div class="card-section">Decision makers</div>
+      ${c.dm.filter(d=>d.name).map(d=>`
+        <div class="card-val">
+          <strong>${d.name}</strong> &middot; <span style="color:var(--color-text-secondary)">${d.title}</span><br>
+          ${d.li ? `<a href="https://${d.li}" target="_blank"><i class="ti ti-brand-linkedin" aria-hidden="true" style="font-size:13px;margin-right:4px"></i>LinkedIn profile</a>` : ''}
+        </div>
+      `).join('')}
+      <div class="card-section" style="margin-top: 12px;">Contact</div>
+      <div class="card-val"><i class="ti ti-mail" aria-hidden="true" style="font-size:13px;margin-right:6px;color:var(--color-text-secondary)"></i>${c.email || 'Search LinkedIn / Apollo'}</div>
+      <hr class="divider">
+      <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.6">${c.why}</div>
+    </div>
+  `).join('');
+}
+
+function filterCat(cat, btn) {
+  activeCat = cat;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCompanies();
+}
+
+function filterCompanies(val) {
+  searchTerm = val.toLowerCase();
+  renderCompanies();
+}
+
+function showTab(id) {
+  // Hide all main content tabs
+  ['companies','playbook','scripts','templates'].forEach(t => {
+    document.getElementById('tab-'+t).style.display = t===id ? '' : 'none';
+  });
+  
+  // Update sidebar active states
+  const tabsIds = ['companies','playbook','scripts','templates'];
+  document.querySelectorAll('.nav-item').forEach((btn, index) => {
+      if (tabsIds[index] === id) {
+          btn.classList.add('active');
+      } else {
+          btn.classList.remove('active');
+      }
+  });
+}
+
+function renderScripts() {
+  const tabsEl = document.getElementById('scriptTabs');
+  tabsEl.innerHTML = scripts.map((s,i) => `<button class="script-tab ${i===0?'active':''}" onclick="showScript(${i},this)">${s.label}</button>`).join('');
+  showScriptContent(0);
+}
+
+function showScript(i, btn) {
+  activeScript = i;
+  document.querySelectorAll('.script-tab').forEach(b => b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  showScriptContent(i);
+}
+
+function showScriptContent(i) {
+  const s = scripts[i];
+  document.getElementById('scriptContent').innerHTML = `
+    <div class="script-card">
+      <div class="script-header">
+        <div class="script-title">${s.title}</div>
+        <div style="display:flex;gap:12px;align-items:center">
+          <span class="channel-badge">${s.channel}</span>
+          <button class="copy-btn" onclick="copyScript(${i}, this)">
+            <i class="ti ti-copy" aria-hidden="true" style="font-size:15px;margin-right:6px"></i>Copy
+          </button>
+        </div>
+      </div>
+      <div class="script-body" id="scriptBody${i}">${s.body}</div>
+      <div class="script-note"><i class="ti ti-bulb" aria-hidden="true" style="font-size:14px;margin-right:6px;color:#ff9500"></i>${s.note}</div>
+    </div>
+  `;
+}
+
+// Reliable fallback for copying in iframes/embedded browsers
+function fallbackCopyTextToClipboard(text, btn) {
+  var textArea = document.createElement("textarea");
+  textArea.value = text;
+  textArea.style.top = "0";
+  textArea.style.left = "0";
+  textArea.style.position = "fixed";
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+  try {
+    document.execCommand('copy');
+  } catch (err) {}
+  document.body.removeChild(textArea);
+  
+  const originalHTML = btn.innerHTML;
+  btn.innerHTML = '<i class="ti ti-check" aria-hidden="true" style="font-size:15px;margin-right:6px;color:#34c759"></i>Copied';
+  setTimeout(()=>{btn.innerHTML=originalHTML;}, 2000);
+}
+
+function copyScript(i, btn) {  
+  fallbackCopyTextToClipboard(scripts[i].body, btn);
+}
+
+function copyTemplate(i, btn) {
+  fallbackCopyTextToClipboard(templates[i].body, btn);
+}
+
+let activeTemplateType = 'all';
+
+function renderTemplates() {
+  const filterContainer = document.getElementById('templateFilters');
+  if(!filterContainer.innerHTML) {
+    const types = [...new Set(templates.map(t => t.type))];
+    filterContainer.innerHTML = `<button class="filter-btn active" onclick="filterTemplates('all', this)">All Categories</button>` +
+      types.map(t => `<button class="filter-btn" onclick="filterTemplates('${t}', this)">${t}</button>`).join('');
+  }
+
+  const grid = document.getElementById('templateGrid');
+  const filtered = templates.filter(t => activeTemplateType === 'all' || t.type === activeTemplateType);
+  
+  grid.innerHTML = filtered.map((t) => {
+    const i = templates.indexOf(t);
+    return `
+    <div class="template-card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">
+        <div class="template-type">${t.type}</div>
+        <button class="copy-btn" onclick="copyTemplate(${i}, this)">
+          <i class="ti ti-copy" aria-hidden="true" style="font-size:15px;margin-right:6px"></i>Copy
+        </button>
+      </div>
+      <div class="template-subject"><i class="ti ti-mail" aria-hidden="true" style="font-size:15px;margin-right:8px;color:var(--color-text-secondary)"></i>${t.subject}</div>
+      <hr class="divider">
+      <div class="template-body">${t.body}</div>
+    </div>
+  `}).join('');
+}
+
+function filterTemplates(type, btn) {
+  activeTemplateType = type;
+  document.querySelectorAll('#templateFilters .filter-btn').forEach(b => b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  renderTemplates();
+}
+
+// Initial render
+renderCompanies();
+renderScripts();
+renderTemplates();
+</script>
+
+</body>
+</html>
