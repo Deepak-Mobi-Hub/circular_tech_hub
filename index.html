@@ -534,6 +534,53 @@
             padding-right: 10px;
         }
 
+        /* Top Split Layout */
+        .top-split-section {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 32px;
+            align-items: center;
+        }
+
+        .hero-left {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 16px;
+            color: var(--color-text-secondary);
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        .hero-right {
+            flex: 1.5;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-subtle);
+            display: flex;
+            aspect-ratio: 1200 / 628;
+            background-color: #1d1d1f;
+        }
+
+        .hero-right img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: transparent; }
@@ -572,15 +619,21 @@
     <!-- Main Content Area -->
     <main class="main-content">
         
-        <!-- Hero Banner Section -->
-        <div class="hero-banner">
-            <div class="hero-overlay">
-                <h1>GITEX Berlin — Circular Tech Hub</h1>
-                <p>Sales Intelligence System &middot; 30-Day Close Engine</p>
-            </div>
-        </div>
-        
         <div class="content-wrapper">
+            <!-- Top Split Section -->
+            <div class="top-split-section">
+                <!-- Left: Header Info -->
+                <div class="hero-left">
+                    <h1 class="hero-title">GITEX Berlin — Circular Tech Hub</h1>
+                    <p class="hero-subtitle">Sales Intelligence System &middot; 30-Day Close Engine</p>
+                </div>
+                
+                <!-- Right: Hero Image (Strictly 1200x628 Aspect Ratio) -->
+                <div class="hero-right">
+                    <img src="hero.jpg" alt="GITEX Circular Tech Hub" onerror="this.onerror=null; this.src='https://via.placeholder.com/1200x628/1d1d1f/86868b?text=Hero+Image+(1200x628)';">
+                </div>
+            </div>
+
             <!-- Top Stats Row -->
             <div class="stat-row">
                 <div class="stat">
@@ -905,10 +958,12 @@ let activeTemplateType = 'all';
 
 function renderTemplates() {
   const filterContainer = document.getElementById('templateFilters');
-  if(!filterContainer.innerHTML) {
+  
+  // Update dynamic filters
+  if(!filterContainer.innerHTML || document.querySelectorAll('#templateFilters .filter-btn').length <= [...new Set(templates.map(t => t.type))].length) {
     const types = [...new Set(templates.map(t => t.type))];
     filterContainer.innerHTML = `<button class="filter-btn active" onclick="filterTemplates('all', this)">All Categories</button>` +
-      types.map(t => `<button class="filter-btn" onclick="filterTemplates('${t}', this)">${t}</button>`).join('');
+      types.map(t => `<button class="filter-btn ${activeTemplateType === t ? 'active' : ''}" onclick="filterTemplates('${t}', this)">${t}</button>`).join('');
   }
 
   const grid = document.getElementById('templateGrid');
@@ -919,7 +974,9 @@ function renderTemplates() {
     return `
     <div class="template-card">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">
-        <div class="template-type">${t.type}</div>
+        <div class="template-type">
+          ${t.type}
+        </div>
         <button class="copy-btn" onclick="copyTemplate(${i}, this)">
           <i class="ti ti-copy" aria-hidden="true" style="font-size:15px;margin-right:6px"></i>Copy
         </button>
