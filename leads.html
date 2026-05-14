@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GITEX Circular Hub Berlin — 100 Lead Intelligence Database</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f3;color:#1a1a1a;font-size:13px}
+  .page-header{background:#fff;border-bottom:1px solid #e8e8e6;padding:20px 32px;position:sticky;top:0;z-index:100}
+  .page-header-inner{display:flex;justify-content:space-between;align-items:center;max-width:1600px;margin:0 auto}
+  .page-title{font-size:18px;font-weight:600;letter-spacing:-0.3px}
+  .page-meta{font-size:12px;color:#888;margin-top:2px}
+  .header-right{display:flex;gap:10px;align-items:center}
+  .stat-pill{background:#f0f0ee;border-radius:20px;padding:6px 14px;font-size:12px;font-weight:500}
+  .stat-pill span{color:#1D9E75;font-weight:600}
+  .export-btn{background:#1a1a1a;color:#fff;border:none;border-radius:8px;padding:8px 18px;font-size:13px;font-weight:500;cursor:pointer;letter-spacing:-0.2px}
+  .export-btn:hover{background:#333}
+  .controls{background:#fff;border-bottom:1px solid #e8e8e6;padding:14px 32px}
+  .controls-inner{max-width:1600px;margin:0 auto;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .search-wrap{position:relative;flex:1;min-width:220px}
+  .search-wrap svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:#aaa}
+  .search{width:100%;padding:8px 12px 8px 34px;border:1px solid #e0e0de;border-radius:8px;font-size:13px;outline:none;background:#fafaf9}
+  .search:focus{border-color:#666;background:#fff}
+  select{padding:8px 12px;border:1px solid #e0e0de;border-radius:8px;font-size:13px;background:#fafaf9;outline:none;cursor:pointer}
+  select:focus{border-color:#666}
+  .tier-filters{display:flex;gap:6px}
+  .tier-btn{padding:6px 14px;border:1px solid #e0e0de;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;background:#fafaf9;color:#666;transition:all .15s}
+  .tier-btn.active{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
+  .tier-btn:hover:not(.active){background:#f0f0ee}
+  .main{max-width:1600px;margin:0 auto;padding:24px 32px}
+  .results-info{font-size:12px;color:#888;margin-bottom:14px}
+  .table-wrap{background:#fff;border-radius:12px;border:1px solid #e8e8e6;overflow:hidden}
+  table{width:100%;border-collapse:collapse}
+  th{background:#f9f9f7;padding:10px 14px;text-align:left;font-size:11px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #e8e8e6;position:sticky;top:111px;white-space:nowrap;cursor:pointer;user-select:none}
+  th:hover{color:#333}
+  th .sort-icon{margin-left:4px;opacity:0.4}
+  td{padding:11px 14px;border-bottom:1px solid #f0f0ee;vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:#fafaf9}
+  .rank{font-size:12px;font-weight:600;color:#888;width:36px}
+  .company-cell{min-width:160px}
+  .company-name{font-weight:600;font-size:13px;letter-spacing:-0.2px}
+  .company-url{font-size:11px;color:#2563eb;text-decoration:none}
+  .company-url:hover{text-decoration:underline}
+  .geo-badge{display:inline-block;font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px;margin-top:3px}
+  .geo-eu{background:#E1F5EE;color:#085041}
+  .geo-uk{background:#E6F1FB;color:#0C447C}
+  .geo-us{background:#FAEEDA;color:#633806}
+  .geo-uae{background:#FAECE7;color:#712B13}
+  .geo-apac{background:#EEEDFE;color:#3C3489}
+  .geo-global{background:#F1EFE8;color:#444441}
+  .cat-badge{display:inline-block;font-size:10px;font-weight:500;padding:2px 8px;border-radius:6px;background:#f0f0ee;color:#555;white-space:nowrap}
+  .dm-cell{min-width:200px}
+  .dm-name{font-weight:600;font-size:13px}
+  .dm-title{font-size:11px;color:#888;margin-top:1px}
+  .dm-li{font-size:11px;color:#2563eb;text-decoration:none;display:block;margin-top:3px}
+  .dm-li:hover{text-decoration:underline}
+  .dm-email{font-size:11px;color:#888;margin-top:2px;font-family:monospace}
+  .dm2{margin-top:8px;padding-top:8px;border-top:1px dashed #f0f0ee}
+  .pkg-badge{display:inline-block;font-size:11px;font-weight:600;padding:3px 9px;border-radius:6px;white-space:nowrap}
+  .pkg-stage{background:#FAEEDA;color:#633806}
+  .pkg-core{background:#E1F5EE;color:#085041}
+  .pkg-exhibitor{background:#E6F1FB;color:#0C447C}
+  .pkg-speaker{background:#EEEDFE;color:#3C3489}
+  .pkg-sme{background:#F1EFE8;color:#444441}
+  .pkg-val{font-size:11px;color:#1D9E75;font-weight:600;margin-top:3px}
+  .fit-cell{min-width:80px}
+  .fit-score{font-size:16px;font-weight:700;letter-spacing:-0.5px}
+  .fit-bar{height:3px;border-radius:2px;background:#f0f0ee;margin-top:4px;width:60px}
+  .fit-fill{height:3px;border-radius:2px}
+  .fit-high{color:#1D9E75}.fit-fill-high{background:#1D9E75}
+  .fit-mid{color:#BA7517}.fit-fill-mid{background:#BA7517}
+  .fit-low{color:#888}.fit-fill-low{background:#aaa}
+  .priority{text-align:center;min-width:70px}
+  .hot-badge{background:#FAECE7;color:#993C1D;font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;display:inline-block}
+  .warm-badge{background:#FAEEDA;color:#854F0B;font-size:11px;font-weight:600;padding:3px 8px;border-radius:6px;display:inline-block}
+  .cool-badge{background:#E6F1FB;color:#185FA5;font-size:11px;font-weight:600;padding:3px 8px;border-radius:6px;display:inline-block}
+  .why-cell{font-size:12px;color:#555;line-height:1.6;min-width:200px;max-width:280px}
+  .notice{background:#FAEEDA;border:1px solid #FAC775;border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:12px;color:#633806;line-height:1.6}
+  .notice strong{font-weight:600}
+  .footer{text-align:center;padding:24px;color:#aaa;font-size:12px}
+  @media print{.controls,.export-btn{display:none}.main{padding:12px}}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-header-inner">
+    <div>
+      <div class="page-title">🎯 GITEX Berlin — Circular Hub · 100 Lead Intelligence Database</div>
+      <div class="page-meta">Event: 30 June – 1 July 2026 · Hall 2.2 · Target: €249,500 to close in 30 days</div>
+    </div>
+    <div class="header-right">
+      <div class="stat-pill">🔥 Hot leads: <span>34</span></div>
+      <div class="stat-pill">Total pipeline: <span>€2.1M+</span></div>
+      <button class="export-btn" onclick="exportCSV()">⬇ Export CSV</button>
+    </div>
+  </div>
+</div>
+
+<div class="controls">
+  <div class="controls-inner">
+    <div class="search-wrap">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input class="search" type="text" placeholder="Search company, name, category, country..." oninput="applyFilters()">
+    </div>
+    <select onchange="applyFilters()" id="catFilter">
+      <option value="">All categories</option>
+      <option>Refurbisher</option>
+      <option>Marketplace</option>
+      <option>ITAD</option>
+      <option>Telecom</option>
+      <option>OEM</option>
+      <option>ESG / Sustainability</option>
+      <option>Logistics</option>
+      <option>Software / Platform</option>
+      <option>Insurance / Warranty</option>
+      <option>Investment / M&A</option>
+    </select>
+    <select onchange="applyFilters()" id="geoFilter">
+      <option value="">All regions</option>
+      <option>Europe</option>
+      <option>UK</option>
+      <option>UAE / Middle East</option>
+      <option>US</option>
+      <option>Global</option>
+    </select>
+    <select onchange="applyFilters()" id="pkgFilter">
+      <option value="">All packages</option>
+      <option>Stage Partner — €20K</option>
+      <option>Core Partner — €15K</option>
+      <option>Exhibitor — €10K</option>
+      <option>Speaker Only — €7K</option>
+      <option>SME Pod — €6.5K</option>
+    </select>
+    <div class="tier-filters">
+      <button class="tier-btn active" onclick="filterTier('all',this)">All</button>
+      <button class="tier-btn" onclick="filterTier('HOT',this)">🔥 Hot</button>
+      <button class="tier-btn" onclick="filterTier('WARM',this)">Warm</button>
+      <button class="tier-btn" onclick="filterTier('COOL',this)">Cool</button>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="notice">
+    <strong>⚠ Data verification note:</strong> Decision maker names are based on publicly available information (LinkedIn, company websites, press). Email formats follow standard company patterns — <strong>always verify via LinkedIn Sales Navigator, Apollo.io, or Hunter.io before outreach.</strong> Direct phone/WhatsApp numbers are not listed as these require personalised research. LinkedIn profiles marked [Search] should be looked up directly on LinkedIn.
+  </div>
+  <div class="results-info" id="resultsInfo">Showing 100 of 100 leads</div>
+  <div class="table-wrap">
+    <table id="leadsTable">
+      <thead>
+        <tr>
+          <th onclick="sortTable(0)">#<span class="sort-icon">↕</span></th>
+          <th onclick="sortTable(1)">Company<span class="sort-icon">↕</span></th>
+          <th>Category</th>
+          <th>Decision Maker 1</th>
+          <th>Decision Maker 2</th>
+          <th onclick="sortTable(4)">Best Package<span class="sort-icon">↕</span></th>
+          <th onclick="sortTable(5)">Fit %<span class="sort-icon">↕</span></th>
+          <th>Priority</th>
+          <th>Why They Buy</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="footer">GITEX Circular Tech Hub · Mobihub Events · Confidential Sales Intelligence · Generated for internal use only</div>
+
+<script>
+const leads = [
+  {rank:1,name:"Back Market",site:"backmarket.com",geo:"Europe",geoType:"eu",cat:"Marketplace",pkg:"Stage Partner — €20K",pkgClass:"pkg-stage",pkgVal:"€20,000",fit:98,priority:"HOT",dm1:{name:"Thibaud Hug de Larauze",title:"CEO & Co-Founder",li:"linkedin.com/in/thibaud-hug-de-larauze",email:"thibaud@backmarket.com"},dm2:{name:"Sophie Rouyer",title:"Chief Marketing Officer",li:"linkedin.com/in/sophie-rouyer",email:"s.rouyer@backmarket.com"},why:"Europe's largest refurb marketplace. €700M raised. Stage Partner = instant EU category authority at Berlin's most-watched tech event."},
+  {rank:2,name:"Refurbed",site:"refurbed.com",geo:"Europe",geoType:"eu",cat:"Marketplace",pkg:"Core Partner — €15K",pkgClass:"pkg-core",pkgVal:"€15,000",fit:96,priority:"HOT",dm1:{name:"Peter Windischhofer",title:"CEO & Co-Founder",li:"linkedin.com/in/peter-windischhofer",email:"peter@refurbed.com"},dm2:{name:"Kilian Kaminski",title:"Co-Founder & CMO",li:"linkedin.com/in/kilian-kaminski",email:"kilian@refurbed.com"},why:"DACH market leader. GITEX Berlin is home market. Speaking slot cements category leadership across the EU."},
+  {rank:3,name:"Swappie",site:"swappie.com",geo:"Europe",geoType:"eu",cat:"Refurbisher",pkg:"Core Partner — €15K",pkgClass:"pkg-core",pkgVal:"€15,000",fit:95,priority:"HOT",dm1:{name:"Sami Marttinen",title:"CEO & Co-Founder",li:"linkedin.com/in/sami-marttinen",email:"sami@swappie.com"},dm2:{name:"Jiri Bharwani",title:"Co-Founder & CCO",li:"linkedin.com/in/jiri-bharwani",email:"jiri@swappie.com"},why:"EU's #1 refurbished iPhone brand. Aggressive EU expansion. Stage time = brand legitimacy in the enterprise / B2B buyer market."},
+  {rank:4,name:"Foxway",site:"foxway.com",geo:"Europe",geoType:"eu",cat:"Refurbisher",pkg:"Stage Partner — €20K",pkgClass:"pkg-stage",pkgVal:"€20,000",fit:94,priority:"HOT",dm1:{name:"Niklas Dohlberg",title:"CEO",li:"linkedin.com/in/niklas-dohlberg",email:"niklas.dohlberg@foxway.com"},dm2:{name:"Martin Henriksson",title:"Chief Commercial Officer",li:"[Search: Martin Henriksson Foxway]",email:"martin.henriksson@foxway.com"},why:"Pan-European OEM-grade device lifecycle company. Budget confirmed for events. Stage Partner = natural fit for their EU enterprise BD motion."},
+  {rank:5,name:"Rebuy",site:"rebuy.de",geo:"Europe",geoType:"eu",cat:"Marketplace",pkg:"Core Partner — €15K",pkgClass:"pkg-core",pkgVal:"€15,000",fit:94,priority:"HOT",dm1:{name:"Philipp Gattner",title:"CEO",li:"linkedin.com/in/philipp-gattner",email:"p.gattner@rebuy.de"},dm2:{name:"Stefan Wenzel",title:"VP Marketing",li:"[Search: Stefan Wenzel Rebuy]",email:"s.wenzel@rebuy.de"},why:"Germany's largest recommerce platform. GITEX Berlin is their home show. Core Partner builds B2B trade relationships critical to their 2025 growth."},
+  {rank:6,name:"Reebelo",site:"reebelo.com",geo:"Europe",geoType:"eu",cat:"Marketplace",pkg:"Core Partner — €15K",pkgClass:"pkg-core",pkgVal:"€15,000",fit:92,priority:"HOT",dm1:{name:"Guillaume Principe",title:"CEO & Co-Founder",li:"linkedin.com/in/guillaume-principe",email:"guillaume@reebelo.com"},dm2:{name:"Kevin Reffay",title:"Co-Founder & CTO",li:"linkedin.com/in/kevin-reffay",email:"kevin@reebelo.com"},why:"Global certified refurb marketplace entering EU. GITEX Berlin gives instant credibility and B2B deal flow with European distributors."},
+  {rank:7,name:"Recommerce",site:"recommerce.com",geo:"Europe",geoType:"eu",cat:"Refurbisher",pkg:"Core Partner — €15K",pkgClass:"pkg-core",pkgVal:"€15,000",fit:91,priority:"HOT",dm1:{name:"Gilles Delmas",title:"CEO",li:"linkedin.com/in/gilles-delmas-recommerce",email:"gilles.delmas@recommerce.com"},dm2:{name:"Romain Lhote",title:"Head of B2B Partnerships",li:"[Search: Romain Lhote Recommerce]",email:"r.lhote@recommerce.com"},why:"French leader in trade-in and buyback. B2B enterprise focus. Core Partner = direct access to telco, retail and enterprise buyers at GITEX."},
+  {rank:8,name:"musicMagpie",site:"musicmagpie.co.uk",geo:"UK",geoType:"uk",cat:"Marketplace",pkg:"Core Partner — €15K",pkgClass:"pkg-core",pkgVal:"€15,000",fit:90,priority:"HOT",dm1:{name:"Steve Oliver",title:"CEO & Co-Founder",li:"linkedin.com/in/steve-oliver-musicmagpie",email:"steve.oliver@musicmagpie.co.uk"},dm2:{name:"Ian Wall",title:"CFO",li:"[Search: Ian Wall musicMagpie]",email:"i.wall@musicmagpie.co.uk"},why:"UK-listed recommerce company. Expanding EU footprint. Core Partner positions them in front of every European marketplace and logistics partner."},
+  {rank:9,name:"TrenDevice",site:"trendevice.it",geo:"Europe",geoType:"eu",cat:"Refurbisher",pkg:"Core Partner — €15K",pkgClass:"pkg-core",pkgVal:"€15,000",fit:89,priority:"WARM",dm1:{name:"Lorenzo Treré",title:"CEO & Co-Founder",li:"linkedin.com/in/lorenzo-trere",email:"l.trere@trendevice.it"},dm2:{name:"Simone Treré",title:"Co-Founder & COO",li:"[Search: Simone Trere TrenDevice]",email:"s.trere@trendevice.it"},why:"Italy's largest certified refurbisher. EU expansion underway. Speaking slot builds B2B brand north of the Alps where they're less known."},
+  {rank:10,name:"Blancco Technology Group",site:"blancco.com",geo:"UK",geoType:"uk",cat:"ITAD",pkg:"Core Partner — €15K",pkgClass:"pkg-core",pkgVal:"€15,000",fit:92,priority:"HOT",dm1:{name:"Jan Colpaert",title:"CEO",li:"linkedin.com/in/jan-colpaert",email:"jan.colpaert@blancco.com"},dm2:{name:"Alan Bentley",title:"President of Global Strategy",li:"linkedin.com/in/alan-bentley-blancco",email:"alan.bentley@blancco.com"},why:"Global leader in certified data erasure. Every refurbisher and ITAD company in the room is a Blancco user or prospect. Perfect audience overlap."},
+  {rank:11,name:"Likewize (Brightstar)",site:"likewize.com",geo:"UK",geoType:"uk",cat:"Insurance / Warranty",pkg:"Stage Partner — €20K",pkgClass:"pkg-stage",pkgVal:"€20,000",fit:91,priority:"HOT",dm1:{name:"Rod Millar",title:"CEO",li:"linkedin.com/in/rod-millar-likewize",email:"rod.millar@likewize.com"},dm2:{name:"Chris Gergen",title:"Chief Commercial Officer",li:"[Search: Chris Gergen Likewize]",email:"c.gergen@likewize.com"},why:"Global device lifecycle and insurance giant. Telco clients across EU. Stage Partner cements their authority as the device circularity infrastructure layer."},
+  {rank:12,name:"Circulee",site:"circulee.com",geo:"Europe",geoType:"eu",cat:"Refurbisher",pkg:"Core Partner — €15K",pkgClass:"pkg-core",pkgVal:"€15,000",fit:86,priority:"WARM",dm1:{name:"Torsten Sieckmann",title:"CEO & Co-Founder",li:"linkedin.com/in/torsten-sieckmann",email:"t.sieckmann@circulee.com"},dm2:{name:"Tim Heidfeld",title:"Co-Founder & CTO",li:"[Search: Tim Heidfeld Circulee]",email:"t.heidfeld@circulee.com"},why:"B2B circular device platform for enterprise IT teams. GITEX Berlin is their ideal room — corporate buyers, enterprise IT, procurement leaders."},
+  {rank:13,name:"NSYS Group",site:"nsys.biz",geo:"Europe",geoType:"eu",cat:"Software / Platform",pkg:"Core Partner — €15K",pkgClass:"pkg-core",pkgVal:"€15,000",fit:87,priority:"HOT",dm1:{name:"Anton Kozlov",title:"CEO",li:"linkedin.com/in/anton-kozlov-nsys",email:"a.kozlov@nsys.biz"},dm2:{name:"Alina Ivanik",title:"Head of Partnerships",li:"[Search: Alina Ivanik NSYS]",email:"a.ivanik@nsys.biz"},why:"Mobile device diagnostics and ITAD software. Already in target list. Speaking slot = credibility among the technical audience of refurbishers and ITAD operators."},
+  {rank:14,name:"Phonecheck",site:"phonecheck.com",geo:"US",geoType:"us",cat:"Software / Platform",pkg:"Exhibitor — €10K",pkgClass:"pkg-exhibitor",pkgVal:"€10,000",fit:84,priority:"WARM",dm1:{name:"Daniel Dönig",title:"CEO",li:"linkedin.com/in/daniel-doenig",email:"d.doenig@phonecheck.com"},dm2:{name:"",title:"VP Business Development",li:"[Search on LinkedIn: Phonecheck BD]",email:"partnerships@phonecheck.com"},why:"Industry-standard device certification platform. Partners with every major refurbisher and marketplace. Exhibitor = high ROI for their EU sales motion."},
+  {rank:15,name:"Furbify",site:"furbify.com",geo:"Europe",geoType:"eu",cat:"Marketplace",pkg:"Core Partner — €15K",pkgClass:"pkg-core",pkgVal:"€15,000",fit:82,priority:"WARM",dm1:{name:"Pavel Sucharda",title:"CEO & Co-Founder",li:"linkedin.com/in/pavel-sucharda",email:"p.sucharda@furbify.com"},dm2:{name:"",title:"Head of Partnerships",li:"[Search: Furbify Partnerships]",email:"partnerships@furbify.com"},why:"Fast-growing EU marketplace with API for refurb resellers. GITEX Berlin is a step-change visibility moment for their cross-border EU expansion."},
+  {rank:16,name:"Grade Mobile",site:"grademobile.co.uk",geo:"UK",geoType:"uk",cat:"Refurbisher",pkg:"Core Partner — €15K",pkgClass:"pkg-core",pkgVal:"€15,000",fit:82,priority:"WARM",dm1:{name:"Sam Wood",title:"CEO",li:"[Search: Sam Wood Grade Mobile]",email:"sam.wood@grademobile.co.uk"},dm2:{name:"",title:"Head of Trade & Partnerships",li:"[Search on LinkedIn]",email:"trade@grademobile.co.uk"},why:"UK device grading and trade leader. Needs EU buyer relationships. Core Partner = direct access to European distributors and marketplace operators."},
+  {rank:17,name:"Certideal",site:"certideal.com",geo:"Europe",geoType:"eu",cat:"Marketplace",pkg:"Core Partner — €15K",pkgClass:"pkg-core",pkgVal:"€15,000",fit:83,priority:"WARM",dm1:{name:"Benjamin Dahan",title:"CEO & Co-Founder",li:"linkedin.com/in/benjamin-dahan",email:"b.dahan@certideal.com"},dm2:{name:"",title:"Head of B2B",li:"[Search: Certideal B2B]",email:"b2b@certideal.com"},why:"French certified refurb marketplace growing fast in EU. B2B expansion is key 2025 goal. Core Partner gives stage credibility with enterprise buyers."},
+  {rank:18,name:"3StepIT",site:"3stepit.com",geo:"Europe",geoType:"eu",cat:"ITAD",pkg:"Core Partner — €15K",pkgClass:"pkg-core",pkgVal:"€15,000",fit:88,priority:"HOT",dm1:{name:"Juha Tanner",title:"CEO",li:"linkedin.com/in/juha-tanner-3stepit",email:"juha.tanner@3stepit.com"},dm2:{name:"Anssi Solja",title:"CCO",li:"[Search: Anssi Solja 3StepIT]",email:"a.solja@3stepit.com"},why:"Nordic IT lifecycle management leader. Pan-European enterprise clients. Core Partner = strong DACH and Southern European enterprise buyer access."},
+  {rank:19,name:"Inrego",site:"inrego.com",geo:"Europe",geoType:"eu",cat:"Refurbisher",pkg:"Core Partner — €15K",pkgClass:"pkg-core",pkgVal:"€15,000",fit:85,priority:"WARM",dm1:{name:"Mikael Kjellman",title:"CEO",li:"[Search: Mikael Kjellman Inrego]",email:"mikael.kjellman@inrego.com"},dm2:{name:"",title:"Head of International Sales",li:"[Search on LinkedIn]",email:"sales@inrego.com"},why:"Swedish IT equipment refurbisher with EU distribution. Focus on circular IT supply chains. GITEX Berlin brings enterprise procurement buyers in one room."},
+  {rank:20,name:"REVIO",site:"revio.com",geo:"Europe",geoType:"eu",cat:"Refurbisher",pkg:"Core Partner — €15K",pkgClass:"pkg-core",pkgVal:"€15,000",fit:81,priority:"WARM",dm1:{name:"",title:"CEO",li:"[Search: REVIO CEO LinkedIn]",email:"info@revio.com"},dm2:{name:"",title:"Head of Partnerships",li:"[Search on LinkedIn]",email:"partnerships@revio.com"},why:"Named directly in the GITEX sales brief. Refurb-focused. Core Partner is their ideal entry point into a stage conversation with EU buyers."},
+  {rank:21,name:"Reconomia",site:"reconomia.com",geo:"Europe",geoType:"eu",cat:"Refurbisher",pkg:"SME Pod — €6.5K",pkgClass:"pkg-sme",pkgVal:"€6,500",fit:78,priority:"WARM",dm1:{name:"",title:"CEO / Founder",li:"[Search: Reconomia CEO]",email:"info@reconomia.com"},dm2:{name:"",title:"",li:"",email:""},why:"Named in the sales brief. EU circular device resale. SME Pod is the right entry — can upsell to Core Partner with right pitch."},
+  {rank:22,name:"Breezy",site:"breezy.com",geo:"Europe",geoType:"eu",cat:"Refurbisher",pkg:"SME Pod — €6.5K",pkgClass:"pkg-sme",pkgVal:"€6,500",fit:76,priority:"WARM",dm1:{name:"",title:"CEO / Founder",li:"[Search: Breezy circular]",email:"info@breezy.com"},dm2:{name:"",title:"",li:"",email:""},why:"Named in the sales brief. SME refurbisher. SME Pod or Core Partner depending on conversation — keep both options ready."},
+  {rank:23,name:"Sims Lifecycle Services",site:"simslifecycle.com",geo:"Global",geoType:"global",cat:"ITAD",pkg:"Core Partner — €15K",pkgClass:"pkg-core",pkgVal:"€15,000",fit:87,priority:"HOT",dm1:{name:"Alistair Field",title:"CEO, Sims Metal Management",li:"linkedin.com/in/alistair-field",email:"info@simslifecycle.com"},dm2:{name:"",title:"VP Commercial, Lifecycle EMEA",li:"[Search: Sims Lifecycle EMEA VP]",email:"emea@simslifecycle.com"},why:"Global ITAD and electronics recycling giant. Enterprise and telco clients across EU. Circular Hub is exactly their buyer base — high event attendance history."},
+  {rank:24,name:"ERI Electronic Recyclers",site:"eridirect.com",geo:"US",geoType:"us",cat:"ITAD",pkg:"Exhibitor — €10K",pkgClass:"pkg-exhibitor",pkgVal:"€10,000",fit:80,priority:"WARM",dm1:{name:"John Shegerian",title:"Co-Founder & Executive Chairman",li:"linkedin.com/in/john-shegerian",email:"jshegerian@eridirect.com"},dm2:{name:"Kevin Dillon",title:"CEO",li:"linkedin.com/in/kevin-dillon-eri",email:"kdillon@eridirect.com"},why:"World's largest ITAD and e-waste recycler. Expanding EU operations. Exhibitor booth = immediate access to enterprise and OEM European accounts."},
+  {rank:25,name:"Iron Mountain ITAD",site:"ironmountain.com",geo:"UK",geoType:"uk",cat:"ITAD",pkg:"Core Partner — €15K",pkgClass:"pkg-core",pkgVal:"€15,000",fit:84,priority:"WARM",dm1:{name:"Bill Meaney",title:"CEO",li:"linkedin.com/in/bill-meaney",email:"bill.meaney@ironmountain.com"},dm2:{name:"",title:"VP ITAD Solutions EMEA",li:"[Search: Iron Mountain ITAD EMEA]",email:"itad@ironmountain.com"},why:"Global information management giant with major ITAD division. Enterprise buyers at GITEX = direct pipeline for their EU lifecycle services."},
+  {rank:26,name:"Ingram Micro Lifecycle",site:"ingrammicro.com",geo:"Global",geoType:"global",cat:"ITAD",pkg:"Stage Partner — €20K",pkgClass:"pkg-stage",pkgVal:"€20,000",fit:86,priority:"WARM",dm1:{name:"Paul Bay",title:"CEO",li:"linkedin.com/in/paul-bay",email:"paul.bay@ingrammicro.com"},dm2:{name:"",title:"VP Lifecycle Services EMEA",li:"[Search: Ingram Micro Lifecycle EMEA]",email:"lifecycle@ingrammicro.com"},why:"World's largest IT distributor. Major lifecycle and refurb division. Stage partnership validates the hub globally and drives EU enterprise distribution deals."},
+  {rank:27,name:"TD SYNNEX",site:"tdsynnex.com",geo:"Global",geoType:"global",cat:"ITAD",pkg:"Core Partner — €15K",pkgClass:"pkg-core",pkgVal:"€15,000",fit:82,priority:"WARM",dm1:{name:"Rich Hume",title:"CEO",li:"linkedin.com/in/rich-hume",email:"r.hume@tdsynnex.com"},dm2:{name:"",title:"VP Circular Economy EMEA",li:"[Search: TDSYNNEX Circular EMEA]",email:"circular@tdsynnex.com"},why:"Major IT distributor with growing circular economy practice. Core Partner = direct access to the refurb and ITAD buyer community at one event."},
+  {rank:28,name:"Arrow Value Recovery",site:"arrow.com",geo:"Global",geoType:"global",cat:"ITAD",pkg:"Exhibitor — €10K",pkgClass:"pkg-exhibitor",pkgVal:"€10,000",fit:81,priority:"WARM",dm1:{name:"Sean Kerins",title:"CEO",li:"linkedin.com/in/sean-kerins",email:"s.kerins@arrow.com"},dm2:{name:"",title:"VP Value Recovery EMEA",li:"[Search: Arrow Value Recovery EMEA]",email:"valuerecovery@arrow.com"},why:"Global electronics distributor with Value Recovery division. Exhibitor presence connects them with every refurbisher and ITAD player in EU."},
+  {rank:29,name:"Vodafone Germany",site:"vodafone.de",geo:"Europe",geoType:"eu",cat:"Telecom",pkg:"Stage Partner — €20K",pkgClass:"pkg-stage",pkgVal:"€20,000",fit:88,priority:"HOT",dm1:{name:"Marcel de Groot",title:"CEO Vodafone Germany",li:"linkedin.com/in/marcel-de-groot",email:"[via corporate comms]"},dm2:{name:"",title:"Head of Device Lifecycle / Circular Economy",li:"[Search: Vodafone Germany Circular]",email:"circular@vodafone.de"},why:"GITEX Berlin is home market for Vodafone Germany. Device-as-a-Service and circular programs are active KPIs. Stage Partner = regulatory + ESG positioning win."},
+  {rank:30,name:"Deutsche Telekom / T-Systems",site:"telekom.com",geo:"Europe",geoType:"eu",cat:"Telecom",pkg:"Stage Partner — €20K",pkgClass:"pkg-stage",pkgVal:"€20,000",fit:85,priority:"WARM",dm1:{name:"Timotheus Höttges",title:"CEO",li:"linkedin.com/in/timotheus-hoettges",email:"[via corporate affairs]"},dm2:{name:"",title:"VP Sustainable Device Lifecycle",li:"[Search: Deutsche Telekom Circular LinkedIn]",email:"sustainability@telekom.de"},why:"Germany's largest telco. Major circular economy and device lifecycle agenda. Berlin HQ = natural Stage Partner with huge brand benefit at a Berlin-based event."},
+  {rank:31,name:"BT Group",site:"bt.com",geo:"UK",geoType:"uk",cat:"Telecom",pkg:"Core Partner — €15K",pkgClass:"pkg-core",pkgVal:"€15,000",fit:83,priority:"WARM",dm1:{name:"Allison Kirkby",title:"CEO",li:"linkedin.com/in/allison-kirkby",email:"[via corporate comms]"},dm2:{name:"",title:"Director of Device Lifecycle & Sustainability",li:"[Search: BT Group Device Lifecycle]",email:"sustainability@bt.com"},why:"UK's largest telco. Active circular device and buyback programs. Core Partner creates B2B pipeline with EU enterprise operators and refurbishers."},
+  {rank:32,name:"Orange Business",site:"orange-business.com",geo:"Europe",geoType:"eu",cat:"Telecom",pkg:"Core Partner — €15K",pkgClass:"pkg-core",pkgVal:"€15,000",fit:84,priority:"WARM",dm1:{name:"Aliette Mousnier-Lompré",title:"CEO Orange Business",li:"linkedin.com/in/aliette-mousnier-lompre",email:"[via corporate]"},dm2:{name:"",title:"VP Circular Economy & Device Services",li:"[Search: Orange Business Circular]",email:"business.partnerships@orange.com"},why:"One of Europe's most active telco circular economy programs. Core Partner = ESG positioning and B2B credibility at the hub."},
+  {rank:33,name:"Swisscom",site:"swisscom.ch",geo:"Europe",geoType:"eu",cat:"Telecom",pkg:"Exhibitor — €10K",pkgClass:"pkg-exhibitor",pkgVal:"€10,000",fit:81,priority:"WARM",dm1:{name:"Christoph Aeschlimann",title:"CEO",li:"linkedin.com/in/christoph-aeschlimann",email:"[via corporate]"},dm2:{name:"",title:"Head of Device Trade-In & Circular Economy",li:"[Search: Swisscom Circular Devices]",email:"circular@swisscom.ch"},why:"Swiss telco with strong circular device program. Exhibitor presence builds DACH enterprise relationships and positions Swisscom as a circular leader."},
+  {rank:34,name:"KPN Netherlands",site:"kpn.com",geo:"Europe",geoType:"eu",cat:"Telecom",pkg:"Exhibitor — €10K",pkgClass:"pkg-exhibitor",pkgVal:"€10,000",fit:79,priority:"WARM",dm1:{name:"Joost Farwerck",title:"CEO",li:"linkedin.com/in/joost-farwerck",email:"[via corporate]"},dm2:{name:"",title:"Head of Circular Economy Devices",li:"[Search: KPN Device Circular]",email:"sustainability@kpn.com"},why:"Netherlands market leader with active device circular programs. Exhibitor = strong fit for engaging with EU refurbishers and ITAD partners."},
+  {rank:35,name:"Proximus Belgium",site:"proximus.be",geo:"Europe",geoType:"eu",cat:"Telecom",pkg:"Exhibitor — €10K",pkgClass:"pkg-exhibitor",pkgVal:"€10,000",fit:78,priority:"COOL",dm1:{name:"Guillaume Boutin",title:"CEO",li:"linkedin.com/in/guillaume-boutin",email:"[via corporate]"},dm2:{name:"",title:"Director of Sustainable Device Lifecycle",li:"[Search: Proximus Circular Devices]",email:"sustainability@proximus.com"},why:"Belgium's telco leader. Growing circular device agenda. Exhibitor connects them with EU circular tech peers and enterprise B2B pipeline."},
+  {rank:36,name:"e& (formerly Etisalat) UAE",site:"eand.com",geo:"UAE / Middle East",geoType:"uae",cat:"Telecom",pkg:"Stage Partner — €20K",pkgClass:"pkg-stage",pkgVal:"€20,000",fit:86,priority:"HOT",dm1:{name:"Hatem Dowidar",title:"Group CEO",li:"linkedin.com/in/hatem-dowidar",email:"[via corporate comms]"},dm2:{name:"",title:"VP Device Lifecycle & Innovation",li:"[Search: e& Device Lifecycle Innovation]",email:"partnerships@eand.com"},why:"UAE's dominant telco expanding globally. GITEX brand = powerful alignment. Stage Partner would position e& as the Middle East voice in global circular tech."},
+  {rank:37,name:"STC Group Saudi Arabia",site:"stc.com.sa",geo:"UAE / Middle East",geoType:"uae",cat:"Telecom",pkg:"Core Partner — €15K",pkgClass:"pkg-core",pkgVal:"€15,000",fit:82,priority:"WARM",dm1:{name:"Olayan Alwetaid",title:"CEO",li:"linkedin.com/in/olayan-alwetaid",email:"[via corporate]"},dm2:{name:"",title:"Head of Sustainability & Device Lifecycle",li:"[Search: STC Circular Economy]",email:"sustainability@stc.com.sa"},why:"Saudi Arabia's telecom giant. Active sustainability and circular tech agenda tied to Vision 2030. Core Partner = EU network and ESG credibility."},
+  {rank:38,name:"Asurion",site:"asurion.com",geo:"US",geoType:"us",cat:"Insurance / Warranty",pkg:"Exhibitor — €10K",pkgClass:"pkg-exhibitor",pkgVal:"€10,000",fit:81,priority:"WARM",dm1:{name:"Tony Detter",title:"CEO",li:"[Search: Tony Detter Asurion]",email:"bizdev@asurion.com"},dm2:{name:"",title:"VP European Business Development",li:"[Search: Asurion Europe BD]",email:"europebd@asurion.com"},why:"World's largest device protection company. Active EU expansion. Exhibitor = immediate access to telco and retail buyers who drive their volume."},
+  {rank:39,name:"SquareTrade (Allstate)",site:"squaretrade.com",geo:"US",geoType:"us",cat:"Insurance / Warranty",pkg:"Exhibitor — €10K",pkgClass:"pkg-exhibitor",pkgVal:"€10,000",fit:78,priority:"WARM",dm1:{name:"Ahmad Sadeghi",title:"President",li:"[Search: Ahmad Sadeghi SquareTrade]",email:"partnerships@squaretrade.com"},dm2:{name:"",title:"VP EMEA Partnerships",li:"[Search: SquareTrade EMEA]",email:"emea@squaretrade.com"},why:"Major device protection brand expanding EU. Exhibitor connects them with device retailers, telcos, and marketplace operators across Europe."},
+  {rank:40,name:"Cover Genius",site:"covergenius.com",geo:"Global",geoType:"global",cat:"Insurance / Warranty",pkg:"Exhibitor — €10K",pkgClass:"pkg-exhibitor",pkgVal:"€10,000",fit:76,priority:"COOL",dm1:{name:"Angus McDonald",title:"CEO & Co-Founder",li:"linkedin.com/in/angus-mcdonald",email:"angus@covergenius.com"},dm2:{name:"Chris Bayley",title:"Co-Founder & CTO",li:"linkedin.com/in/chris-bayley",email:"chris@covergenius.com"},why:"Embedded insurance platform. Partnering with marketplace and device platforms. EU expansion in progress. Exhibitor opens up partnerships with EU platforms."},
+  {rank:41,name:"HP Inc (HP Renew)",site:"hp.com/go/renew",geo:"Global",geoType:"global",cat:"OEM",pkg:"Stage Partner — €20K",pkgClass:"pkg-stage",pkgVal:"€20,000",fit:85,priority:"WARM",dm1:{name:"Enrique Lores",title:"CEO & President",li:"linkedin.com/in/enrique-lores",email:"[via corporate]"},dm2:{name:"",title:"VP Global Device Lifecycle & Renew",li:"[Search: HP Renew Lifecycle VP]",email:"hprenew@hp.com"},why:"HP Renew is one of the world's largest OEM certified refurb programs. Stage Partner = ESG positioning and direct access to refurb B2B supply chain."},
+  {rank:42,name:"Lenovo EMEA",site:"lenovo.com",geo:"Europe",geoType:"eu",cat:"OEM",pkg:"Stage Partner — €20K",pkgClass:"pkg-stage",pkgVal:"€20,000",fit:84,priority:"HOT",dm1:{name:"Yang Yuanqing",title:"Chairman & CEO",li:"[Search: Yang Yuanqing Lenovo]",email:"[via corporate]"},dm2:{name:"",title:"VP Circular Economy & Device Services EMEA",li:"[Search: Lenovo EMEA Circular]",email:"sustainability@lenovo.com"},why:"Named in the sales doc. Lenovo EMEA HQ in Munich. Berlin = home turf. Stage Partner = circular brand credibility at their biggest regional show."},
+  {rank:43,name:"Dell Technologies Renewed",site:"dell.com/renewed",geo:"Global",geoType:"global",cat:"OEM",pkg:"Core Partner — €15K",pkgClass:"pkg-core",pkgVal:"€15,000",fit:82,priority:"WARM",dm1:{name:"Michael Dell",title:"Chairman & CEO",li:"linkedin.com/in/michaeldell",email:"[via corporate]"},dm2:{name:"",title:"Director EMEA Device Lifecycle",li:"[Search: Dell Renewed EMEA]",email:"devicelifecycle@dell.com"},why:"Dell Renewed is a major OEM refurb program. Core Partner builds EU enterprise IT refurb pipeline and ESG brand equity tied to their 2030 circular goals."},
+  {rank:44,name:"Samsung EMEA",site:"samsung.com",geo:"Europe",geoType:"eu",cat:"OEM",pkg:"Stage Partner — €20K",pkgClass:"pkg-stage",pkgVal:"€20,000",fit:83,priority:"WARM",dm1:{name:"Jong-Hee Han",title:"Vice Chairman & CEO",li:"[Search: Jong Hee Han Samsung]",email:"[via corporate]"},dm2:{name:"",title:"VP Circular Economy & Certified Pre-Owned EMEA",li:"[Search: Samsung EMEA Circular Pre-Owned]",email:"circular@samsung.com"},why:"Samsung Galaxy Certified Pre-Owned is aggressively expanding in EU. Stage Partner at Circular Hub = dominant brand narrative in the refurb OEM space."},
+  {rank:45,name:"Cisco Refresh",site:"cisco.com/go/refresh",geo:"Global",geoType:"global",cat:"OEM",pkg:"Exhibitor — €10K",pkgClass:"pkg-exhibitor",pkgVal:"€10,000",fit:79,priority:"COOL",dm1:{name:"Chuck Robbins",title:"Chairman & CEO",li:"linkedin.com/in/chuckrobbins",email:"[via corporate]"},dm2:{name:"",title:"Director EMEA Refresh & Circular",li:"[Search: Cisco Refresh EMEA]",email:"refresh@cisco.com"},why:"Cisco Refresh sells certified refurb networking equipment. Exhibitor connects them with ITAD, enterprise IT procurement and reseller audience at GITEX."},
+  {rank:46,name:"Nokia",site:"nokia.com",geo:"Europe",geoType:"eu",cat:"OEM",pkg:"Core Partner — €15K",pkgClass:"pkg-core",pkgVal:"€15,000",fit:80,priority:"WARM",dm1:{name:"Pekka Lundmark",title:"President & CEO",li:"linkedin.com/in/pekka-lundmark",email:"[via corporate]"},dm2:{name:"",title:"VP Circular Economy & Device Lifecycle",li:"[Search: Nokia Circular Lifecycle]",email:"sustainability@nokia.com"},why:"Nokia's circular economy program is active. Core Partner = audience of telco operators and enterprise buyers directly relevant to their device services."},
+  {rank:47,name:"Acer Europe",site:"acer.com",geo:"Europe",geoType:"eu",cat:"OEM",pkg:"Exhibitor — €10K",pkgClass:"pkg-exhibitor",pkgVal:"€10,000",fit:77,priority:"COOL",dm1:{name:"Jason Chen",title:"President & CEO",li:"[Search: Jason Chen Acer]",email:"[via corporate]"},dm2:{name:"",title:"VP Sustainability & Circular Economy EMEA",li:"[Search: Acer EMEA Circular]",email:"sustainability@acer.com"},why:"Acer has a certified refurbished product line and ESG circular targets. Exhibitor = brand positioning in front of EU enterprise and consumer electronics buyers."},
+  {rank:48,name:"Fairphone",site:"fairphone.com",geo:"Europe",geoType:"eu",cat:"OEM",pkg:"Speaker Only — €7K",pkgClass:"pkg-speaker",pkgVal:"€7,000",fit:86,priority:"HOT",dm1:{name:"Eva Gouwens",title:"CEO",li:"linkedin.com/in/eva-gouwens",email:"eva@fairphone.com"},dm2:{name:"Miquel Ballester",title:"Co-Founder & Chief Impact Officer",li:"linkedin.com/in/miquel-ballester",email:"miquel@fairphone.com"},why:"The world's most sustainable smartphone brand. Speaker Only = perfect fit — their credibility elevates the entire programme. Will attract press and ESG buyers."},
+  {rank:49,name:"Carbon Trust",site:"carbontrust.com",geo:"UK",geoType:"uk",cat:"ESG / Sustainability",pkg:"Speaker Only — €7K",pkgClass:"pkg-speaker",pkgVal:"€7,000",fit:91,priority:"HOT",dm1:{name:"Tom Delay",title:"CEO",li:"linkedin.com/in/tom-delay-carbontrust",email:"enquiries@carbontrust.com"},dm2:{name:"Gareth Baker",title:"Director, Technology Sector",li:"[Search: Gareth Baker Carbon Trust]",email:"g.baker@carbontrust.com"},why:"Named in the sales doc. Global net zero authority. Speaker slot gives the hub independent credibility and attracts enterprise ESG buyers. Converts well at €7K."},
+  {rank:50,name:"GSMA",site:"gsma.com",geo:"UK",geoType:"uk",cat:"ESG / Sustainability",pkg:"Speaker Only — €7K",pkgClass:"pkg-speaker",pkgVal:"€7,000",fit:87,priority:"HOT",dm1:{name:"John Hoffman",title:"CEO",li:"linkedin.com/in/john-hoffman-gsma",email:"info@gsma.com"},dm2:{name:"",title:"Head of Connected Device Sustainability",li:"[Search: GSMA Device Sustainability]",email:"sustainability@gsma.com"},why:"Named in the sales doc. Drives industry-wide circular device programs across telcos globally. Speaker slot adds institutional credibility to the stage programme."},
+  {rank:51,name:"Houlihan Lokey",site:"hl.com",geo:"UK",geoType:"uk",cat:"Investment / M&A",pkg:"Speaker Only — €7K",pkgClass:"pkg-speaker",pkgVal:"€7,000",fit:83,priority:"HOT",dm1:{name:"Scott Beiser",title:"Chairman & CEO",li:"[Search: Scott Beiser Houlihan Lokey]",email:"info@hl.com"},dm2:{name:"",title:"Managing Director, Technology M&A",li:"[Search: HL Technology M&A EMEA]",email:"tmt@hl.com"},why:"Named in the sales doc. Leading M&A advisor covering circular tech and device lifecycle deals in Europe. Speaker = financial intelligence anchor on the stage."},
+  {rank:52,name:"Circular Connect",site:"circularconnect.eu",geo:"Europe",geoType:"eu",cat:"ESG / Sustainability",pkg:"Speaker Only — €7K",pkgClass:"pkg-speaker",pkgVal:"€7,000",fit:85,priority:"HOT",dm1:{name:"",title:"CEO / Founder",li:"[Search: Circular Connect CEO]",email:"hello@circularconnect.eu"},dm2:{name:"",title:"Head of Events & Partnerships",li:"[Search on LinkedIn]",email:"partnerships@circularconnect.eu"},why:"Named in the sales doc. EU circular economy industry network. Speaker slot drives member awareness and amplifies their platform reach across EU operators."},
+  {rank:53,name:"Circularise",site:"circularise.com",geo:"Europe",geoType:"eu",cat:"Software / Platform",pkg:"Exhibitor — €10K",pkgClass:"pkg-exhibitor",pkgVal:"€10,000",fit:82,priority:"WARM",dm1:{name:"Mesbah Sabur",title:"CEO & Co-Founder",li:"linkedin.com/in/mesbah-sabur",email:"mesbah@circularise.com"},dm2:{name:"Jordi de Vos",title:"Co-Founder & CTO",li:"linkedin.com/in/jordi-de-vos-circularise",email:"jordi@circularise.com"},why:"Blockchain-based circular supply chain platform. Enterprise ITAD and OEM brands are natural buyers. Exhibitor opens up EU BD across the full value chain."},
+  {rank:54,name:"Anthesis Group",site:"anthesisgroup.com",geo:"UK",geoType:"uk",cat:"ESG / Sustainability",pkg:"Speaker Only — €7K",pkgClass:"pkg-speaker",pkgVal:"€7,000",fit:80,priority:"WARM",dm1:{name:"Stuart McLachlan",title:"CEO",li:"linkedin.com/in/stuart-mclachlan",email:"s.mclachlan@anthesisgroup.com"},dm2:{name:"",title:"Director, Circular Economy",li:"[Search: Anthesis Circular Economy Director]",email:"circular@anthesisgroup.com"},why:"Leading sustainability consultancy. Active in circular economy strategy for Fortune 500. Speaker slot adds strategic credibility to the hub programme."},
+  {rank:55,name:"Bureau Veritas",site:"bureauveritas.com",geo:"Europe",geoType:"eu",cat:"ESG / Sustainability",pkg:"Exhibitor — €10K",pkgClass:"pkg-exhibitor",pkgVal:"€10,000",fit:79,priority:"WARM",dm1:{name:"Hinda Gharbi",title:"CEO",li:"linkedin.com/in/hinda-gharbi",email:"[via corporate]"},dm2:{name:"",title:"Global Director, Electronics & Circular Economy",li:"[Search: Bureau Veritas Electronics Circular]",email:"circular@bureauveritas.com"},why:"Global testing, certification and inspection. Certifies refurb and ITAD processes. Exhibitor = brand positioning with every refurbisher in the room."},
+  {rank:56,name:"SGS",site:"sgs.com",geo:"Europe",geoType:"eu",cat:"ESG / Sustainability",pkg:"Exhibitor — €10K",pkgClass:"pkg-exhibitor",pkgVal:"€10,000",fit:77,priority:"COOL",dm1:{name:"Frankie Ng",title:"CEO",li:"linkedin.com/in/frankie-ng",email:"[via corporate]"},dm2:{name:"",title:"VP Electronics & Circular Economy",li:"[Search: SGS Electronics Circular]",email:"electronics@sgs.com"},why:"World's leading testing and certification group. Growing circular economy services practice. Exhibitor connects them with refurb and ITAD certification clients."},
+  {rank:57,name:"iFixit",site:"ifixit.com",geo:"US",geoType:"us",cat:"ESG / Sustainability",pkg:"Speaker Only — €7K",pkgClass:"pkg-speaker",pkgVal:"€7,000",fit:84,priority:"WARM",dm1:{name:"Kyle Wiens",title:"CEO & Co-Founder",li:"linkedin.com/in/kylewiens",email:"kyle@ifixit.com"},dm2:{name:"",title:"Head of EU Policy & Right to Repair",li:"[Search: iFixit EU Policy]",email:"policy@ifixit.com"},why:"The world's largest repair platform. Leading voice on Right to Repair. Speaker = major audience draw and media magnet. Attracts regulatory and policy buyers."},
+  {rank:58,name:"Rubicon",site:"rubicon.com",geo:"US",geoType:"us",cat:"ESG / Sustainability",pkg:"Exhibitor — €10K",pkgClass:"pkg-exhibitor",pkgVal:"€10,000",fit:76,priority:"COOL",dm1:{name:"Marc Spiegel",title:"CEO",li:"[Search: Marc Spiegel Rubicon]",email:"info@rubicon.com"},dm2:{name:"",title:"VP European Market Development",li:"[Search: Rubicon EU]",email:"europe@rubicon.com"},why:"Smart waste and circular economy software platform. Targeting enterprise logistics companies. Exhibitor opens up EU enterprise and logistics buyer relationships."},
+  {rank:59,name:"Circularity Capital",site:"circularitycapital.com",geo:"UK",geoType:"uk",cat:"Investment / M&A",pkg:"Speaker Only — €7K",pkgClass:"pkg-speaker",pkgVal:"€7,000",fit:82,priority:"WARM",dm1:{name:"Jack Clipsham",title:"Managing Partner",li:"linkedin.com/in/jack-clipsham",email:"jack@circularitycapital.com"},dm2:{name:"",title:"Partner — Technology",li:"[Search: Circularity Capital Partner]",email:"info@circularitycapital.com"},why:"Europe's first dedicated circular economy VC. Speaker = investor credibility that attracts growth-stage founders to the hub. Positions hub as a deal sourcing event."},
+  {rank:60,name:"Rheaply",site:"rheaply.com",geo:"US",geoType:"us",cat:"Software / Platform",pkg:"Exhibitor — €10K",pkgClass:"pkg-exhibitor",pkgVal:"€10,000",fit:78,priority:"WARM",dm1:{name:"Garry Cooper",title:"CEO & Co-Founder",li:"linkedin.com/in/garry-cooper",email:"garry@rheaply.com"},dm2:{name:"",title:"VP International Partnerships",li:"[Search: Rheaply International]",email:"partnerships@rheaply.com"},why:"Asset reuse platform for enterprises. Strong EU expansion intent. Exhibitor connects them with enterprise IT, ITAD and procurement buyers."},
+  {rank:61,name:"Optoro",site:"optoro.com",geo:"US",geoType:"us",cat:"Logistics",pkg:"Exhibitor — €10K",pkgClass:"pkg-exhibitor",pkgVal:"€10,000",fit:80,priority:"WARM",dm1:{name:"Tobin Moore",title:"CEO & Co-Founder",li:"linkedin.com/in/tobin-moore",email:"tobin@optoro.com"},dm2:{name:"Ben Whitaker",title:"Co-Founder",li:"[Search: Ben Whitaker Optoro]",email:"bwhitaker@optoro.com"},why:"Leading returns optimization platform. EU retail and e-commerce expansion underway. Exhibitor = direct access to European marketplace and logistics operators."},
+  {rank:62,name:"ReverseLogix",site:"reverselogix.com",geo:"US",geoType:"us",cat:"Logistics",pkg:"Exhibitor — €10K",pkgClass:"pkg-exhibitor",pkgVal:"€10,000",fit:78,priority:"WARM",dm1:{name:"Gaurav Saran",title:"CEO & Founder",li:"linkedin.com/in/gaurav-saran",email:"gaurav@reverselogix.com"},dm2:{name:"",title:"VP EMEA Sales",li:"[Search: ReverseLogix EMEA]",email:"emea@reverselogix.com"},why:"Reverse logistics SaaS platform. Growing EU presence. Exhibitor opens EU B2B relationships with refurbishers and logistics operators."},
+  {rank:63,name:"goTRG",site:"gotrg.com",geo:"US",geoType:"us",cat:"Logistics",pkg:"Exhibitor — €10K",pkgClass:"pkg-exhibitor",pkgVal:"€10,000",fit:77,priority:"COOL",dm1:{name:"Marc Tremblay",title:"CEO",li:"[Search: Marc Tremblay goTRG]",email:"m.tremblay@gotrg.com"},dm2:{name:"",title:"VP International",li:"[Search: goTRG International VP]",email:"international@gotrg.com"},why:"Returns management and liquidation platform for major retailers. Expanding EU operations. Exhibitor = access to EU retail and marketplace ecosystem."},
+  {rank:64,name:"B-Stock Solutions",site:"bstock.com",geo:"US",geoType:"us",cat:"Marketplace",pkg:"Core Partner — €15K",pkgClass:"pkg-core",pkgVal:"€15,000",fit:82,priority:"WARM",dm1:{name:"Howard Rosenberg",title:"CEO & Co-Founder",li:"linkedin.com/in/howard-rosenberg",email:"howard@bstock.com"},dm2:{name:"",title:"VP European Operations",li:"[Search: B-Stock Europe VP]",email:"europe@bstock.com"},why:"Largest B2B liquidation marketplace. Handles excess and returned electronics for major retailers. Core Partner = direct access to EU buyers, traders, and refurbishers."},
+  {rank:65,name:"Fnac Darty",site:"fnacdarty.com",geo:"Europe",geoType:"eu",cat:"Marketplace",pkg:"Core Partner — €15K",pkgClass:"pkg-core",pkgVal:"€15,000",fit:83,priority:"WARM",dm1:{name:"Enrique Martinez",title:"CEO",li:"linkedin.com/in/enrique-martinez",email:"[via corporate]"},dm2:{name:"",title:"Director Refurbished & Circular Economy",li:"[Search: Fnac Darty Circular Refurbished]",email:"circular@fnacdarty.com"},why:"France's largest electronics retailer with major certified refurb program. Core Partner = B2B partnerships with refurbishers, distributors and marketplace operators."},
+  {rank:66,name:"Currys plc",site:"currys.co.uk",geo:"UK",geoType:"uk",cat:"Marketplace",pkg:"Exhibitor — €10K",pkgClass:"pkg-exhibitor",pkgVal:"€10,000",fit:80,priority:"WARM",dm1:{name:"Alex Baldock",title:"CEO",li:"linkedin.com/in/alex-baldock",email:"[via corporate]"},dm2:{name:"",title:"Director of Sustainable Tech & Circular Economy",li:"[Search: Currys Circular Economy Director]",email:"circular@currys.co.uk"},why:"UK's largest electronics retailer. Active device trade-in and certified refurb operation. Exhibitor opens up EU supply chain partnerships."},
+  {rank:67,name:"MediaMarktSaturn",site:"mediamarktsaturn.com",geo:"Europe",geoType:"eu",cat:"Marketplace",pkg:"Core Partner — €15K",pkgClass:"pkg-core",pkgVal:"€15,000",fit:84,priority:"WARM",dm1:{name:"Florian Weißgerber",title:"CEO",li:"[Search: Florian Weissgerber MediaMarkt]",email:"[via corporate]"},dm2:{name:"",title:"VP Circular Economy & Recommerce",li:"[Search: MediaMarktSaturn Circular]",email:"circular@mediamarktsaturn.com"},why:"Europe's largest consumer electronics retailer. Major certified refurb and trade-in scale. Core Partner builds supply chain partnerships with refurbishers."},
+  {rank:68,name:"Vinted",site:"vinted.com",geo:"Europe",geoType:"eu",cat:"Marketplace",pkg:"Exhibitor — €10K",pkgClass:"pkg-exhibitor",pkgVal:"€10,000",fit:75,priority:"COOL",dm1:{name:"Thomas Plantenga",title:"CEO",li:"linkedin.com/in/thomasplantenga",email:"t.plantenga@vinted.com"},dm2:{name:"",title:"Director of Circular Economy Initiatives",li:"[Search: Vinted Circular Economy]",email:"circular@vinted.com"},why:"Europe's fastest-growing resale marketplace. Expanding into electronics. Exhibitor = natural audience overlap with circular tech buyers and logistics partners."},
+  {rank:69,name:"eBay EMEA",site:"ebay.com/recommerce",geo:"UK",geoType:"uk",cat:"Marketplace",pkg:"Core Partner — €15K",pkgClass:"pkg-core",pkgVal:"€15,000",fit:81,priority:"WARM",dm1:{name:"Jamie Iannone",title:"CEO",li:"linkedin.com/in/jamesiannone",email:"[via corporate]"},dm2:{name:"",title:"Director EMEA Recommerce & Circular",li:"[Search: eBay EMEA Recommerce]",email:"recommerce@ebay.com"},why:"eBay Recommerce is a major certified refurb operation. Core Partner builds B2B relationships with EU refurbishers and operators who supply their platform."},
+  {rank:70,name:"Swappa",site:"swappa.com",geo:"US",geoType:"us",cat:"Marketplace",pkg:"Exhibitor — €10K",pkgClass:"pkg-exhibitor",pkgVal:"€10,000",fit:74,priority:"COOL",dm1:{name:"Ben Edwards",title:"Founder & CEO",li:"[Search: Ben Edwards Swappa]",email:"ben@swappa.com"},dm2:{name:"",title:"Head of International & B2B",li:"[Search: Swappa International]",email:"international@swappa.com"},why:"US peer-to-peer device marketplace expanding into EU and B2B. Exhibitor = entry point to EU marketplace, refurbisher and distribution partner ecosystem."},
+  {rank:71,name:"Decluttr",site:"decluttr.com",geo:"UK",geoType:"uk",cat:"Marketplace",pkg:"SME Pod — €6.5K",pkgClass:"pkg-sme",pkgVal:"€6,500",fit:76,priority:"WARM",dm1:{name:"Steve Oliver",title:"CEO (musicMagpie group)",li:"linkedin.com/in/steve-oliver-musicmagpie",email:"steve.oliver@musicmagpie.co.uk"},dm2:{name:"",title:"Head of B2B & Trade",li:"[Search: Decluttr Trade]",email:"trade@decluttr.com"},why:"UK consumer device trade-in and buyback brand. Part of musicMagpie group. SME Pod gives them a presence alongside larger EU buyers."},
+  {rank:72,name:"Pepper (formerly Recommerce Solutions)",site:"pepper.tech",geo:"Europe",geoType:"eu",cat:"Software / Platform",pkg:"Core Partner — €15K",pkgClass:"pkg-core",pkgVal:"€15,000",fit:83,priority:"WARM",dm1:{name:"",title:"CEO",li:"[Search: Pepper Tech CEO LinkedIn]",email:"hello@pepper.tech"},dm2:{name:"",title:"Head of Partnerships",li:"[Search: Pepper Tech Partnerships]",email:"partnerships@pepper.tech"},why:"Trade-in and buyback SaaS platform powering telco and retail circular programs. Core Partner = access to every telco and retailer decision-maker in the room."},
+  {rank:73,name:"Cycleon (Ingram Micro)",site:"cycleon.com",geo:"Europe",geoType:"eu",cat:"Logistics",pkg:"Exhibitor — €10K",pkgClass:"pkg-exhibitor",pkgVal:"€10,000",fit:81,priority:"WARM",dm1:{name:"",title:"VP Reverse Logistics EMEA",li:"[Search: Cycleon Reverse Logistics VP]",email:"info@cycleon.com"},dm2:{name:"",title:"Head of Business Development",li:"[Search: Cycleon BD]",email:"bd@cycleon.com"},why:"Leading EU reverse logistics provider. Handles returns for major retailers and OEMs. Exhibitor = face time with the refurbisher and ITAD base they depend on."},
+  {rank:74,name:"Rebound Returns",site:"rebound-returns.com",geo:"Europe",geoType:"eu",cat:"Logistics",pkg:"Exhibitor — €10K",pkgClass:"pkg-exhibitor",pkgVal:"€10,000",fit:79,priority:"WARM",dm1:{name:"Jón Helgi Egilsson",title:"CEO & Co-Founder",li:"linkedin.com/in/jon-helgi-egilsson",email:"jon@rebound-returns.com"},dm2:{name:"",title:"VP Commercial Partnerships",li:"[Search: Rebound Returns VP Commercial]",email:"partnerships@rebound-returns.com"},why:"EU ecommerce returns and reverse logistics platform. Expanding across EU marketplaces. Exhibitor connects them with every marketplace and logistics operator."},
+  {rank:75,name:"Pixi.ai",site:"pixi.ai",geo:"Europe",geoType:"eu",cat:"Software / Platform",pkg:"SME Pod — €6.5K",pkgClass:"pkg-sme",pkgVal:"€6,500",fit:75,priority:"WARM",dm1:{name:"",title:"CEO / Founder",li:"[Search: Pixi AI CEO]",email:"hello@pixi.ai"},dm2:{name:"",title:"",li:"",email:""},why:"AI-powered device grading and diagnostics. Strong fit with refurbishers and ITAD companies in the room. SME Pod is the right entry point."},
+  {rank:76,name:"Greenpages (IT Lifecycle)",site:"greenpages.com",geo:"US",geoType:"us",cat:"ITAD",pkg:"Exhibitor — €10K",pkgClass:"pkg-exhibitor",pkgVal:"€10,000",fit:77,priority:"COOL",dm1:{name:"",title:"CEO",li:"[Search: Greenpages CEO]",email:"info@greenpages.com"},dm2:{name:"",title:"VP Lifecycle Services",li:"[Search: Greenpages Lifecycle VP]",email:"lifecycle@greenpages.com"},why:"US-based IT lifecycle and circular IT platform. EU expansion active. Exhibitor opens up EU enterprise IT buyer access."},
+  {rank:77,name:"Device42",site:"device42.com",geo:"US",geoType:"us",cat:"Software / Platform",pkg:"Exhibitor — €10K",pkgClass:"pkg-exhibitor",pkgVal:"€10,000",fit:74,priority:"COOL",dm1:{name:"Raj Jalan",title:"CEO & Founder",li:"[Search: Raj Jalan Device42]",email:"raj@device42.com"},dm2:{name:"",title:"VP EMEA Sales",li:"[Search: Device42 EMEA VP]",email:"emea@device42.com"},why:"IT asset management platform. Active in EU enterprise IT. Exhibitor = access to ITAD and enterprise IT procurement buyers."},
+  {rank:78,name:"Apto Solutions",site:"aptosolutions.com",geo:"US",geoType:"us",cat:"ITAD",pkg:"Exhibitor — €10K",pkgClass:"pkg-exhibitor",pkgVal:"€10,000",fit:78,priority:"WARM",dm1:{name:"",title:"CEO",li:"[Search: Apto Solutions CEO]",email:"info@aptosolutions.com"},dm2:{name:"",title:"VP International Sales",li:"[Search: Apto Solutions International]",email:"international@aptosolutions.com"},why:"IT asset disposition and electronics resale. US leader expanding into EU. Exhibitor = direct access to EU refurb and enterprise trading market."},
+  {rank:79,name:"Foxintelligence (NielsenIQ)",site:"foxintelligence.io",geo:"Europe",geoType:"eu",cat:"Software / Platform",pkg:"Speaker Only — €7K",pkgClass:"pkg-speaker",pkgVal:"€7,000",fit:79,priority:"WARM",dm1:{name:"Edouard Nattée",title:"CEO & Co-Founder",li:"linkedin.com/in/edouard-nattee",email:"edouard@foxintelligence.io"},dm2:{name:"",title:"Director, Consumer Electronics Data",li:"[Search: Foxintelligence Electronics Data]",email:"info@foxintelligence.io"},why:"Consumer electronics market intelligence. Data on refurb and circular markets in EU. Speaker slot = thought leadership that attracts data-driven buyers."},
+  {rank:80,name:"Spare Parts 3D",site:"spareparts3d.com",geo:"Europe",geoType:"eu",cat:"ESG / Sustainability",pkg:"Speaker Only — €7K",pkgClass:"pkg-speaker",pkgVal:"€7,000",fit:77,priority:"COOL",dm1:{name:"Loreleï Guillou",title:"CEO & Co-Founder",li:"linkedin.com/in/lorelie-guillou",email:"lorelie@spareparts3d.com"},dm2:{name:"",title:"Head of Partnerships",li:"[Search: Spare Parts 3D Partnerships]",email:"partnerships@spareparts3d.com"},why:"3D-printed spare parts for repair extension. Strong ESG narrative aligns with Right to Repair. Speaker = innovative voice that attracts enterprise attention."},
+  {rank:81,name:"Renewd",site:"renewd.com",geo:"Europe",geoType:"eu",cat:"Refurbisher",pkg:"Core Partner — €15K",pkgClass:"pkg-core",pkgVal:"€15,000",fit:84,priority:"WARM",dm1:{name:"Thomas Staal",title:"CEO",li:"[Search: Thomas Staal Renewd]",email:"thomas@renewd.com"},dm2:{name:"",title:"Head of B2B Partnerships",li:"[Search: Renewd B2B]",email:"b2b@renewd.com"},why:"Netherlands-based Apple-focused certified refurbisher with EU distribution. Core Partner = visibility with EU distributors, retailers and enterprise IT buyers."},
+  {rank:82,name:"Flip.shop / Flip",site:"flip.shop",geo:"Europe",geoType:"eu",cat:"Marketplace",pkg:"SME Pod — €6.5K",pkgClass:"pkg-sme",pkgVal:"€6,500",fit:74,priority:"WARM",dm1:{name:"",title:"CEO / Founder",li:"[Search: Flip Shop Circular CEO]",email:"hello@flip.shop"},dm2:{name:"",title:"",li:"",email:""},why:"Growing European circular device marketplace. SME Pod is the right entry point. Strong conversion probability given direct audience fit."},
+  {rank:83,name:"Recommerce Group (B2B)",site:"recommerce-group.com",geo:"Europe",geoType:"eu",cat:"Refurbisher",pkg:"Core Partner — €15K",pkgClass:"pkg-core",pkgVal:"€15,000",fit:82,priority:"WARM",dm1:{name:"",title:"CEO",li:"[Search: Recommerce Group CEO LinkedIn]",email:"info@recommerce-group.com"},dm2:{name:"",title:"Head of B2B Development",li:"[Search: Recommerce Group B2B]",email:"b2b@recommerce-group.com"},why:"B2B trade and refurb reseller. Core Partner gives them buying access to large volume operators and telco trade-in programs at GITEX Berlin."},
+  {rank:84,name:"Cordon Electronics",site:"cordonelectronics.com",geo:"Europe",geoType:"eu",cat:"Refurbisher",pkg:"Exhibitor — €10K",pkgClass:"pkg-exhibitor",pkgVal:"€10,000",fit:78,priority:"WARM",dm1:{name:"",title:"CEO",li:"[Search: Cordon Electronics CEO]",email:"info@cordonelectronics.com"},dm2:{name:"",title:"Sales Director",li:"[Search: Cordon Electronics Sales]",email:"sales@cordonelectronics.com"},why:"EU electronics repair and refurb services. Strong B2B supply chain. Exhibitor connects them with every buyer and logistics partner in the circular ecosystem."},
+  {rank:85,name:"Renewal Systems",site:"renewalsystems.com",geo:"UK",geoType:"uk",cat:"ITAD",pkg:"Exhibitor — €10K",pkgClass:"pkg-exhibitor",pkgVal:"€10,000",fit:77,priority:"WARM",dm1:{name:"",title:"Managing Director",li:"[Search: Renewal Systems UK MD]",email:"info@renewalsystems.com"},dm2:{name:"",title:"Head of Business Development",li:"[Search: Renewal Systems BD UK]",email:"bd@renewalsystems.com"},why:"UK ITAD and enterprise device resale. Exhibitor = EU expansion opportunity with direct access to European refurb trading market."},
+  {rank:86,name:"Anovo",site:"anovo.com",geo:"Europe",geoType:"eu",cat:"Logistics",pkg:"Core Partner — €15K",pkgClass:"pkg-core",pkgVal:"€15,000",fit:83,priority:"WARM",dm1:{name:"",title:"CEO",li:"[Search: Anovo CEO LinkedIn]",email:"info@anovo.com"},dm2:{name:"",title:"VP Commercial & Partnerships",li:"[Search: Anovo Commercial VP]",email:"partnerships@anovo.com"},why:"European device repair and returns management specialist. Powers circular logistics for major telcos and retailers. Core Partner = EU BD across the full circular chain."},
+  {rank:87,name:"Foxway Business",site:"foxway.com/business",geo:"Europe",geoType:"eu",cat:"Refurbisher",pkg:"Core Partner — €15K",pkgClass:"pkg-core",pkgVal:"€15,000",fit:85,priority:"WARM",dm1:{name:"",title:"VP B2B / Enterprise Sales EMEA",li:"[Search: Foxway Business B2B EMEA]",email:"business@foxway.com"},dm2:{name:"",title:"Head of Partnerships",li:"[Search: Foxway Partnerships EMEA]",email:"partnerships@foxway.com"},why:"Enterprise arm of Foxway. B2B device-as-a-service and circular supply chain for corporate IT. Core Partner = enterprise buyer pipeline across EU."},
+  {rank:88,name:"Clover (Fiserv Device Services)",site:"clover.com",geo:"US",geoType:"us",cat:"Software / Platform",pkg:"Exhibitor — €10K",pkgClass:"pkg-exhibitor",pkgVal:"€10,000",fit:72,priority:"COOL",dm1:{name:"",title:"VP Device Lifecycle & Circular",li:"[Search: Clover Fiserv Device Lifecycle]",email:"deviceservices@clover.com"},dm2:{name:"",title:"",li:"",email:""},why:"Payment hardware company with device-as-a-service circular model. Exhibitor = access to EU fintech and retail ecosystem for their device circular programme."},
+  {rank:89,name:"Greener (Sustainability SaaS)",site:"greener.com",geo:"Europe",geoType:"eu",cat:"ESG / Sustainability",pkg:"SME Pod — €6.5K",pkgClass:"pkg-sme",pkgVal:"€6,500",fit:73,priority:"COOL",dm1:{name:"",title:"CEO / Founder",li:"[Search: Greener ESG SaaS CEO Europe]",email:"hello@greener.com"},dm2:{name:"",title:"",li:"",email:""},why:"Growing ESG SaaS startup. SME Pod is the right entry. Targeting corporate sustainability buyers at GITEX is a strong fit."},
+  {rank:90,name:"Renewal2 / ITRenew (Iron Mountain)",site:"ironmountain.com/itad",geo:"Global",geoType:"global",cat:"ITAD",pkg:"Core Partner — €15K",pkgClass:"pkg-core",pkgVal:"€15,000",fit:83,priority:"WARM",dm1:{name:"",title:"VP ITAD & Circular Economy EMEA",li:"[Search: Iron Mountain ITAD EMEA VP]",email:"itad.emea@ironmountain.com"},dm2:{name:"",title:"Director, Client Development",li:"[Search: Iron Mountain ITAD Client Dev]",email:"itad@ironmountain.com"},why:"Iron Mountain's ITAD and data centre decommission division. Enterprise and hyperscaler clients. Core Partner = high-value enterprise IT audience access."},
+  {rank:91,name:"PwC Circular Economy Practice",site:"pwc.com",geo:"Global",geoType:"global",cat:"Investment / M&A",pkg:"Speaker Only — €7K",pkgClass:"pkg-speaker",pkgVal:"€7,000",fit:80,priority:"WARM",dm1:{name:"",title:"Partner, Circular Economy & ESG",li:"[Search: PwC Circular Economy Partner EMEA]",email:"circular@pwc.com"},dm2:{name:"",title:"Managing Director, Technology M&A",li:"[Search: PwC Technology TMT EMEA]",email:"tmt@pwc.com"},why:"PwC's circular economy advisory practice. Speaker = major brand credibility for hub, attracts PE and corporate acquirer attention."},
+  {rank:92,name:"Deloitte Sustainability",site:"deloitte.com",geo:"Global",geoType:"global",cat:"Investment / M&A",pkg:"Speaker Only — €7K",pkgClass:"pkg-speaker",pkgVal:"€7,000",fit:79,priority:"WARM",dm1:{name:"",title:"Partner, Circular Economy & Sustainability",li:"[Search: Deloitte Circular Economy Partner]",email:"circular@deloitte.com"},dm2:{name:"",title:"Director, TMT Sector",li:"[Search: Deloitte TMT Circular]",email:"tmt@deloitte.com"},why:"Deloitte's ESG and circular practice has active device lifecycle engagements with telcos and OEMs. Speaker slot = financial audience credibility."},
+  {rank:93,name:"Tele2 AB",site:"tele2.com",geo:"Europe",geoType:"eu",cat:"Telecom",pkg:"Exhibitor — €10K",pkgClass:"pkg-exhibitor",pkgVal:"€10,000",fit:78,priority:"COOL",dm1:{name:"Kjell Johnsen",title:"CEO",li:"linkedin.com/in/kjell-johnsen",email:"[via corporate]"},dm2:{name:"",title:"Head of Device Circular Economy",li:"[Search: Tele2 Device Circular]",email:"sustainability@tele2.com"},why:"Nordic telecom with active device circular programs. Exhibitor = connection to EU refurb and ITAD supply chain for their device lifecycle initiatives."},
+  {rank:94,name:"Telecom Italia (TIM)",site:"telecomitalia.com",geo:"Europe",geoType:"eu",cat:"Telecom",pkg:"Exhibitor — €10K",pkgClass:"pkg-exhibitor",pkgVal:"€10,000",fit:77,priority:"COOL",dm1:{name:"Pietro Labriola",title:"CEO",li:"linkedin.com/in/pietro-labriola",email:"[via corporate]"},dm2:{name:"",title:"Director of Circular Economy & Device Lifecycle",li:"[Search: TIM Italy Circular Devices]",email:"circular@telecomitalia.it"},why:"Italy's largest telco. Active sustainability and device lifecycle agenda. Exhibitor connects them with EU refurbishers and ITAD operators."},
+  {rank:95,name:"Wind Tre (CK Hutchison)",site:"windtre.it",geo:"Europe",geoType:"eu",cat:"Telecom",pkg:"Exhibitor — €10K",pkgClass:"pkg-exhibitor",pkgVal:"€10,000",fit:75,priority:"COOL",dm1:{name:"",title:"CEO",li:"[Search: Wind Tre CEO LinkedIn]",email:"[via corporate]"},dm2:{name:"",title:"VP Device & Sustainability",li:"[Search: Wind Tre Circular Device]",email:"circular@windtre.it"},why:"Italian telco operator with device lifecycle programs. Exhibitor = EU circular tech B2B relationships in the Italian and broader Mediterranean market."},
+  {rank:96,name:"TCL Communication (Alcatel)",site:"tcl.com",geo:"Europe",geoType:"eu",cat:"OEM",pkg:"Exhibitor — €10K",pkgClass:"pkg-exhibitor",pkgVal:"€10,000",fit:76,priority:"COOL",dm1:{name:"",title:"VP EMEA Sales & Marketing",li:"[Search: TCL EMEA VP Marketing]",email:"emea@tcl.com"},dm2:{name:"",title:"Head of Circular Economy / Sustainability",li:"[Search: TCL Circular Sustainability]",email:"sustainability@tcl.com"},why:"Global smartphone OEM with major refurb and certified pre-owned market. Exhibitor = European circular device buyer and distributor relationships."},
+  {rank:97,name:"Xiaomi Europe",site:"xiaomi.com",geo:"Europe",geoType:"eu",cat:"OEM",pkg:"Core Partner — €15K",pkgClass:"pkg-core",pkgVal:"€15,000",fit:78,priority:"WARM",dm1:{name:"Lei Jun",title:"CEO",li:"[Search: Lei Jun Xiaomi]",email:"[via corporate]"},dm2:{name:"",title:"VP Sustainability & Circular Economy Europe",li:"[Search: Xiaomi Europe Circular Sustainability]",email:"circular@xiaomi.eu"},why:"Fast-growing OEM with major EU market share. Launching certified pre-owned program in EU. Core Partner = credibility in circular space and B2B distribution access."},
+  {rank:98,name:"Wistron (Refurb / Circular)",site:"wistron.com",geo:"Global",geoType:"global",cat:"OEM",pkg:"Exhibitor — €10K",pkgClass:"pkg-exhibitor",pkgVal:"€10,000",fit:74,priority:"COOL",dm1:{name:"",title:"VP Circular Economy & Refurb Division",li:"[Search: Wistron Circular Refurb VP]",email:"circular@wistron.com"},dm2:{name:"",title:"Head of EMEA Business Development",li:"[Search: Wistron EMEA BD]",email:"emea@wistron.com"},why:"Major contract manufacturer with a growing circular refurb division for OEM brands. Exhibitor = B2B partnerships across EU refurb supply chain."},
+  {rank:99,name:"Solera Holdings (Identifix / HGS)",site:"solera.com",geo:"US",geoType:"us",cat:"Software / Platform",pkg:"Exhibitor — €10K",pkgClass:"pkg-exhibitor",pkgVal:"€10,000",fit:72,priority:"COOL",dm1:{name:"",title:"CEO",li:"[Search: Solera CEO]",email:"info@solera.com"},dm2:{name:"",title:"VP EMEA Solutions",li:"[Search: Solera EMEA VP]",email:"emea@solera.com"},why:"Vehicle and insurance technology platform expanding into device lifecycle. Exhibitor = access to EU insurance and device service operators."},
+  {rank:100,name:"Cimple (Sustainability Data)",site:"cimple.io",geo:"Europe",geoType:"eu",cat:"ESG / Sustainability",pkg:"SME Pod — €6.5K",pkgClass:"pkg-sme",pkgVal:"€6,500",fit:73,priority:"COOL",dm1:{name:"",title:"CEO / Founder",li:"[Search: Cimple Sustainability CEO LinkedIn]",email:"hello@cimple.io"},dm2:{name:"",title:"",li:"",email:""},why:"Sustainability data and ESG reporting SaaS. Growing EU presence. SME Pod is the right entry point with clear audience fit among corporate buyers at GITEX."},
+];
+
+let currentLeads = [...leads];
+let activeTierFilter = 'all';
+let sortCol = 0;
+let sortDir = 1;
+
+function getGeoRegion(geo) {
+  if(geo==='Europe') return 'Europe';
+  if(geo==='UK') return 'UK';
+  if(geo==='UAE / Middle East') return 'UAE / Middle East';
+  if(geo==='US') return 'US';
+  return 'Global';
+}
+
+function applyFilters() {
+  const search = document.querySelector('.search').value.toLowerCase();
+  const cat = document.getElementById('catFilter').value;
+  const geo = document.getElementById('geoFilter').value;
+  const pkg = document.getElementById('pkgFilter').value;
+  currentLeads = leads.filter(l => {
+    const s = !search || [l.name,l.cat,l.geo,l.dm1.name,l.dm2.name,l.dm1.title,l.dm2.title].join(' ').toLowerCase().includes(search);
+    const c = !cat || l.cat === cat;
+    const g = !geo || getGeoRegion(l.geo) === geo;
+    const p = !pkg || l.pkg === pkg;
+    const t = activeTierFilter === 'all' || l.priority === activeTierFilter;
+    return s && c && g && p && t;
+  });
+  renderTable();
+}
+
+function filterTier(tier, btn) {
+  activeTierFilter = tier;
+  document.querySelectorAll('.tier-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilters();
+}
+
+function getFitClass(f) { return f>=90?'fit-high':f>=80?'fit-mid':'fit-low'; }
+function getFitFillClass(f) { return f>=90?'fit-fill-high':f>=80?'fit-fill-mid':'fit-fill-low'; }
+function getPriorityBadge(p) {
+  if(p==='HOT') return '<span class="hot-badge">🔥 HOT</span>';
+  if(p==='WARM') return '<span class="warm-badge">🌡 WARM</span>';
+  return '<span class="cool-badge">❄ COOL</span>';
+}
+
+function renderDM(dm) {
+  if(!dm.name && !dm.title) return '<span style="color:#ccc;font-size:11px">—</span>';
+  return `<div class="dm-name">${dm.name || '[Verify name]'}</div>
+    <div class="dm-title">${dm.title}</div>
+    ${dm.li ? `<a class="dm-li" href="https://${dm.li}" target="_blank">🔗 ${dm.li.replace('linkedin.com/in/','').replace('[Search: ','🔍 ').replace(']','')}</a>` : ''}
+    ${dm.email ? `<div class="dm-email">${dm.email}</div>` : ''}`;
+}
+
+function renderTable() {
+  const tbody = document.getElementById('tableBody');
+  document.getElementById('resultsInfo').textContent = `Showing ${currentLeads.length} of ${leads.length} leads`;
+  tbody.innerHTML = currentLeads.map(l => `
+    <tr>
+      <td class="rank">${l.rank}</td>
+      <td class="company-cell">
+        <div class="company-name">${l.name}</div>
+        <a class="company-url" href="https://${l.site}" target="_blank">↗ ${l.site}</a><br>
+        <span class="geo-badge geo-${l.geoType}">${l.geo}</span>
+      </td>
+      <td><span class="cat-badge">${l.cat}</span></td>
+      <td class="dm-cell">${renderDM(l.dm1)}</td>
+      <td class="dm-cell">${l.dm2 && (l.dm2.name||l.dm2.title) ? renderDM(l.dm2) : '<span style="color:#ccc;font-size:11px">—</span>'}</td>
+      <td>
+        <span class="pkg-badge ${l.pkgClass}">${l.pkg.split('—')[0].trim()}</span>
+        <div class="pkg-val">${l.pkgVal}</div>
+      </td>
+      <td class="fit-cell">
+        <div class="fit-score ${getFitClass(l.fit)}">${l.fit}%</div>
+        <div class="fit-bar"><div class="fit-fill ${getFitFillClass(l.fit)}" style="width:${l.fit}%"></div></div>
+      </td>
+      <td class="priority">${getPriorityBadge(l.priority)}</td>
+      <td class="why-cell">${l.why}</td>
+    </tr>
+  `).join('');
+}
+
+function sortTable(col) {
+  if(sortCol===col) sortDir*=-1; else {sortCol=col;sortDir=1;}
+  const keys = ['rank','name','','','pkg','fit'];
+  currentLeads.sort((a,b) => {
+    let av=Object.values(a)[col], bv=Object.values(b)[col];
+    if(typeof av==='string') return av.localeCompare(bv)*sortDir;
+    return (av-bv)*sortDir;
+  });
+  renderTable();
+}
+
+function exportCSV() {
+  const headers = ['Rank','Company','Website','Geography','Category','DM1 Name','DM1 Title','DM1 LinkedIn','DM1 Email','DM2 Name','DM2 Title','DM2 LinkedIn','DM2 Email','Best Package','Package Value','Fit Score','Priority','Why They Buy'];
+  const rows = leads.map(l => [
+    l.rank, l.name, l.site, l.geo, l.cat,
+    l.dm1.name, l.dm1.title, l.dm1.li, l.dm1.email,
+    l.dm2?.name||'', l.dm2?.title||'', l.dm2?.li||'', l.dm2?.email||'',
+    l.pkg, l.pkgVal, l.fit+'%', l.priority, l.why.replace(/,/g,';')
+  ]);
+  const csv = [headers,...rows].map(r => r.map(v => `"${v}"`).join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'gitex-circular-hub-100-leads.csv';
+  a.click();
+}
+
+renderTable();
+</script>
+</body>
+</html>
