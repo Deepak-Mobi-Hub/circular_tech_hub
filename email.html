@@ -1,0 +1,1510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GITEX Circular Hub — Complete Email Sequence System</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f3;color:#1a1a1a;font-size:14px}
+.page-header{background:#fff;border-bottom:1px solid #e8e8e6;padding:20px 36px;position:sticky;top:0;z-index:200}
+.page-header-inner{display:flex;justify-content:space-between;align-items:center;max-width:1400px;margin:0 auto}
+.page-title{font-size:20px;font-weight:700;letter-spacing:-0.5px}
+.page-sub{font-size:13px;color:#888;margin-top:3px}
+.stats{display:flex;gap:12px}
+.stat-pill{background:#f0f0ee;border-radius:20px;padding:6px 14px;font-size:12px;font-weight:500}
+.stat-pill b{color:#1D9E75}
+.layout{display:flex;max-width:1400px;margin:0 auto;min-height:calc(100vh - 80px)}
+.sidebar{width:240px;flex-shrink:0;background:#fff;border-right:1px solid #e8e8e6;padding:20px 0;position:sticky;top:80px;height:calc(100vh - 80px);overflow-y:auto}
+.sidebar-section{padding:0 16px;margin-bottom:6px}
+.sidebar-label{font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:0.8px;padding:12px 16px 6px;display:block}
+.sidebar-btn{display:block;width:100%;text-align:left;padding:8px 14px;border:none;background:none;font-size:13px;color:#555;cursor:pointer;border-radius:8px;line-height:1.4;margin-bottom:1px}
+.sidebar-btn:hover{background:#f5f5f3;color:#1a1a1a}
+.sidebar-btn.active{background:#1a1a1a;color:#fff;font-weight:600}
+.sidebar-btn .tag{float:right;font-size:10px;padding:2px 6px;border-radius:8px;background:#f0f0ee;color:#888;font-weight:500;margin-top:1px}
+.sidebar-btn.active .tag{background:rgba(255,255,255,0.2);color:#fff}
+.content{flex:1;padding:32px 36px;min-width:0}
+.section-header{margin-bottom:28px}
+.section-title{font-size:22px;font-weight:700;letter-spacing:-0.5px;margin-bottom:6px}
+.section-desc{font-size:14px;color:#666;line-height:1.6;max-width:700px}
+.stages-nav{display:flex;gap:0;margin-bottom:28px;border:1px solid #e8e8e6;border-radius:10px;overflow:hidden;background:#fff}
+.stage-btn{flex:1;padding:10px 8px;border:none;background:none;font-size:12px;font-weight:500;color:#888;cursor:pointer;border-right:1px solid #e8e8e6;text-align:center;line-height:1.4;transition:all .15s}
+.stage-btn:last-child{border-right:none}
+.stage-btn:hover{background:#f5f5f3;color:#333}
+.stage-btn.active{background:#1a1a1a;color:#fff}
+.stage-btn .day{display:block;font-size:10px;font-weight:400;opacity:0.7;margin-top:2px}
+.email-card{background:#fff;border:1px solid #e8e8e6;border-radius:14px;overflow:hidden;margin-bottom:20px}
+.email-card-header{padding:16px 20px;border-bottom:1px solid #f0f0ee;display:flex;justify-content:space-between;align-items:flex-start}
+.email-label{display:inline-block;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;margin-bottom:6px}
+.label-stage1{background:#E1F5EE;color:#085041}
+.label-stage2{background:#E6F1FB;color:#0C447C}
+.label-stage3{background:#FAEEDA;color:#633806}
+.label-stage4{background:#EEEDFE;color:#3C3489}
+.label-stage5{background:#FAECE7;color:#712B13}
+.label-stage6{background:#F1EFE8;color:#444441}
+.label-special{background:#FAECE7;color:#993C1D}
+.email-card-title{font-size:15px;font-weight:700;letter-spacing:-0.3px}
+.email-card-meta{font-size:12px;color:#888;margin-top:3px}
+.copy-btn{padding:7px 16px;background:#f5f5f3;border:1px solid #e0e0de;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;flex-shrink:0;margin-left:12px}
+.copy-btn:hover{background:#e8e8e6}
+.copy-btn.copied{background:#E1F5EE;border-color:#9FE1CB;color:#085041}
+.email-field{padding:14px 20px;border-bottom:1px solid #f0f0ee}
+.field-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#aaa;margin-bottom:6px}
+.subject-line{font-size:15px;font-weight:600;color:#1a1a1a}
+.email-body{padding:20px;font-size:13px;line-height:1.9;color:#333;white-space:pre-wrap;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+.email-body .highlight{background:#fff9e6;padding:1px 4px;border-radius:3px;font-weight:600;color:#8B5CF6}
+.strategy-box{background:#f9f9f7;border:1px solid #e8e8e6;border-radius:10px;padding:14px 16px;margin:0 20px 20px}
+.strategy-box-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#aaa;margin-bottom:8px}
+.strategy-items{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.strategy-item{font-size:12px;color:#555;padding-left:14px;position:relative;line-height:1.6}
+.strategy-item::before{content:"→";position:absolute;left:0;color:#1D9E75;font-weight:600}
+.strategy-item b{color:#1a1a1a;font-weight:600}
+.divider-label{text-align:center;font-size:12px;font-weight:600;color:#aaa;padding:6px 0;margin:8px 0;position:relative}
+.divider-label::before,.divider-label::after{content:'';position:absolute;top:50%;width:42%;height:1px;background:#e8e8e6}
+.divider-label::before{left:0}.divider-label::after{right:0}
+.sequence-overview{background:#fff;border:1px solid #e8e8e6;border-radius:14px;padding:20px;margin-bottom:28px}
+.overview-title{font-size:14px;font-weight:700;margin-bottom:14px}
+.timeline{display:flex;gap:0}
+.tl-item{flex:1;text-align:center;position:relative}
+.tl-item::after{content:'';position:absolute;top:18px;left:50%;width:100%;height:1px;background:#e8e8e6;z-index:0}
+.tl-item:last-child::after{display:none}
+.tl-dot{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;margin:0 auto 8px;position:relative;z-index:1}
+.tl-day{font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase}
+.tl-action{font-size:11px;color:#555;margin-top:3px;line-height:1.4}
+.tl-dot-1{background:#E1F5EE;color:#085041}
+.tl-dot-2{background:#E6F1FB;color:#0C447C}
+.tl-dot-3{background:#FAEEDA;color:#633806}
+.tl-dot-4{background:#EEEDFE;color:#3C3489}
+.tl-dot-5{background:#FAECE7;color:#712B13}
+.tl-dot-6{background:#F1EFE8;color:#444441}
+.notice{background:#fff9e6;border:1px solid #FAC775;border-radius:10px;padding:12px 16px;margin-bottom:20px;font-size:12px;color:#633806;line-height:1.6}
+.notice b{font-weight:700}
+.special-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:900px){.layout{flex-direction:column}.sidebar{width:100%;height:auto;position:static}.special-grid{grid-template-columns:1fr}.stages-nav{flex-wrap:wrap}.timeline{flex-wrap:wrap}}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-header-inner">
+    <div>
+      <div class="page-title">✉ GITEX Circular Hub — Complete Email Sequence System</div>
+      <div class="page-sub">6-Stage outreach engine · 9 buyer types · 54+ email scripts · Special situation emails</div>
+    </div>
+    <div class="stats">
+      <div class="stat-pill">Sequences: <b>9</b></div>
+      <div class="stat-pill">Total emails: <b>54+</b></div>
+      <div class="stat-pill">Target close: <b>€249,500</b></div>
+    </div>
+  </div>
+</div>
+
+<div class="layout">
+<div class="sidebar">
+  <span class="sidebar-label">By Buyer Type</span>
+  <button class="sidebar-btn active" onclick="showSection('refurbisher')">🔄 Refurbishers <span class="tag">HOT</span></button>
+  <button class="sidebar-btn" onclick="showSection('marketplace')">🛒 Marketplaces <span class="tag">HOT</span></button>
+  <button class="sidebar-btn" onclick="showSection('itad')">💾 ITAD / Recyclers <span class="tag">HOT</span></button>
+  <button class="sidebar-btn" onclick="showSection('telecom')">📡 Telecom <span class="tag">WARM</span></button>
+  <button class="sidebar-btn" onclick="showSection('oem')">📱 OEM / Hardware <span class="tag">WARM</span></button>
+  <button class="sidebar-btn" onclick="showSection('esg')">🌱 ESG / Sustainability <span class="tag">HOT</span></button>
+  <button class="sidebar-btn" onclick="showSection('logistics')">🚚 Logistics <span class="tag">WARM</span></button>
+  <button class="sidebar-btn" onclick="showSection('software')">💻 Software / Platform <span class="tag">WARM</span></button>
+  <button class="sidebar-btn" onclick="showSection('investor')">💰 Investor / M&A <span class="tag">WARM</span></button>
+  <span class="sidebar-label">Special Situations</span>
+  <button class="sidebar-btn" onclick="showSection('special')">⚡ Special Scripts</button>
+</div>
+
+<div class="content" id="mainContent"></div>
+</div>
+
+<script>
+const sequences = {
+  refurbisher: {
+    name: "Refurbishers",
+    emoji: "🔄",
+    desc: "For device refurbishers, certified pre-owned operators, and buyback platforms. These buyers respond to stage credibility, peer visibility, and B2B buyer access. Lead with the speaking opportunity, not the booth.",
+    bestPkg: "Core Partner — €15K",
+    timeline: [
+      {dot:"1",cls:"tl-dot-1",day:"Day 1",action:"Cold email — stage hook"},
+      {dot:"2",cls:"tl-dot-2",day:"Day 4",action:"Follow-up — social proof"},
+      {dot:"3",cls:"tl-dot-3",day:"Day 7",action:"New angle — competition"},
+      {dot:"4",cls:"tl-dot-4",day:"Day 10",action:"Value + urgency"},
+      {dot:"5",cls:"tl-dot-5",day:"Day 13",action:"FOMO close"},
+      {dot:"6",cls:"tl-dot-6",day:"Day 17",action:"Break-up email"},
+    ],
+    stages: [
+      {
+        id:"s1",label:"STAGE 1 — COLD OUTREACH",labelClass:"label-stage1",title:"The Stage Opener",meta:"Day 1 · First contact · Goal: Reply or call booked",
+        subject:"Your position on stage at GITEX Berlin — [Company]",
+        body:`Hi [First Name],
+
+I'll be direct with you — I'm building the Circular Tech Hub at GITEX Europe Berlin this summer and [Company] came up in our conversation about who should be on the stage.
+
+The hub runs 30 June – 1 July inside Hall 2.2 at GITEX Europe. It's the only dedicated space at GITEX Europe built entirely around refurbished electronics, circular tech and device lifecycle — and we're finalising the speaker and partner lineup this week.
+
+A Core Partner position (€15,000) gives you:
+
+→ 9sqm Shell Scheme booth in the hub
+→ 10-minute speaking slot on the Tech Talk Stage
+→ Logo on all stage screens + event agenda
+→ Interview feature on the Circular Tech Show
+→ Access to 2,000+ circular tech buyers over 2 days
+
+The companies already confirmed include Sunstrike (Title Partner) and a handful of European names you'd recognise. The 6 Core Partner slots are filling up and I wanted to reach out to [Company] before we closed the floor.
+
+Is this on your radar for this summer? Happy to do a 10-minute call this week to walk you through it.
+
+Best,
+[Your Name]
+Mobihub Events | GITEX Circular Hub Berlin`,
+        strategy: [
+          {t:"Goal",b:"Get a reply or a call booked"},
+          {t:"Hook",b:"Named them specifically — not a mass email"},
+          {t:"Social proof",b:"Sunstrike name-dropped immediately"},
+          {t:"CTA",b:"Soft — 10-minute call, not a hard pitch"},
+        ]
+      },
+      {
+        id:"s2",label:"STAGE 2 — FIRST FOLLOW-UP",labelClass:"label-stage2",title:"The Value Add",meta:"Day 4 · No reply yet · Goal: New angle, new reason to respond",
+        subject:"Re: GITEX Berlin — one thing I forgot to mention",
+        body:`Hi [First Name],
+
+Following up on my email from earlier this week.
+
+One thing I should have led with — the Circular Tech Show interview that comes with the Core Partner package is something a lot of our confirmed partners are genuinely excited about.
+
+It's a 5–8 minute filmed interview, professionally produced, released on our channels after the event. Past episodes have hit 15,000+ views from buyers, investors and industry press in the circular tech space.
+
+For [Company], I think that clip alone would be worth the conversation — it's the kind of content that lives on LinkedIn for months and builds brand authority beyond the event itself.
+
+We have 5 Core Partner slots left. Would a quick 10-minute call this week make sense?
+
+[Your Name]`,
+        strategy: [
+          {t:"New hook",b:"Media clip angle — not in the first email"},
+          {t:"Specifics",b:"15,000+ views adds credibility"},
+          {t:"Relevance",b:"Brand content play — marketers love this"},
+          {t:"Soft close",b:"'Would a call make sense?' — easy to say yes to"},
+        ]
+      },
+      {
+        id:"s3",label:"STAGE 3 — SECOND FOLLOW-UP",labelClass:"label-stage3",title:"The Competitive Angle",meta:"Day 7 · Still no reply · Goal: Create competitive urgency",
+        subject:"A couple of your competitors just confirmed for Berlin",
+        body:`Hi [First Name],
+
+Quick one — I wanted to reach out before I close off the shortlist.
+
+Two of [Company]'s direct competitors in the European refurb space have now confirmed positions at the Circular Hub. I'm not going to name them here — but you'd know them well.
+
+That leaves 4 Core Partner slots.
+
+Here's the thing — I genuinely think [Company] should have the stronger position at this event. The stage slot that comes with the Core Partner package is what separates the brands that lead the conversation from the ones who watch it happen.
+
+If it's helpful I can send you a 1-page overview of the programme so you can make a quick decision. Would that be useful?
+
+[Your Name]`,
+        strategy: [
+          {t:"Trigger",b:"Competitor FOMO — works on founders and CMOs"},
+          {t:"Don't name names",b:"Keeps intrigue high, avoids verification"},
+          {t:"Position them",b:"'Stronger position' — appeals to competitive ego"},
+          {t:"Micro CTA",b:"1-page overview — low friction next step"},
+        ]
+      },
+      {
+        id:"s4",label:"STAGE 4 — VALUE + URGENCY",labelClass:"label-stage4",title:"The ROI Case",meta:"Day 10 · Goal: Address budget objection before it's raised",
+        subject:"What does one new client mean for [Company]?",
+        body:`Hi [First Name],
+
+I know you're busy so I'll keep this short.
+
+Most of the partners who've confirmed for the Circular Hub have said the same thing: the ROI question isn't "is €15K a lot" — it's "what does one new enterprise client, one new distribution partnership, or one new buyer relationship mean to our revenue?"
+
+For a refurbisher operating at any scale, the answer usually makes the decision easy.
+
+The 2,000+ visitors at GITEX Berlin include procurement teams, distribution buyers, marketplace operators, telco device managers, and enterprise IT decision-makers. These are people spending significant budgets on certified refurb devices and looking for partners they can trust.
+
+The Core Partner package puts you in the room, on the stage, and on their radar — all in one.
+
+We're closing the floor plan at the end of this week. I'd love to get [Company] locked in.
+
+Can we speak for 10 minutes before Friday?
+
+[Your Name] | [Phone / WhatsApp]`,
+        strategy: [
+          {t:"Reframe",b:"ROI question, not cost question"},
+          {t:"Audience detail",b:"Specific buyer types build confidence"},
+          {t:"Deadline",b:"End of week — specific, not vague"},
+          {t:"Direct ask",b:"Phone number included — signals confidence"},
+        ]
+      },
+      {
+        id:"s5",label:"STAGE 5 — FOMO CLOSE",labelClass:"label-stage5",title:"The Last Chance",meta:"Day 13 · Final email before removing from sequence",
+        subject:"Closing the floor this Friday — [First Name]",
+        body:`Hi [First Name],
+
+I've reached out a few times now and I'm going to respect your time — this is my last message on this.
+
+We're finalising the Circular Hub floor plan on Friday. Two Core Partner spots remain.
+
+The brands that are confirmed are the ones who'll own the narrative at GITEX Berlin this summer — in front of buyers, press, investors, and the key operators in the European circular tech space.
+
+If [Company] wants one of those spots, this is the week to decide.
+
+If the timing genuinely isn't right — no problem at all. I'll reach out again when we launch our next event.
+
+But if there's any part of you thinking "we should be there" — reply to this email or call me directly and we'll get it sorted today.
+
+[Your Name]
+[Direct phone / WhatsApp number]
+
+P.S. If budget is the constraint, let's talk — there may be an option that works. Just reply and we'll find the right fit.`,
+        strategy: [
+          {t:"Respectful",b:"Acknowledge the silence without being aggressive"},
+          {t:"Scarcity",b:"2 spots left — specific number"},
+          {t:"Soft out",b:"Give them a graceful no — paradoxically increases responses"},
+          {t:"P.S.",b:"Sneaky budget bridge — opens door to SME Pod at €6.5K"},
+        ]
+      },
+      {
+        id:"s6",label:"STAGE 6 — BREAK-UP EMAIL",labelClass:"label-stage6",title:"The Re-opener",meta:"Day 17 · True last attempt · Keep door open for next event",
+        subject:"Closing your file — [Company]",
+        body:`Hi [First Name],
+
+I'm closing out my outreach to [Company] today — I don't want to keep landing in your inbox if the timing isn't right.
+
+The Circular Hub at GITEX Berlin is now nearly full. If you'd like to join a waitlist for any last-minute positions, just reply and I'll add you.
+
+Either way — I'd love to stay connected. What [Company] is building in the circular space is genuinely interesting and I'm sure our paths will cross at some point.
+
+I'll reach out again when we launch our next event.
+
+[Your Name]
+Mobihub Events`,
+        strategy: [
+          {t:"Close the loop",b:"No hard sell — they respect you for it"},
+          {t:"Waitlist",b:"Keeps them engaged for late-stage decisions"},
+          {t:"Future open",b:"Keeps relationship alive for next event"},
+          {t:"Short",b:"Under 100 words — respects their time"},
+        ]
+      }
+    ]
+  },
+
+  marketplace: {
+    name: "Marketplaces & E-commerce Platforms",
+    emoji: "🛒",
+    desc: "For online recommerce and resale marketplaces. These buyers care about supply chain access, seller acquisition, and B2B volume. Lead with the buyer/seller audience overlap and the media interview.",
+    bestPkg: "Core Partner — €15K",
+    timeline: [
+      {dot:"1",cls:"tl-dot-1",day:"Day 1",action:"Cold — supply chain hook"},
+      {dot:"2",cls:"tl-dot-2",day:"Day 4",action:"Follow-up — buyer audience"},
+      {dot:"3",cls:"tl-dot-3",day:"Day 7",action:"Seller / supply angle"},
+      {dot:"4",cls:"tl-dot-4",day:"Day 10",action:"Case + urgency"},
+      {dot:"5",cls:"tl-dot-5",day:"Day 13",action:"FOMO close"},
+      {dot:"6",cls:"tl-dot-6",day:"Day 17",action:"Break-up"},
+    ],
+    stages: [
+      {
+        id:"s1",label:"STAGE 1 — COLD OUTREACH",labelClass:"label-stage1",title:"The Supply Chain Play",meta:"Day 1 · First contact",
+        subject:"Your sellers and suppliers will be at GITEX Berlin",
+        body:`Hi [First Name],
+
+Building a marketplace is one thing. Getting the supply chain right — the graders, the refurbishers, the ITAD operators who can feed consistent volume — is what actually separates the winners.
+
+The Circular Hub at GITEX Europe Berlin (30 June – 1 July) is the only event in Europe where that entire supply chain is in one room. Refurbishers, graders, ITAD companies, logistics providers, OEM-grade resellers — these are the companies feeding the European recommerce market.
+
+A Core Partner position (€15,000) gives [Company] a 9sqm booth, a 10-minute stage slot, and two days of curated access to 2,000+ people in that ecosystem.
+
+Is this the kind of room [Company] needs to be in right now? Happy to walk through it in 10 minutes this week.
+
+[Your Name]
+Mobihub Events`,
+        strategy: [
+          {t:"Hook",b:"Supply chain quality — their #1 growth problem"},
+          {t:"Audience specifics",b:"Name the exact suppliers they need"},
+          {t:"Positioning",b:"'Only event' — scarcity of the vertical"},
+          {t:"Open question",b:"'Is this the kind of room' — invites discussion"},
+        ]
+      },
+      {
+        id:"s2",label:"STAGE 2 — FIRST FOLLOW-UP",labelClass:"label-stage2",title:"The Buyer Audience",meta:"Day 4 · No reply yet",
+        subject:"Re: GITEX Berlin — the buyers attending",
+        body:`Hi [First Name],
+
+Following up quickly — wanted to give you more colour on who's actually in the room at GITEX Berlin.
+
+The Circular Hub audience includes:
+
+→ Enterprise IT procurement teams buying certified refurb devices at scale
+→ Telco device lifecycle managers running trade-in and buyback programmes
+→ B2B resellers and distributors looking for reliable marketplace supply
+→ Investors and M&A teams actively looking at circular tech companies
+→ OEM and brand representatives exploring refurb channel partnerships
+
+For a marketplace like [Company], this is a concentrated version of your most valuable buyer and partner segment — all in one place for two days.
+
+The Core Partner slot (€15K) includes a speaking slot that puts you on their radar before you've even shaken hands.
+
+Worth 10 minutes to explore? I'm free Thursday or Friday this week.
+
+[Your Name]`,
+        strategy: [
+          {t:"Specifics",b:"5 buyer types — paints a vivid picture"},
+          {t:"Relevance",b:"Frame every buyer type for their business model"},
+          {t:"Speaking slot",b:"Stage = warmth before the booth conversation"},
+          {t:"Availability",b:"Specific days — reduces friction"},
+        ]
+      },
+      {
+        id:"s3",label:"STAGE 3 — SECOND FOLLOW-UP",labelClass:"label-stage3",title:"The Platform Angle",meta:"Day 7 · Still no reply",
+        subject:"[Company] on the GITEX stage — here's why it matters",
+        body:`Hi [First Name],
+
+One more thought before I close off my outreach to you.
+
+The circular tech category in Europe is still being defined. The marketplaces that will own the next decade of recommerce in Europe are the ones being seen as category leaders right now — not in three years.
+
+A 10-minute speaking slot at the Circular Hub in Berlin isn't just about one event. It's about being on record as one of the definitive voices in this industry at a pivotal moment — in front of buyers, suppliers, investors and press, all at once.
+
+[Company] is doing genuinely interesting things. I'd rather see you on that stage than watching from outside.
+
+Two Core Partner slots are still available. Would it help if I sent you a 1-page overview?
+
+[Your Name]`,
+        strategy: [
+          {t:"Category authority",b:"Founders and CMOs respond to legacy thinking"},
+          {t:"Flattery with edge",b:"'Genuinely interesting' + urgency"},
+          {t:"1-pager CTA",b:"Low friction — easy yes that moves them forward"},
+        ]
+      },
+      {
+        id:"s4",label:"STAGE 4 — VALUE + URGENCY",labelClass:"label-stage4",title:"The Numbers Case",meta:"Day 10 · Goal: Trigger decision",
+        subject:"Quick maths on the GITEX Core Partner ROI",
+        body:`Hi [First Name],
+
+I want to make the case as simple as possible.
+
+Core Partner at the Circular Hub: €15,000.
+
+What that buys you: 2 days, 2,000+ targeted attendees, stage access, booth presence, and a media interview that generates content post-event.
+
+What one new supply partnership or one new B2B distribution deal is worth to [Company]: almost certainly more than €15,000 in its first year.
+
+The companies that book these positions aren't doing it as a marketing cost. They're doing it because the pipeline value is clear.
+
+We close the floor plan this Friday. Two spots remain.
+
+Can we speak before then?
+
+[Your Name] | [Phone]`,
+        strategy: [
+          {t:"ROI math",b:"Simple — cost vs one deal value"},
+          {t:"Reframe spend",b:"Pipeline investment, not marketing cost"},
+          {t:"Friday deadline",b:"Specific day creates genuine urgency"},
+        ]
+      },
+      {
+        id:"s5",label:"STAGE 5 — FOMO CLOSE",labelClass:"label-stage5",title:"Competitor Confirmation",meta:"Day 13 · Last pitch email",
+        subject:"One of your European competitors just took the last Core Partner slot",
+        body:`Hi [First Name],
+
+I said I'd let you know — one of [Company]'s direct competitors in the European marketplace space just confirmed a Core Partner position for the Circular Hub.
+
+That leaves one remaining Core Partner slot.
+
+I want to be straight with you: if [Company] doesn't take this position, a competitor will own that stage in Berlin while you're not in the room. That matters in a market that's still being shaped.
+
+This is genuinely the last time I'll reach out on this. If you want the spot, reply to this email today and I'll get you sorted immediately. If not — no problem, and I wish you a great summer.
+
+[Your Name]
+[Phone / WhatsApp — reply here for fastest response]`,
+        strategy: [
+          {t:"Competitor confirmation",b:"Real or composite — never name names"},
+          {t:"1 slot left",b:"True scarcity, specific number"},
+          {t:"Direct consequence",b:"'Competitor owns the stage' — vivid"},
+          {t:"Final offer",b:"Closes the loop professionally"},
+        ]
+      },
+      {
+        id:"s6",label:"STAGE 6 — BREAK-UP",labelClass:"label-stage6",title:"The Graceful Exit",meta:"Day 17 · Door stays open",
+        subject:"Signing off — [Company]",
+        body:`Hi [First Name],
+
+The Circular Hub at GITEX Berlin is now fully allocated — I'm closing out my outreach.
+
+If [Company] would like to explore future events or partnerships with Mobihub, I'd genuinely welcome that conversation at any point.
+
+Stay on my radar — I'll be in touch when we announce our next event.
+
+[Your Name]`,
+        strategy: []
+      }
+    ]
+  },
+
+  itad: {
+    name: "ITAD & Recycling Companies",
+    emoji: "💾",
+    desc: "For IT asset disposition, data destruction, e-waste recycling, and electronics processing companies. These buyers are B2B by nature and respond to enterprise buyer access and credibility signals.",
+    bestPkg: "Core Partner — €15K or Exhibitor — €10K",
+    timeline: [
+      {dot:"1",cls:"tl-dot-1",day:"Day 1",action:"Cold — enterprise buyer hook"},
+      {dot:"2",cls:"tl-dot-2",day:"Day 4",action:"Follow-up — audience specifics"},
+      {dot:"3",cls:"tl-dot-3",day:"Day 7",action:"Regulatory angle"},
+      {dot:"4",cls:"tl-dot-4",day:"Day 10",action:"Pipeline ROI case"},
+      {dot:"5",cls:"tl-dot-5",day:"Day 13",action:"FOMO close"},
+      {dot:"6",cls:"tl-dot-6",day:"Day 17",action:"Break-up"},
+    ],
+    stages: [
+      {
+        id:"s1",label:"STAGE 1 — COLD OUTREACH",labelClass:"label-stage1",title:"The Enterprise Buyer Hook",meta:"Day 1 · First contact",
+        subject:"The enterprise buyers making circular decisions are in Berlin this July",
+        body:`Hi [First Name],
+
+The hardest part of ITAD business development isn't the service — it's getting in front of the enterprise IT teams, procurement directors and device lifecycle managers who are actively putting circular programmes together.
+
+The Circular Hub at GITEX Europe Berlin (30 June – 1 July) puts [Company] in the same room as those people.
+
+The hub is the only dedicated circular tech and device lifecycle space inside GITEX Europe. The audience includes enterprise IT buyers, telco device managers, OEM lifecycle teams, and corporate procurement — all specifically there to meet companies doing what [Company] does.
+
+A Core Partner position (€15,000) gives you a booth, a speaking slot, and two days of direct access to that buyer base.
+
+Worth exploring? I can walk you through it in 10 minutes this week.
+
+[Your Name]
+Mobihub Events | GITEX Circular Hub Berlin`,
+        strategy: []
+      },
+      {
+        id:"s2",label:"STAGE 2 — FIRST FOLLOW-UP",labelClass:"label-stage2",title:"The Compliance Angle",meta:"Day 4 · No reply",
+        subject:"Re: GITEX Berlin — enterprise circular procurement is accelerating",
+        body:`Hi [First Name],
+
+Quick follow-up to my previous email.
+
+The EU's Corporate Sustainability Reporting Directive, e-waste regulations, and Right to Repair legislation are forcing enterprise IT teams to actively audit and document their device lifecycle decisions.
+
+What that means practically: procurement teams at large corporates are being pushed to work with ITAD and certified disposal partners they can put in front of an auditor. The buying cycle is shortening and the requirements are getting more specific.
+
+The Circular Hub at GITEX Berlin is where those procurement teams are looking for partners. A Core Partner position (€15K) or Exhibitor position (€10K) puts [Company] directly in front of them.
+
+Is this relevant to your EU BD pipeline for H2 2025?
+
+[Your Name]`,
+        strategy: [
+          {t:"Regulatory hook",b:"CSRD and e-waste regs = urgency for their buyers"},
+          {t:"Two options",b:"Offer Core and Exhibitor — more likely to get a yes"},
+        ]
+      },
+      {
+        id:"s3",label:"STAGE 3 — SECOND FOLLOW-UP",labelClass:"label-stage3",title:"The Credibility Case",meta:"Day 7 · Still no reply",
+        subject:"One more thought — [Company] on the GITEX stage",
+        body:`Hi [First Name],
+
+Last outreach from me before I close off — one thought I wanted to share.
+
+In the ITAD and device circular space, buyer trust is everything. The companies that win enterprise contracts at scale are the ones with visible credibility — the ones buyers have heard speak, seen on stage, or encountered through industry media.
+
+A 10-minute speaking slot at the Circular Hub is a credibility accelerator. It positions [Company] in front of enterprise buyers, telco teams and OEM representatives as a trusted, authoritative voice — before the sales conversation has even started.
+
+The Core Partner slot is €15K. The Exhibitor position is €10K if you want presence without a stage slot.
+
+Two Core Partner slots remain. Can we do 10 minutes this week?
+
+[Your Name]`,
+        strategy: []
+      },
+      {
+        id:"s4",label:"STAGE 4 — VALUE + URGENCY",labelClass:"label-stage4",title:"The Pipeline Case",meta:"Day 10",
+        subject:"One contract covers the entire investment — [Company]",
+        body:`Hi [First Name],
+
+I'll keep this to three sentences.
+
+The average ITAD enterprise contract is worth multiples of €15,000 in its first year. The Circular Hub at GITEX Berlin puts you in the room with enterprise IT buyers actively sourcing ITAD partners. We close the floor this Friday.
+
+Worth 10 minutes before the week is out?
+
+[Your Name] | [Phone]`,
+        strategy: []
+      },
+      {
+        id:"s5",label:"STAGE 5 — FOMO CLOSE",labelClass:"label-stage5",title:"Last Chance",meta:"Day 13",
+        subject:"Final spots — Circular Hub Berlin",
+        body:`Hi [First Name],
+
+This is my final outreach on the Circular Hub at GITEX Berlin.
+
+We have one Core Partner position and two Exhibitor positions remaining. Once these are gone, the floor plan is closed.
+
+The companies already confirmed are category leaders in this space — the kind of names that signal to enterprise buyers and the market that this event matters.
+
+If [Company] should be in that room, reply to this email today and I'll get everything sorted within 24 hours.
+
+If the timing isn't right, no hard feelings — I'll reach out for our next event.
+
+[Your Name]`,
+        strategy: []
+      },
+      {
+        id:"s6",label:"STAGE 6 — BREAK-UP",labelClass:"label-stage6",title:"The Exit",meta:"Day 17",
+        subject:"Closing out — [Company]",
+        body:`Hi [First Name],
+
+The Circular Hub is fully allocated. Closing out my outreach.
+
+I'll be in touch when we launch our next event — the circular tech and ITAD buyer community we're building is only getting bigger.
+
+[Your Name]`,
+        strategy: []
+      }
+    ]
+  },
+
+  telecom: {
+    name: "Telecom Companies",
+    emoji: "📡",
+    desc: "For mobile network operators, telco groups, and device-as-a-service providers. These buyers are driven by ESG KPIs, device circular programs, and regulatory compliance. Reach the sustainability or device lifecycle team directly.",
+    bestPkg: "Stage Partner — €20K",
+    timeline: [
+      {dot:"1",cls:"tl-dot-1",day:"Day 1",action:"Cold — ESG / circular hook"},
+      {dot:"2",cls:"tl-dot-2",day:"Day 4",action:"Follow-up — regulatory angle"},
+      {dot:"3",cls:"tl-dot-3",day:"Day 7",action:"Peer telco social proof"},
+      {dot:"4",cls:"tl-dot-4",day:"Day 10",action:"Stage Partner pitch"},
+      {dot:"5",cls:"tl-dot-5",day:"Day 13",action:"FOMO close"},
+      {dot:"6",cls:"tl-dot-6",day:"Day 17",action:"Break-up"},
+    ],
+    stages: [
+      {
+        id:"s1",label:"STAGE 1 — COLD OUTREACH",labelClass:"label-stage1",title:"The Circular Economy Hook",meta:"Day 1 · First contact",
+        subject:"[Telco name]'s circular device programme — and GITEX Berlin",
+        body:`Hi [First Name],
+
+[Company]'s work on circular device programmes — the trade-in, buyback and refurb initiatives — is some of the most visible in the European telecom space. It came up when we were mapping who should be on the stage at GITEX Berlin this July.
+
+The Circular Hub at GITEX Europe Berlin (30 June – 1 July) is the only dedicated circular tech and device lifecycle hub inside GITEX Europe. It's where the refurbishers, ITAD operators, OEM circular teams and enterprise device managers who make your circular programmes work are all gathering in one room.
+
+A Stage Partner position (€20,000) gives [Company] a 20-minute speaking slot, full hub branding, a premium booth, and a produced interview for the Circular Tech Show.
+
+For a telco with active circular device KPIs, this is a meaningful positioning moment — and it signals to your partners and regulators that you're leading the category, not following it.
+
+Worth a brief conversation this week?
+
+[Your Name]
+Mobihub Events`,
+        strategy: []
+      },
+      {
+        id:"s2",label:"STAGE 2 — FIRST FOLLOW-UP",labelClass:"label-stage2",title:"The Regulatory Framing",meta:"Day 4",
+        subject:"Re: GITEX Berlin — the regulatory tailwind for circular telco",
+        body:`Hi [First Name],
+
+Quick follow-up to my previous note.
+
+With CSRD reporting requirements landing on telcos this year and EU device circular economy targets tightening, the companies that are visibly active in the circular space — on stages, in media, in front of industry and regulators — are building a positioning advantage that's hard to quantify but very real.
+
+The Circular Hub at GITEX Berlin is one of those visible moments. A Stage Partner position puts [Company] on the stage as one of the European telecom leaders defining how device lifecycle is managed — not just internally, but publicly.
+
+I'd love to have a 15-minute conversation about whether this is relevant to [Company]'s sustainability and device strategy for this year. Are you the right person to speak with, or is there a colleague on the device circular or sustainability team I should also include?
+
+[Your Name]`,
+        strategy: []
+      },
+      {
+        id:"s3",label:"STAGE 3 — SECOND FOLLOW-UP",labelClass:"label-stage3",title:"Peer Telco Social Proof",meta:"Day 7",
+        subject:"Other European telcos are already confirmed — [Company]?",
+        body:`Hi [First Name],
+
+One more note — I wanted to share that we have European telco representation confirmed at the Circular Hub. I can't share names yet, but you'd recognise the operators immediately.
+
+The Circular Hub is positioning itself as the telco circular economy conversation at GITEX Europe — and the telcos that are confirmed will have the narrative advantage with buyers, supply chain partners and industry media in Berlin.
+
+The Stage Partner slot (€20K) is the one I'd recommend for [Company] — it includes the speaking slot that drives that positioning. But if a Core Partner slot (€15K) with a booth and shorter stage time is a better fit for budget, that works too.
+
+Two Stage Partner slots remain. Is a quick call this week possible?
+
+[Your Name]`,
+        strategy: []
+      },
+      {
+        id:"s4",label:"STAGE 4 — VALUE + URGENCY",labelClass:"label-stage4",title:"The Decision Email",meta:"Day 10",
+        subject:"Making the case for [Company] at GITEX Berlin",
+        body:`Hi [First Name],
+
+I want to make a direct case for why I think [Company] should be at the Circular Hub — and then I'll leave it with you.
+
+[Company] has one of the most visible circular device programmes in European telecom. That work deserves a public stage — one where the people who influence your supply chain, your partners, and your regulatory relationships can see it.
+
+The Circular Hub at GITEX Berlin is that stage. €20K for a Stage Partner position — 20-minute slot, premium booth, full branding, media interview.
+
+We close the floor this Friday. Two Stage Partner slots remain.
+
+I'll respect your decision either way — but if [Company] should be there, now is the time.
+
+[Your Name] | [Direct number]`,
+        strategy: []
+      },
+      {
+        id:"s5",label:"STAGE 5 — FOMO CLOSE",labelClass:"label-stage5",title:"Final Email",meta:"Day 13",
+        subject:"Closing the Circular Hub floor — final Stage Partner slot",
+        body:`Hi [First Name],
+
+This is my final message on the Circular Hub at GITEX Berlin.
+
+One Stage Partner slot remains. Once it's confirmed, we close the floor plan.
+
+The telcos and circular tech leaders already confirmed are doing so because they understand the value of being visible at this inflection point in the European circular tech market.
+
+If [Company] wants the final Stage Partner position, reply to this email today.
+
+If the timing isn't right, I completely understand — I'll reach out when we plan the next event.
+
+[Your Name]`,
+        strategy: []
+      },
+      {
+        id:"s6",label:"STAGE 6 — BREAK-UP",labelClass:"label-stage6",title:"The Graceful Exit",meta:"Day 17",
+        subject:"Closing out — [Company]",
+        body:`Hi [First Name],
+
+The Circular Hub is now fully confirmed. Wrapping up my outreach.
+
+The circular device conversation in European telecom is only getting louder — I'll be back in touch when we announce our next event or a relevant opportunity.
+
+[Your Name]`,
+        strategy: []
+      }
+    ]
+  },
+
+  oem: {
+    name: "OEM & Hardware Brands",
+    emoji: "📱",
+    desc: "For device manufacturers, hardware OEMs, and certified pre-owned brand programs. These buyers have sustainability KPIs and are building certified refurb channels. Lead with category authority and EU market positioning.",
+    bestPkg: "Stage Partner — €20K",
+    timeline: [
+      {dot:"1",cls:"tl-dot-1",day:"Day 1",action:"Cold — CPO / circular hook"},
+      {dot:"2",cls:"tl-dot-2",day:"Day 4",action:"Sustainability KPI angle"},
+      {dot:"3",cls:"tl-dot-3",day:"Day 7",action:"Channel partner angle"},
+      {dot:"4",cls:"tl-dot-4",day:"Day 10",action:"Stage Partner pitch"},
+      {dot:"5",cls:"tl-dot-5",day:"Day 13",action:"FOMO close"},
+      {dot:"6",cls:"tl-dot-6",day:"Day 17",action:"Break-up"},
+    ],
+    stages: [
+      {
+        id:"s1",label:"STAGE 1 — COLD OUTREACH",labelClass:"label-stage1",title:"The Certified Pre-Owned Hook",meta:"Day 1 · First contact",
+        subject:"[Brand]'s certified pre-owned story deserves a bigger stage in Europe",
+        body:`Hi [First Name],
+
+[Company]'s certified pre-owned programme is one of the more ambitious OEM circular moves in the European market — it came up when we were building the speaker and partner programme for GITEX Berlin this summer.
+
+The Circular Hub at GITEX Europe Berlin (30 June – 1 July) is the only dedicated circular tech and device lifecycle space inside GITEX Europe. Every major refurbisher, certified reseller, ITAD operator and enterprise buyer in the European device market will be there.
+
+A Stage Partner position (€20,000) gives [Brand] a 20-minute keynote-style slot on the Tech Talk Stage, full hub branding, a premium booth, and a produced media interview — all inside Europe's biggest tech event this summer.
+
+For an OEM running a circular or certified pre-owned programme, this is the room where you build the channel partner relationships, brand credibility and buyer trust that makes that programme work.
+
+Worth a quick conversation this week?
+
+[Your Name]
+Mobihub Events`,
+        strategy: []
+      },
+      {
+        id:"s2",label:"STAGE 2 — FIRST FOLLOW-UP",labelClass:"label-stage2",title:"The ESG Angle",meta:"Day 4",
+        subject:"Re: GITEX Berlin — the ESG positioning opportunity",
+        body:`Hi [First Name],
+
+Following up on my previous note.
+
+OEM brands with public circular economy and certified pre-owned commitments are increasingly being evaluated not just on the programmes themselves, but on how visibly they champion them.
+
+A Stage Partner position at the Circular Hub puts [Company] on record — at Europe's leading tech event — as an OEM that leads on circular, not follows. That's a message that lands with regulators, enterprise buyers, reseller partners, and industry media simultaneously.
+
+This is a different kind of ROI from a standard event sponsorship. Happy to walk through it in 10 minutes this week.
+
+[Your Name]`,
+        strategy: []
+      },
+      {
+        id:"s3",label:"STAGE 3 — SECOND FOLLOW-UP",labelClass:"label-stage3",title:"The Channel Partner Case",meta:"Day 7",
+        subject:"The resellers, refurbishers and distributors handling [Brand] devices will be in this room",
+        body:`Hi [First Name],
+
+One specific reason I think [Company] should be at the Circular Hub — the people in that room.
+
+The Circular Hub audience includes the certified refurbishers, B2B resellers, and distribution partners who are actively handling [Brand] devices across Europe. These are the people buying, grading, reselling and building circular supply chains around your hardware.
+
+A Stage Partner presence puts [Company] in front of them at scale — reinforcing your certified programme, strengthening those channel relationships, and building the kind of brand trust that makes resellers choose your CPO over a generic grey market option.
+
+Stage Partner is €20K. Core Partner with a shorter slot is €15K.
+
+Can we speak this week?
+
+[Your Name]`,
+        strategy: []
+      },
+      {
+        id:"s4",label:"STAGE 4 — VALUE + URGENCY",labelClass:"label-stage4",title:"The Decision Push",meta:"Day 10",
+        subject:"Final Stage Partner slot — [Brand] at GITEX Berlin",
+        body:`Hi [First Name],
+
+Quick update — we have one Stage Partner slot remaining for the Circular Hub at GITEX Berlin.
+
+The OEMs that own this space in Europe are the ones who show up at the moments that shape the narrative. GITEX Berlin this July is one of those moments.
+
+[Company] should be on that stage. If this needs to go through a specific team — marketing, events, sustainability, partnerships — I'm happy to reach out directly or get on a call to help you move it quickly.
+
+We close the floor this Friday.
+
+[Your Name] | [Phone]`,
+        strategy: []
+      },
+      {
+        id:"s5",label:"STAGE 5 — FOMO CLOSE",labelClass:"label-stage5",title:"Last Call",meta:"Day 13",
+        subject:"Last Stage Partner slot confirmed today or gone — [Brand]",
+        body:`Hi [First Name],
+
+Last message from me on this — the final Stage Partner slot is being allocated today.
+
+If [Company] wants the position, I need to hear from you by end of day. Reply here or call me directly on [phone number].
+
+If not — no hard feelings, and I'll see you at the next one.
+
+[Your Name]`,
+        strategy: []
+      },
+      {
+        id:"s6",label:"STAGE 6 — BREAK-UP",labelClass:"label-stage6",title:"Exit",meta:"Day 17",
+        subject:"Wrapping up — [Company]",
+        body:`Hi [First Name],
+
+The Circular Hub is fully allocated. Closing out my outreach to [Company].
+
+I'll be in touch for our next event — the circular tech space is moving fast and I think there'll be a strong fit again soon.
+
+[Your Name]`,
+        strategy: []
+      }
+    ]
+  },
+
+  esg: {
+    name: "ESG & Sustainability Leaders",
+    emoji: "🌱",
+    desc: "For sustainability consultancies, circular economy platforms, ESG advisory firms, and right-to-repair advocates. These buyers respond to thought leadership positioning and audience credibility. Speaker Only (€7K) is the natural entry point.",
+    bestPkg: "Speaker Only — €7K (upsell Panel Add-on €4K)",
+    timeline: [
+      {dot:"1",cls:"tl-dot-1",day:"Day 1",action:"Cold — speaker positioning"},
+      {dot:"2",cls:"tl-dot-2",day:"Day 4",action:"Audience credibility angle"},
+      {dot:"3",cls:"tl-dot-3",day:"Day 7",action:"Panel upsell mention"},
+      {dot:"4",cls:"tl-dot-4",day:"Day 10",action:"Closing the programme"},
+      {dot:"5",cls:"tl-dot-5",day:"Day 13",action:"Final speaker slot"},
+      {dot:"6",cls:"tl-dot-6",day:"Day 17",action:"Break-up"},
+    ],
+    stages: [
+      {
+        id:"s1",label:"STAGE 1 — COLD OUTREACH",labelClass:"label-stage1",title:"The Thought Leadership Play",meta:"Day 1 · First contact",
+        subject:"Speaking opportunity — GITEX Berlin Circular Tech Hub",
+        body:`Hi [First Name],
+
+[Company]'s work at the intersection of [ESG / circular economy / sustainability] is exactly the kind of independent voice that gives the Circular Tech Hub at GITEX Berlin credibility.
+
+The hub runs 30 June – 1 July inside GITEX Europe Berlin — it's the only dedicated circular tech and device lifecycle space at GITEX Europe. The audience is 2,000+ decision-makers from the refurbished electronics, ITAD, telecom, and circular tech sector.
+
+We have three Speaker Only positions available (€7,000 each). This isn't a booth — it's a 10-minute slot on the Tech Talk Stage, logo placement on all session screens, and an agenda listing that puts [Company] in front of every attendee and media outlet covering the event.
+
+No booth required. Just a powerful platform in a room full of the people you most need to reach.
+
+Is this something worth a quick conversation?
+
+[Your Name]
+Mobihub Events`,
+        strategy: []
+      },
+      {
+        id:"s2",label:"STAGE 2 — FIRST FOLLOW-UP",labelClass:"label-stage2",title:"The Audience Quality Case",meta:"Day 4",
+        subject:"Re: GITEX Berlin — who's actually in the room",
+        body:`Hi [First Name],
+
+Quick follow-up on the speaking opportunity I mentioned.
+
+The Circular Hub audience at GITEX Berlin includes:
+
+→ Senior sustainability leads at telcos and OEMs looking for credible advisory voices
+→ Enterprise procurement teams navigating circular compliance requirements  
+→ Refurbisher and ITAD founders making strategic decisions about their business direction
+→ Investors actively deploying capital into circular economy businesses
+→ Industry press covering the European circular tech narrative
+
+For [Company], a 10-minute slot in that room — positioned as an independent expert — is a very different proposition to a standard conference speaking opportunity.
+
+Speaker Only slot is €7K. Happy to walk through the topic areas and stage programme on a 10-minute call. Would that be useful?
+
+[Your Name]`,
+        strategy: []
+      },
+      {
+        id:"s3",label:"STAGE 3 — PANEL UPSELL MENTION",labelClass:"label-stage3",title:"The Panel Angle",meta:"Day 7",
+        subject:"One more option — the panel discussions at GITEX Berlin",
+        body:`Hi [First Name],
+
+One thing I should have mentioned in my earlier outreach — in addition to the Speaker Only slot, we have panel discussion positions available as an add-on (€4,000).
+
+A panel position gives [Company] a seat on one of the curated discussions on topics like circular economy compliance, Right to Repair, or device lifecycle policy. These tend to generate the most audience engagement and media coverage of the entire programme.
+
+The combination of a Speaker Only slot (€7K) + Panel seat (€4K) for €11K total is genuinely strong value for the positioning it creates.
+
+Two Speaker Only positions remain and panel seats are limited.
+
+Is a quick call this week possible?
+
+[Your Name]`,
+        strategy: []
+      },
+      {
+        id:"s4",label:"STAGE 4 — VALUE + URGENCY",labelClass:"label-stage4",title:"The Closing Argument",meta:"Day 10",
+        subject:"Closing the speaker programme — [Company]",
+        body:`Hi [First Name],
+
+We're finalising the speaker programme for the Circular Hub this week.
+
+I want to be direct: [Company]'s perspective on [specific area — circular compliance / ESG / repair policy] is the kind of insight this audience needs to hear. The stage is designed for exactly this kind of independent expert voice.
+
+A Speaker Only slot is €7,000. Two remain.
+
+If this is something [Company] should be doing — and I genuinely think it is — let's get it confirmed this week. A 10-minute call is all we need.
+
+[Your Name] | [Phone]`,
+        strategy: []
+      },
+      {
+        id:"s5",label:"STAGE 5 — FINAL SPEAKER SLOT",labelClass:"label-stage5",title:"One Slot Left",meta:"Day 13",
+        subject:"Final speaker slot — [Company]",
+        body:`Hi [First Name],
+
+Last message from me — one Speaker Only slot remains for the Circular Hub at GITEX Berlin.
+
+If [Company] wants it, reply today and I'll get it confirmed immediately.
+
+If not — I completely understand. I'll reach out when we have future speaking opportunities.
+
+[Your Name]`,
+        strategy: []
+      },
+      {
+        id:"s6",label:"STAGE 6 — BREAK-UP",labelClass:"label-stage6",title:"Exit",meta:"Day 17",
+        subject:"Closing out — [Company]",
+        body:`Hi [First Name],
+
+The speaker programme is now full. Closing out my outreach.
+
+I'd love to stay connected — [Company]'s voice in the circular economy conversation is important and I expect our paths will cross again at a future event.
+
+[Your Name]`,
+        strategy: []
+      }
+    ]
+  },
+
+  logistics: {
+    name: "Logistics & Reverse Logistics",
+    emoji: "🚚",
+    desc: "For returns management, reverse logistics platforms, and supply chain operators. These buyers want access to refurb and marketplace clients. Lead with the supply chain audience and the direct buyer access.",
+    bestPkg: "Exhibitor — €10K",
+    timeline: [
+      {dot:"1",cls:"tl-dot-1",day:"Day 1",action:"Cold — supply chain angle"},
+      {dot:"2",cls:"tl-dot-2",day:"Day 4",action:"Client audience pitch"},
+      {dot:"3",cls:"tl-dot-3",day:"Day 7",action:"EU expansion angle"},
+      {dot:"4",cls:"tl-dot-4",day:"Day 10",action:"ROI + urgency"},
+      {dot:"5",cls:"tl-dot-5",day:"Day 13",action:"FOMO close"},
+      {dot:"6",cls:"tl-dot-6",day:"Day 17",action:"Break-up"},
+    ],
+    stages: [
+      {
+        id:"s1",label:"STAGE 1 — COLD OUTREACH",labelClass:"label-stage1",title:"The Client Acquisition Hook",meta:"Day 1 · First contact",
+        subject:"Your next circular tech clients are at GITEX Berlin",
+        body:`Hi [First Name],
+
+The circular tech and recommerce market in Europe is growing fast — and the refurbishers, ITAD companies, and marketplace operators that make up that growth all need reliable reverse logistics and returns management partners.
+
+Those companies are gathering in one room at the Circular Hub, GITEX Europe Berlin on 30 June – 1 July.
+
+An Exhibitor position (€10,000) gives [Company] a 6sqm booth, logo visibility across the event, a 30-second video intro played at session breaks, and full networking access — two days in front of the EU circular tech supply chain.
+
+For a logistics company with EU ambitions, this is a very direct pipeline play.
+
+Worth 10 minutes this week?
+
+[Your Name]
+Mobihub Events`,
+        strategy: []
+      },
+      {
+        id:"s2",label:"STAGE 2 — FIRST FOLLOW-UP",labelClass:"label-stage2",title:"Audience Specifics",meta:"Day 4",
+        subject:"Re: GITEX Berlin — who you'll meet in the room",
+        body:`Hi [First Name],
+
+Following up on my previous email — wanted to put some names to faces.
+
+The Circular Hub audience at GITEX Berlin includes refurbishers processing hundreds of thousands of devices per year, B2B marketplaces managing returns at scale, ITAD operators handling enterprise equipment collections, and OEM teams building circular return programmes from scratch.
+
+Every single one of those businesses needs logistics infrastructure. An Exhibitor position at €10K puts [Company] in conversation with all of them over two focused days.
+
+Is this relevant to [Company]'s EU pipeline goals for the second half of this year?
+
+[Your Name]`,
+        strategy: []
+      },
+      {
+        id:"s3",label:"STAGE 3 — SECOND FOLLOW-UP",labelClass:"label-stage3",title:"The EU Expansion Angle",meta:"Day 7",
+        subject:"If [Company] is scaling in Europe, this is the room",
+        body:`Hi [First Name],
+
+One final thought before I close off my outreach.
+
+For logistics and returns management companies expanding in Europe, the circular tech sector is one of the highest-growth buyer segments — and it's still underserved. The companies at GITEX Berlin are actively building their logistics infrastructure right now.
+
+An Exhibitor spot (€10K) positions [Company] as the logistics partner of choice for EU circular tech — at the exact moment those buying decisions are being made.
+
+Two Exhibitor positions remain. Can we connect for 10 minutes this week?
+
+[Your Name]`,
+        strategy: []
+      },
+      {
+        id:"s4",label:"STAGE 4 — VALUE + URGENCY",labelClass:"label-stage4",title:"The Numbers",meta:"Day 10",
+        subject:"€10K booth vs one new circular tech client — [Company]",
+        body:`Hi [First Name],
+
+Simple maths: an Exhibitor position at the Circular Hub costs €10,000.
+
+One new logistics contract with a European refurbisher or marketplace platform running high volume returns is worth multiples of that in year one.
+
+We're closing the floor this Friday. Two Exhibitor positions remain.
+
+[Your Name] | [Phone]`,
+        strategy: []
+      },
+      {
+        id:"s5",label:"STAGE 5 — FOMO CLOSE",labelClass:"label-stage5",title:"Final Offer",meta:"Day 13",
+        subject:"Last Exhibitor positions — Circular Hub GITEX Berlin",
+        body:`Hi [First Name],
+
+Final message from me — one Exhibitor position remains.
+
+If [Company] should be in that room in Berlin, reply today.
+
+[Your Name]`,
+        strategy: []
+      },
+      {
+        id:"s6",label:"STAGE 6 — BREAK-UP",labelClass:"label-stage6",title:"Exit",meta:"Day 17",
+        subject:"Wrapping up",
+        body:`Hi [First Name],
+
+The Circular Hub is fully allocated. I'll be in touch when we plan our next event.
+
+[Your Name]`,
+        strategy: []
+      }
+    ]
+  },
+
+  software: {
+    name: "Software & Platform Companies",
+    emoji: "💻",
+    desc: "For circular tech SaaS, device diagnostics platforms, ITAM software, and recommerce technology companies. Lead with the qualified buyer audience and the industry credibility signal.",
+    bestPkg: "Core Partner — €15K or Exhibitor — €10K",
+    timeline: [
+      {dot:"1",cls:"tl-dot-1",day:"Day 1",action:"Cold — buyer access angle"},
+      {dot:"2",cls:"tl-dot-2",day:"Day 4",action:"Product fit specifics"},
+      {dot:"3",cls:"tl-dot-3",day:"Day 7",action:"Competitor / category angle"},
+      {dot:"4",cls:"tl-dot-4",day:"Day 10",action:"ROI + urgency"},
+      {dot:"5",cls:"tl-dot-5",day:"Day 13",action:"FOMO close"},
+      {dot:"6",cls:"tl-dot-6",day:"Day 17",action:"Break-up"},
+    ],
+    stages: [
+      {
+        id:"s1",label:"STAGE 1 — COLD OUTREACH",labelClass:"label-stage1",title:"The Qualified Buyer Hook",meta:"Day 1 · First contact",
+        subject:"2,000 qualified circular tech buyers in one room — [Company]",
+        body:`Hi [First Name],
+
+For software and platform companies serving the circular tech market, the hardest part of enterprise sales is getting in front of qualified buyers who understand the problem you solve and are actively looking for solutions.
+
+The Circular Hub at GITEX Europe Berlin (30 June – 1 July) gives [Company] exactly that: 2,000+ refurbishers, ITAD operators, marketplace platforms, telco device teams, and enterprise IT buyers — all specifically attending to solve circular tech challenges.
+
+A Core Partner position (€15,000) gives you a booth, a 10-minute product-focused stage slot, and two days of direct access. An Exhibitor position (€10,000) gives you the booth and visibility without the stage time.
+
+Either way, this is a concentrated version of your ICP — without the CAC of individual outbound campaigns.
+
+Worth 10 minutes to explore?
+
+[Your Name]
+Mobihub Events`,
+        strategy: []
+      },
+      {
+        id:"s2",label:"STAGE 2 — FIRST FOLLOW-UP",labelClass:"label-stage2",title:"The Product Fit",meta:"Day 4",
+        subject:"Re: GITEX Berlin — the buyers who need what [Company] builds",
+        body:`Hi [First Name],
+
+Following up — wanted to be specific about why I think [Company] fits here.
+
+The Circular Hub audience includes companies actively looking for [device diagnostics / ITAM / returns management / grading software] — they're not research-stage leads, they're decision-stage buyers with budgets allocated.
+
+A Core Partner slot (€15K) with a speaking slot lets you do a focused demo-style presentation on the Tech Talk Stage — effectively a live product pitch to 200+ targeted attendees in 10 minutes.
+
+For a software company, that kind of concentrated, qualified exposure is hard to find.
+
+Would a call this week make sense?
+
+[Your Name]`,
+        strategy: []
+      },
+      {
+        id:"s3",label:"STAGE 3 — SECOND FOLLOW-UP",labelClass:"label-stage3",title:"The Category Position",meta:"Day 7",
+        subject:"Which [your category] company owns the GITEX Berlin narrative?",
+        body:`Hi [First Name],
+
+In software categories, visibility is a growth multiplier. The [device diagnostics / returns management / ITAM] companies that establish themselves as category leaders at the right events are the ones that enterprise buyers call first.
+
+GITEX Berlin is shaping up to be the defining circular tech event in Europe this year. The companies on that stage are the ones who'll own the narrative in their respective software categories.
+
+[Company] should be the [your category] name in that programme. Is there a reason not to explore it?
+
+One Core Partner slot remains. Can we speak this week?
+
+[Your Name]`,
+        strategy: []
+      },
+      {
+        id:"s4",label:"STAGE 4 — VALUE + URGENCY",labelClass:"label-stage4",title:"The CAC Argument",meta:"Day 10",
+        subject:"What does your CAC look like vs €15K at GITEX Berlin?",
+        body:`Hi [First Name],
+
+Quick thought for you.
+
+What does [Company]'s customer acquisition cost look like for a mid-market or enterprise circular tech account? Across outbound, SDR time, events, and sales cycles, it's rarely under €5,000–€15,000 per customer.
+
+A Core Partner slot at the Circular Hub gives you 2,000 targeted contacts over 2 days — with stage-level brand credibility baked in. The maths tend to work.
+
+Floor closes this Friday. One Core Partner slot remains.
+
+[Your Name] | [Phone]`,
+        strategy: []
+      },
+      {
+        id:"s5",label:"STAGE 5 — FOMO CLOSE",labelClass:"label-stage5",title:"Last Slot",meta:"Day 13",
+        subject:"Last Core Partner slot — [Company]",
+        body:`Hi [First Name],
+
+Final message — one Core Partner slot remains at the Circular Hub.
+
+If [Company] should have a position in Berlin this July, reply today and I'll lock it in within the hour.
+
+[Your Name]`,
+        strategy: []
+      },
+      {
+        id:"s6",label:"STAGE 6 — BREAK-UP",labelClass:"label-stage6",title:"Exit",meta:"Day 17",
+        subject:"Closing out — [Company]",
+        body:`Hi [First Name],
+
+The Circular Hub is fully allocated. Closing out my outreach to [Company].
+
+I'll be in touch for our next event — the circular tech software space is growing fast and I'm sure there'll be another strong fit.
+
+[Your Name]`,
+        strategy: []
+      }
+    ]
+  },
+
+  investor: {
+    name: "Investors & M&A Advisors",
+    emoji: "💰",
+    desc: "For PE firms, VCs, M&A advisors, and corporate development teams active in the circular economy. Speaker Only is the perfect entry point — frame it as curated deal flow access, not event sponsorship.",
+    bestPkg: "Speaker Only — €7K",
+    timeline: [
+      {dot:"1",cls:"tl-dot-1",day:"Day 1",action:"Cold — deal flow angle"},
+      {dot:"2",cls:"tl-dot-2",day:"Day 4",action:"Portfolio / thesis fit"},
+      {dot:"3",cls:"tl-dot-3",day:"Day 7",action:"Companies attending"},
+      {dot:"4",cls:"tl-dot-4",day:"Day 10",action:"Visibility + urgency"},
+      {dot:"5",cls:"tl-dot-5",day:"Day 13",action:"Final slot"},
+      {dot:"6",cls:"tl-dot-6",day:"Day 17",action:"Break-up"},
+    ],
+    stages: [
+      {
+        id:"s1",label:"STAGE 1 — COLD OUTREACH",labelClass:"label-stage1",title:"The Deal Flow Hook",meta:"Day 1 · First contact",
+        subject:"Circular tech deal flow at GITEX Berlin — [Firm name]",
+        body:`Hi [First Name],
+
+The circular economy and refurb tech market in Europe is at an inflection point — consolidation is accelerating, growth valuations are compressing, and the best assets are going to the investors who have the relationships and visibility to move quickly.
+
+The Circular Hub at GITEX Europe Berlin (30 June – 1 July) is bringing together the most interesting growth-stage circular tech companies in Europe — refurb platforms, ITAD operators, circular SaaS businesses, marketplace models — all in one room over two days.
+
+We have three Speaker Only positions available (€7,000) for advisory and investment firms who want to be on the stage as financial intelligence voices — and in the room as deal flow sources.
+
+No booth. Just a 10-minute speaking slot, a seat in the room, and two days of curated access to the founders, operators and corporate development teams shaping European circular tech.
+
+Is this relevant to [Firm]'s current activity in this space?
+
+[Your Name]
+Mobihub Events`,
+        strategy: []
+      },
+      {
+        id:"s2",label:"STAGE 2 — FIRST FOLLOW-UP",labelClass:"label-stage2",title:"The Portfolio Angle",meta:"Day 4",
+        subject:"Re: GITEX Berlin — the companies in the room",
+        body:`Hi [First Name],
+
+Following up quickly.
+
+The Circular Hub at GITEX Berlin will include confirmed presence from leading European refurbishers, marketplace platforms, and circular tech operators — a significant share of the most active growth-stage companies in this vertical.
+
+For an investor or M&A advisor with interest in this space, two days at this event is a more efficient deal flow channel than months of individual outreach.
+
+A Speaker Only slot (€7K) puts [Firm] on the stage as a credible financial voice — which changes how founders and operators engage with you at the event.
+
+One call this week to see if the timing works?
+
+[Your Name]`,
+        strategy: []
+      },
+      {
+        id:"s3",label:"STAGE 3 — SECOND FOLLOW-UP",labelClass:"label-stage3",title:"The Stage Credibility Case",meta:"Day 7",
+        subject:"Being on the stage vs being in the audience — [Firm]",
+        body:`Hi [First Name],
+
+One thing I've found consistently true about investor and advisor positioning at events like this: being on the stage changes everything.
+
+The founders and corporate development teams in that room go from politely networking with you to actively seeking you out. A 10-minute slot — even on a topic like "the investment thesis for circular tech in 2025–26" — positions [Firm] as the credible financial voice in the room.
+
+At €7,000 for a Speaker Only position, this is one of the more efficient positioning investments available in the European circular tech space this year.
+
+Two Speaker Only slots remain. Worth a call this week?
+
+[Your Name]`,
+        strategy: []
+      },
+      {
+        id:"s4",label:"STAGE 4 — VALUE + URGENCY",labelClass:"label-stage4",title:"Final Push",meta:"Day 10",
+        subject:"Closing the speaker programme — [Firm]",
+        body:`Hi [First Name],
+
+We're finalising the financial voices on the Circular Hub stage this week.
+
+[Firm]'s perspective on [circular economy M&A / investment thesis / market consolidation] is exactly what this audience needs to hear — and what would position [Firm] as the go-to financial intelligence voice in the European circular tech market.
+
+Speaker Only is €7,000. One slot remains.
+
+Can we speak before Friday?
+
+[Your Name] | [Phone]`,
+        strategy: []
+      },
+      {
+        id:"s5",label:"STAGE 5 — FINAL SLOT",labelClass:"label-stage5",title:"Last Speaker Slot",meta:"Day 13",
+        subject:"Last speaker slot — [Firm] at GITEX Berlin",
+        body:`Hi [First Name],
+
+Final message from me — one Speaker Only slot remains.
+
+If [Firm] should have a voice on that stage, reply today.
+
+[Your Name]`,
+        strategy: []
+      },
+      {
+        id:"s6",label:"STAGE 6 — BREAK-UP",labelClass:"label-stage6",title:"Exit",meta:"Day 17",
+        subject:"Closing out — [Firm]",
+        body:`Hi [First Name],
+
+The speaker programme is full. Closing out my outreach.
+
+I'll be in touch — the circular tech M&A and investment market is evolving fast and I expect we'll have relevant opportunities to share again soon.
+
+[Your Name]`,
+        strategy: []
+      }
+    ]
+  },
+
+  special: {
+    name: "Special Situation Scripts",
+    emoji: "⚡",
+    desc: "High-leverage emails for specific moments in the sales process. Use these to handle objections, re-engage lost leads, accelerate post-call decisions, and win back deals that went cold.",
+    special: true,
+    scripts: [
+      {
+        id:"sp1",label:"SPECIAL — POST CALL",labelClass:"label-special",title:"After a discovery call — next steps",meta:"Send within 1 hour of the call ending",
+        subject:"Great speaking — here's what we discussed + next steps",
+        body:`Hi [First Name],
+
+Really enjoyed our conversation earlier — [Company]'s focus on [specific thing they mentioned] is exactly what the Circular Hub audience wants to hear about.
+
+To confirm what we discussed:
+
+→ Package: [Core Partner / Stage Partner / Exhibitor] at [€amount]
+→ Speaking topic: [what they proposed or you suggested]
+→ Booth size: [9sqm / 6sqm]
+→ Dates: 30 June – 1 July, GITEX Europe Berlin
+
+Next step on our side: I'll hold the position for [Company] until [specific date — 3-5 business days].
+
+To confirm, I just need a reply to this email with a go-ahead and I'll get the invoice raised through Hanna within 24 hours.
+
+Any questions — call me directly on [phone].
+
+[Your Name]`
+      },
+      {
+        id:"sp2",label:"SPECIAL — POST DECK",labelClass:"label-special",title:"After sending the 1-pager or deck",meta:"Send 24-48 hours after deck delivery",
+        subject:"Did the overview land OK? — [Company]",
+        body:`Hi [First Name],
+
+Wanted to check in on the overview I sent over — did it land in a usable way?
+
+I know PDFs can sometimes raise more questions than they answer so I wanted to be available if anything needs clarifying.
+
+The one thing the document doesn't fully capture is the quality of the audience — the Circular Hub is a curated room, not a general expo floor. The conversation on the day is qualitatively different to what you'd get at a broader tech event.
+
+If it would help to get on a call for 10 minutes — I'm free [specific times]. Otherwise, a simple yes or no reply works too.
+
+[Your Name]`
+      },
+      {
+        id:"sp3",label:"SPECIAL — BUDGET OBJECTION",labelClass:"label-special",title:"They said the budget isn't there",meta:"Use immediately after a budget pushback",
+        subject:"Re: Budget — a different option for [Company]",
+        body:`Hi [First Name],
+
+Appreciate you being straight with me on the budget.
+
+I want to offer you one alternative before I move on — if the Core Partner at €15K is too much right now, the Exhibitor position at €10K gives you the same booth footprint, event map listing, and networking access — without the speaking slot.
+
+If even that feels like a stretch, there's an SME Pod at €6,500 that gives you a physical presence in the hub and full networking access.
+
+I'd rather find the right option for where [Company] is right now than lose the relationship over a number.
+
+Which of those three makes sense to explore?
+
+[Your Name]`
+      },
+      {
+        id:"sp4",label:"SPECIAL — RE-ENGAGEMENT",labelClass:"label-special",title:"Re-engaging a lead that went cold (30+ days)",meta:"Use for leads who responded once then disappeared",
+        subject:"[Company] — still a position with your name on it",
+        body:`Hi [First Name],
+
+It's been a few weeks since we last spoke — I wanted to reach back out before we close the floor completely.
+
+We still have [X] position(s) available at the Circular Hub. Given our earlier conversation about [something specific they mentioned], I think [Company] would get real value from being there.
+
+The event is 30 June – 1 July in Berlin — less than [X] weeks away now.
+
+If the timing is better now, I can have everything sorted for you in 24 hours.
+
+If not — no problem at all.
+
+[Your Name]`
+      },
+      {
+        id:"sp5",label:"SPECIAL — UPSELL TO PANEL",labelClass:"label-special",title:"Upselling the Panel Add-on (€4K)",meta:"Send immediately after confirming a Core or Stage Partner",
+        subject:"One more thing — the panel discussion at the Circular Hub",
+        body:`Hi [First Name],
+
+Now that [Company]'s position is confirmed — one thing I want to flag before panels fill up.
+
+We have a panel discussion add-on available for confirmed partners at €4,000. It gives you a seat on one of our curated stage panels — topics we're running include [circular compliance / device lifecycle / recommerce market trends / ESG in electronics].
+
+These panel slots consistently generate the most audience engagement and LinkedIn content of the entire programme. Past panellists have described it as the best part of the event for visibility.
+
+Given [Company]'s position in [their space], I think a panel seat would be a strong complement to your Core Partner presence.
+
+Shall I reserve one for you?
+
+[Your Name]`
+      },
+      {
+        id:"sp6",label:"SPECIAL — OBJECTION: WRONG EVENT",labelClass:"label-special",title:"They say GITEX isn't the right fit",meta:"Use when they push back on event relevance",
+        subject:"Re: GITEX fit — worth 5 minutes on this",
+        body:`Hi [First Name],
+
+Appreciate you being direct — let me address that honestly.
+
+You're right that GITEX is a broad tech event. But the Circular Hub is specifically designed so that [Company] isn't on a general tech floor — you're in a curated vertical hub, surrounded by your ICP, with an audience that came specifically for circular tech and device lifecycle content.
+
+It's the difference between exhibiting at a trade show and headlining a vertical conference — inside the infrastructure of Europe's biggest tech event.
+
+The companies already confirmed are not general tech brands. They're circular specialists — the names you'd expect to see at an industry-only event.
+
+Would it help to share the confirmed partner list? I think it would change the picture.
+
+[Your Name]`
+      },
+      {
+        id:"sp7",label:"SPECIAL — INVOICE CHASE",labelClass:"label-special",title:"Chasing a signed deal for invoice",meta:"Use when deal is verbally agreed but PO not raised",
+        subject:"Invoice for [Company] — just need a green light",
+        body:`Hi [First Name],
+
+Following up on our conversation — we're holding the [Core Partner / Exhibitor] position for [Company] but I need to get the invoice raised through our finance team to lock it in formally.
+
+Could you confirm the billing details or connect me with whoever handles POs? I want to make sure the position is secured before we close the floor.
+
+The invoice goes through Hanna on our side and we can have it with you within hours of your go-ahead.
+
+[Your Name]`
+      },
+      {
+        id:"sp8",label:"SPECIAL — AFTER A NO",labelClass:"label-special",title:"They said no — keep the door open",meta:"Use when they decline — never burn a bridge",
+        subject:"Understood — and thank you for being direct",
+        body:`Hi [First Name],
+
+Appreciate you letting me know — I'd much rather hear a clear no than be left chasing.
+
+I'll close off the outreach on this event. But I'd genuinely like to stay connected — [Company]'s work in [their space] is interesting and I'm sure there'll be future opportunities where we can collaborate.
+
+I'll reach out when we announce our next event.
+
+Thanks again for your time.
+
+[Your Name]`
+      }
+    ]
+  }
+};
+
+let currentSection = 'refurbisher';
+let activeStage = 0;
+
+function showSection(id) {
+  currentSection = id;
+  activeStage = 0;
+  document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  renderSection();
+}
+
+function renderSection() {
+  const seq = sequences[currentSection];
+  const content = document.getElementById('mainContent');
+  if(seq.special) {
+    renderSpecial(seq, content);
+  } else {
+    renderSequence(seq, content);
+  }
+}
+
+function renderSequence(seq, content) {
+  const stage = seq.stages[activeStage];
+  const tlHtml = seq.timeline.map(t => `
+    <div class="tl-item">
+      <div class="tl-dot ${t.cls}">${t.dot}</div>
+      <div class="tl-day">${t.day}</div>
+      <div class="tl-action">${t.action}</div>
+    </div>
+  `).join('');
+  const stageNavHtml = seq.stages.map((s,i) => `
+    <button class="stage-btn ${i===activeStage?'active':''}" onclick="setStage(${i})">
+      ${s.label.split('—')[0].replace('STAGE ','S')}
+      <span class="day">${seq.timeline[i]?.day||''}</span>
+    </button>
+  `).join('');
+  const stratHtml = stage.strategy && stage.strategy.length ? `
+    <div class="strategy-box">
+      <div class="strategy-box-title">💡 Why this email works</div>
+      <div class="strategy-items">
+        ${stage.strategy.map(s => `<div class="strategy-item"><b>${s.t}:</b> ${s.b}</div>`).join('')}
+      </div>
+    </div>
+  ` : '';
+
+  content.innerHTML = `
+    <div class="section-header">
+      <div class="section-title">${seq.emoji} ${seq.name}</div>
+      <div class="section-desc">${seq.desc}</div>
+    </div>
+    <div class="sequence-overview">
+      <div class="overview-title">6-stage sequence · Best package: <b>${seq.bestPkg}</b></div>
+      <div class="timeline">${tlHtml}</div>
+    </div>
+    <div class="stages-nav">${stageNavHtml}</div>
+    <div class="email-card">
+      <div class="email-card-header">
+        <div>
+          <div class="email-label ${stage.labelClass}">${stage.label}</div>
+          <div class="email-card-title">${stage.title}</div>
+          <div class="email-card-meta">${stage.meta}</div>
+        </div>
+        <button class="copy-btn" onclick="copyEmail('${stage.id}')">Copy email</button>
+      </div>
+      <div class="email-field">
+        <div class="field-label">Subject line</div>
+        <div class="subject-line" id="subj-${stage.id}">${stage.subject}</div>
+      </div>
+      <div class="email-body" id="body-${stage.id}">${stage.body}</div>
+      ${stratHtml}
+    </div>
+  `;
+}
+
+function renderSpecial(seq, content) {
+  const cardsHtml = seq.scripts.map(s => `
+    <div class="email-card">
+      <div class="email-card-header">
+        <div>
+          <div class="email-label ${s.labelClass}">${s.label}</div>
+          <div class="email-card-title">${s.title}</div>
+          <div class="email-card-meta">${s.meta}</div>
+        </div>
+        <button class="copy-btn" onclick="copySpecial('${s.id}')">Copy</button>
+      </div>
+      <div class="email-field">
+        <div class="field-label">Subject line</div>
+        <div class="subject-line" id="subj-${s.id}">${s.subject}</div>
+      </div>
+      <div class="email-body" id="body-${s.id}">${s.body}</div>
+    </div>
+  `).join('');
+
+  content.innerHTML = `
+    <div class="section-header">
+      <div class="section-title">${seq.emoji} ${seq.name}</div>
+      <div class="section-desc">${seq.desc}</div>
+    </div>
+    <div class="special-grid">${cardsHtml}</div>
+  `;
+}
+
+function setStage(i) {
+  activeStage = i;
+  renderSection();
+}
+
+function copyEmail(id) {
+  const subj = document.getElementById('subj-'+id)?.innerText || '';
+  const body = document.getElementById('body-'+id)?.innerText || '';
+  const text = `Subject: ${subj}\n\n${body}`;
+  navigator.clipboard.writeText(text).catch(()=>{});
+  const btn = event.target;
+  btn.textContent = '✓ Copied!';
+  btn.classList.add('copied');
+  setTimeout(()=>{btn.textContent='Copy email';btn.classList.remove('copied');},2000);
+}
+
+function copySpecial(id) {
+  const subj = document.getElementById('subj-'+id)?.innerText || '';
+  const body = document.getElementById('body-'+id)?.innerText || '';
+  const text = `Subject: ${subj}\n\n${body}`;
+  navigator.clipboard.writeText(text).catch(()=>{});
+  const btn = event.target;
+  btn.textContent = '✓ Copied';
+  btn.classList.add('copied');
+  setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},2000);
+}
+
+renderSection();
+</script>
+</body>
+</html>
