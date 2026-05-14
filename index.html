@@ -57,12 +57,20 @@
         /* Sidebar Styling - Updated to Premium Dark */
         .sidebar {
             width: 280px;
+            min-width: 280px;
             background-color: #1d1d1f; /* Dark background for the logo */
             border-right: 1px solid #2d2d2f;
             display: flex;
             flex-direction: column;
             padding: 24px 16px;
             z-index: 10;
+            overflow-y: auto;
+            /* Hide scrollbar for sidebar */
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .sidebar::-webkit-scrollbar {
+            display: none;
         }
 
         .logo-container {
@@ -113,6 +121,141 @@
             color: #ffffff;
         }
 
+        /* --- Custom Template Builder (Main Area Tab) --- */
+        .ct-layout {
+            display: flex;
+            gap: 24px;
+            height: 100%;
+        }
+        .ct-sidebar {
+            flex: 1;
+            max-width: 320px;
+            background: var(--color-bg-panel);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: var(--shadow-subtle);
+            border: 1px solid rgba(0,0,0,0.02);
+            display: flex;
+            flex-direction: column;
+        }
+        .ct-editor {
+            flex: 2;
+            background: var(--color-bg-panel);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: var(--shadow-subtle);
+            border: 1px solid rgba(0,0,0,0.02);
+            display: flex;
+            flex-direction: column;
+        }
+        .ct-header {
+            font-size: 16px;
+            color: var(--color-text-primary);
+            font-weight: 600;
+        }
+        .ct-input, .ct-select {
+            width: 100%;
+            background: var(--color-bg-app);
+            border: 1px solid var(--color-border);
+            color: var(--color-text-primary);
+            border-radius: 8px;
+            padding: 12px 14px;
+            font-size: 14px;
+            margin-bottom: 16px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .ct-textarea {
+            width: 100%;
+            background: var(--color-bg-app);
+            border: 1px solid var(--color-border);
+            color: var(--color-text-primary);
+            border-radius: 8px;
+            padding: 14px;
+            font-size: 14px;
+            margin-bottom: 0;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s;
+            resize: vertical;
+            min-height: 250px;
+            flex: 1;
+        }
+        .ct-input::placeholder, .ct-textarea::placeholder {
+            color: var(--color-text-tertiary);
+        }
+        .ct-input:focus, .ct-select:focus, .ct-textarea:focus {
+            border-color: var(--color-accent);
+        }
+        .ct-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 16px;
+        }
+        .ct-btn {
+            background: transparent;
+            color: var(--color-accent);
+            border: 1px solid var(--color-accent);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s;
+        }
+        .ct-btn:hover { background: var(--color-accent); color: #fff; }
+        .ct-status {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+        }
+        .ct-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+            overflow-y: auto;
+            flex: 1;
+        }
+        .ct-item {
+            background: var(--color-bg-app);
+            border-radius: 8px;
+            padding: 14px 12px;
+            cursor: pointer;
+            border: 1px solid var(--color-border);
+            position: relative;
+            transition: all 0.2s;
+        }
+        .ct-item:hover { border-color: var(--color-accent); }
+        .ct-item.active { border-color: var(--color-accent); background: rgba(0, 113, 227, 0.05); }
+        .ct-item-title { 
+            font-size: 14px; 
+            color: var(--color-text-primary); 
+            font-weight: 600; 
+            margin-bottom: 4px; 
+            white-space: nowrap; 
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+            padding-right: 24px;
+        }
+        .ct-item-type { font-size: 12px; color: var(--color-text-secondary); }
+        .ct-item-del { 
+            position: absolute; 
+            right: 10px; 
+            top: 14px; 
+            color: #ff3b30; 
+            font-size: 16px; 
+            background: none; 
+            border: none; 
+            cursor: pointer; 
+            opacity: 0; 
+            transition: opacity 0.2s;
+        }
+        .ct-item:hover .ct-item-del { opacity: 1; }
+
         /* Main Content Area */
         .main-content {
             flex: 1;
@@ -123,43 +266,6 @@
 
         .content-wrapper {
             padding: 32px 48px;
-        }
-
-        /* Hero Banner - Unrestrained */
-        .hero-banner {
-            width: 100%;
-            height: 280px;
-            background-image: url('hero.jpg');
-            background-size: cover;
-            background-position: center;
-            background-color: #1d1d1f; /* Fallback */
-            position: relative;
-            margin-bottom: 0;
-            /* Removed border-radius and box-shadow to let it bleed to edges */
-        }
-
-        .hero-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(90deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.1) 100%);
-            padding: 48px 48px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            color: #ffffff;
-        }
-
-        .hero-overlay h1 {
-            font-size: 36px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            letter-spacing: -0.5px;
-        }
-
-        .hero-overlay p {
-            font-size: 18px;
-            opacity: 0.85;
-            font-weight: 400;
         }
 
         /* Stats Row */
@@ -565,6 +671,51 @@
             line-height: 1.5;
         }
 
+        /* Top Hero CTAs */
+        .hero-ctas {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 18px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .hero-cta i {
+            font-size: 16px;
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+        }
+
+        .cta-whatsapp {
+            background-color: #25D366;
+            color: #ffffff;
+        }
+
+        .cta-linkedin {
+            background-color: #0A66C2;
+            color: #ffffff;
+        }
+
+        .cta-email {
+            background-color: var(--color-text-primary);
+            color: #ffffff;
+        }
+
         .hero-right {
             flex: 1.5;
             border-radius: var(--radius-lg);
@@ -607,13 +758,38 @@
             <button class="nav-item" onclick="showTab('playbook')">
                 <i class="ti ti-book" aria-hidden="true"></i> Sales Playbook
             </button>
+            
+            <a href="leads.html" class="nav-item" style="text-decoration: none;">
+                <i class="ti ti-users" aria-hidden="true"></i> Leads
+            </a>
+            
             <button class="nav-item" onclick="showTab('scripts')">
                 <i class="ti ti-message-2" aria-hidden="true"></i> Outreach Scripts
             </button>
+            
+            <a href="email.html" class="nav-item" style="text-decoration: none;">
+                <i class="ti ti-mail-forward" aria-hidden="true"></i> Gitex Email Sequences
+            </a>
+            
             <button class="nav-item" onclick="showTab('templates')">
                 <i class="ti ti-mail" aria-hidden="true"></i> Email Templates
             </button>
+            <button class="nav-item" onclick="showTab('custom-templates')">
+                <i class="ti ti-edit" aria-hidden="true"></i> Template Builder
+            </button>
         </nav>
+
+        <!-- Developer Connect Section -->
+        <div style="margin-top: auto; padding-top: 24px; border-top: 1px solid #2d2d2f; display: flex; flex-direction: column; gap: 6px;">
+            <div style="font-size: 11px; color: #86868b; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 6px; text-transform: uppercase; padding-left: 12px;">Connect with me</div>
+            <a href="https://www.linkedin.com/in/deepak-kumar-mobi-hub/" target="_blank" class="nav-item" style="text-decoration: none;">
+                <i class="ti ti-brand-linkedin" aria-hidden="true"></i> LinkedIn
+            </a>
+            <a href="mailto:deepak@mobi-hub.com" class="nav-item" style="text-decoration: none;">
+                <i class="ti ti-mail" aria-hidden="true"></i> Email
+            </a>
+        </div>
+
     </aside>
 
     <!-- Main Content Area -->
@@ -626,6 +802,19 @@
                 <div class="hero-left">
                     <h1 class="hero-title">GITEX Berlin — Circular Tech Hub</h1>
                     <p class="hero-subtitle">Sales Intelligence System &middot; 30-Day Close Engine</p>
+                    
+                    <!-- Interactive Contact CTAs -->
+                    <div class="hero-ctas">
+                        <a href="https://wa.me/447477740830" target="_blank" class="hero-cta cta-whatsapp">
+                            <i class="ti ti-brand-whatsapp" aria-hidden="true"></i> +44 7477 740830
+                        </a>
+                        <a href="https://www.linkedin.com/in/deepak-kumar-mobi-hub/" target="_blank" class="hero-cta cta-linkedin">
+                            <i class="ti ti-brand-linkedin" aria-hidden="true"></i> Connect
+                        </a>
+                        <a href="mailto:deepak@mobi-hub.com" class="hero-cta cta-email">
+                            <i class="ti ti-mail" aria-hidden="true"></i> Email
+                        </a>
+                    </div>
                 </div>
                 
                 <!-- Right: Hero Image (Strictly 1200x628 Aspect Ratio) -->
@@ -649,8 +838,13 @@
                     <div class="stat-val orange">€249,500</div>
                 </div>
                 <div class="stat">
-                    <div class="stat-label">Days Remaining</div>
-                    <div class="stat-val red">30</div>
+                    <div class="stat-label">Live Countdown</div>
+                    <div class="stat-val red" id="countdown-days" style="display: flex; align-items: baseline; gap: 4px;">
+                        -- <span style="font-size: 16px; font-weight: 500;">Days</span>
+                    </div>
+                    <div id="countdown-timer" style="font-size: 13px; color: var(--color-text-secondary); margin-top: 4px; font-variant-numeric: tabular-nums; font-weight: 500; display: flex; align-items: center; gap: 4px;">
+                        <i class="ti ti-clock-hour-4" style="font-size: 14px;"></i> --:--:--
+                    </div>
                 </div>
             </div>
             
@@ -767,11 +961,52 @@
                 <div class="filters" id="templateFilters" style="margin-bottom: 24px;"></div>
                 <div class="templates-grid" id="templateGrid"></div>
             </div>
+            
+            <!-- Tab 5: Custom Templates Builder -->
+            <div id="tab-custom-templates" style="display:none">
+                <div class="ct-layout">
+                    <!-- Left Sidebar (Templates List) -->
+                    <div class="ct-sidebar">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h3 class="ct-header">Saved Templates</h3>
+                            <button class="ct-btn" onclick="newCT()"><i class="ti ti-plus" style="font-size:14px"></i> New</button>
+                        </div>
+                        <div class="ct-list" id="ctList">
+                            <!-- Dynamically populated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Right Area (Editor) -->
+                    <div class="ct-editor">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                            <h3 class="ct-header">Editor</h3>
+                            <div class="ct-status" id="ctStatus">All changes saved</div>
+                        </div>
+                        
+                        <select class="ct-select" id="ctType" onchange="autoSaveCT()">
+                            <option value="Email">Email</option>
+                            <option value="LinkedIn">LinkedIn</option>
+                            <option value="Other">Other / WhatsApp</option>
+                        </select>
+                        
+                        <input type="text" class="ct-input" id="ctTitle" placeholder="Subject / Title..." oninput="autoSaveCT()">
+                        <textarea class="ct-textarea" id="ctBody" placeholder="Type your message here... Use [Brackets] for variables." oninput="autoSaveCT()"></textarea>
+                        
+                        <div class="ct-actions">
+                            <button class="copy-btn" onclick="copyCustomTemplate(this)" style="background: var(--color-text-primary); color: #fff; border-color: var(--color-text-primary);">
+                                <i class="ti ti-copy" style="font-size:15px;margin-right:6px"></i>Copy Content
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </main>
 </div>
 
 <script>
+// ---------- EXISTING DATA ----------
 const companies = [  {name:"Back Market",site:"backmarket.com",linkedin:"linkedin.com/company/back-market",geo:"France",cat:"Marketplace",pkg:"Core Partner / Stage Partner",fit:97,dm:[{name:"Thibaud Hug de Larauze",title:"CEO & Co-Founder",li:"linkedin.com/in/thibaud-hug-de-larauze"},{name:"Sophie Rouyer",title:"Chief Marketing Officer",li:"linkedin.com/in/sophie-rouyer"}],email:"partnerships@backmarket.com",why:"Europe's largest refurbished electronics marketplace. €500M+ raised. Brand credibility at GITEX Berlin is a natural expansion move.",hot:true},  {name:"Refurbed",site:"refurbed.com",linkedin:"linkedin.com/company/refurbed",geo:"Austria",cat:"Marketplace",pkg:"Core Partner",fit:94,dm:[{name:"Peter Windischhofer",title:"Co-Founder & CEO",li:"linkedin.com/in/peter-windischhofer"},{name:"Kilian Kaminski",title:"Co-Founder",li:"linkedin.com/in/kilian-kaminski"}],email:"business@refurbed.com",why:"Fast-growing EU marketplace. Active at sustainability events. DACH market leader — GITEX Berlin is home territory.",hot:true},  {name:"Swappie",site:"swappie.com",linkedin:"linkedin.com/company/swappie",geo:"Finland",cat:"Refurbisher",pkg:"Core Partner",fit:91,dm:[{name:"Sami Marttinen",title:"CEO & Co-Founder",li:"linkedin.com/in/sami-marttinen"},{name:"Jiri Bharwani",title:"Co-Founder",li:"linkedin.com/in/jiri-bharwani"}],email:"info@swappie.com",why:"iPhone-focused refurbisher expanding aggressively across Europe. Stage time would cement their brand as the #1 refurbished iPhone name in EU.",hot:true},  {name:"Reebelo",site:"reebelo.com",linkedin:"linkedin.com/company/reebelo",geo:"Singapore / EU",cat:"Marketplace",pkg:"Core Partner / Stage Partner",fit:90,dm:[{name:"Guillaume Principe",title:"CEO & Co-Founder",li:"linkedin.com/in/guillaume-principe"},{name:"Kevin Reffay",title:"Co-Founder & CTO",li:"linkedin.com/in/kevin-reffay"}],email:"partnerships@reebelo.com",why:"Global certified refurb marketplace expanding into Europe. GITEX Berlin gives them instant EU market credibility and B2B deal flow.",hot:false},  {name:"Rebuy",site:"rebuy.de",linkedin:"linkedin.com/company/rebuy",geo:"Germany",cat:"Marketplace",pkg:"Core Partner",fit:93,dm:[{name:"Philipp Gattner",title:"CEO",li:"linkedin.com/in/philipp-gattner"},{name:"Stefan Wenzel",title:"CMO",li:""}],email:"partner@rebuy.de",why:"Germany's leading recommerce platform. Local DACH dominance + GITEX Berlin stage = obvious category win. High event participation history.",hot:true},  {name:"Foxway",site:"foxway.com",linkedin:"linkedin.com/company/foxway",geo:"Sweden",cat:"Refurbisher",pkg:"Stage Partner",fit:92,dm:[{name:"Niklas Dohlberg",title:"CEO",li:"linkedin.com/in/niklas-dohlberg"},{name:"Marcus Nilsson",title:"VP Sales",li:""}],email:"sales@foxway.com",why:"Pan-European device lifecycle company. OEM-grade refurb + logistics. Perfect Stage Partner — they have the budget and need EU brand visibility.",hot:true},  {name:"Recommerce",site:"recommerce.com",linkedin:"linkedin.com/company/recommerce",geo:"France",cat:"Refurbisher",pkg:"Core Partner",fit:88,dm:[{name:"Gilles Delmas",title:"CEO",li:"linkedin.com/in/gilles-delmas-recommerce"},{name:"Romain Lhote",title:"Head of B2B",li:""}],email:"contact@recommerce.com",why:"French leader in buyback and trade-in, B2B focus. GITEX Berlin provides the pan-European retailer and operator audience they need."},  {name:"Blancco Technology Group",site:"blancco.com",linkedin:"linkedin.com/company/blancco",geo:"UK / Global",cat:"ITAD",pkg:"Core Partner / Exhibitor",fit:89,dm:[{name:"Jan Colpaert",title:"CEO",li:"linkedin.com/in/jan-colpaert"},{name:"Pat Clawson",title:"Chairman",li:""}],email:"info@blancco.com",why:"Global leader in certified data erasure. Critical enabler for every refurbisher and ITAD company. Massive audience overlap at Circular Hub.",hot:true},  {name:"NSYS Group",site:"nsys.biz",linkedin:"linkedin.com/company/nsys-group",geo:"Lithuania / Global",cat:"ITAD",pkg:"Core Partner / Exhibitor",fit:87,dm:[{name:"Anton Kozlov",title:"CEO",li:"linkedin.com/in/anton-kozlov-nsys"},{name:"Alina Ivanik",title:"Head of Partnerships",li:""}],email:"info@nsys.biz",why:"Mobile device diagnostics and ITAD software. Already in target list. Natural Core Partner — software-first company needs stage credibility.",hot:false},  {name:"Ingram Micro Lifecycle",site:"ingrammicro.com/lifecycle",linkedin:"linkedin.com/company/ingram-micro",geo:"US / Global",cat:"ITAD",pkg:"Stage Partner",fit:85,dm:[{name:"Paul Bay",title:"CEO",li:"linkedin.com/in/paul-bay"},{name:"Adnan Ziem",title:"VP Lifecycle Services",li:""}],email:"lifecycle@ingrammicro.com",why:"World's largest IT distributor with major lifecycle/refurb division. Stage partnership validates the hub's enterprise credibility globally.",hot:false},  {name:"TrenDevice",site:"trendevice.it",linkedin:"linkedin.com/company/trendevice",geo:"Italy",cat:"Refurbisher",pkg:"Core Partner",fit:86,dm:[{name:"Lorenzo Treré",title:"CEO & Co-Founder",li:"linkedin.com/in/lorenzo-trere"},{name:"Simone Treré",title:"Co-Founder",li:""}],email:"info@trendevice.it",why:"Italy's largest certified refurbisher. Expanding B2B. GITEX Berlin gives them North/West European distributor access and a platform for their brand narrative.",hot:false},  {name:"Grade Mobile",site:"grademobile.co.uk",linkedin:"linkedin.com/company/grade-mobile",geo:"UK",cat:"Refurbisher",pkg:"Core Partner",fit:84,dm:[{name:"Sam Wood",title:"CEO",li:""},{name:"",title:"Head of Trade",li:""}],email:"trade@grademobile.co.uk",why:"UK-based device grading and trade business. Core Partner aligns well — they need EU buyer relationships and brand positioning beyond the UK market.",hot:false},  {name:"Circulee",site:"circulee.com",linkedin:"linkedin.com/company/circulee",geo:"Germany",cat:"Refurbisher",pkg:"Core Partner",fit:83,dm:[{name:"Torsten Sieckmann",title:"CEO",li:"linkedin.com/in/torsten-sieckmann"},{name:"",title:"Head of Growth",li:""}],email:"info@circulee.com",why:"B2B circular device platform for enterprises. GITEX Berlin is their ideal room — corporate IT buyers, enterprise ITAD, procurement decision-makers."},  {name:"Furbify",site:"furbify.com",linkedin:"linkedin.com/company/furbify",geo:"Czech Republic",cat:"Marketplace",pkg:"Core Partner / SME",fit:80,dm:[{name:"Pavel Sucharda",title:"CEO",li:"linkedin.com/in/pavel-sucharda"},{name:"",title:"",li:""}],email:"info@furbify.com",why:"Fast-growing EU marketplace with marketplace API for refurb resellers. GITEX Berlin is a step-change visibility moment for their EU expansion."},  {name:"Phonecheck",site:"phonecheck.com",linkedin:"linkedin.com/company/phonecheck",geo:"US / EU",cat:"ITAD",pkg:"Exhibitor / Speaker",fit:82,dm:[{name:"Daniel Dönig",title:"CEO",li:"linkedin.com/in/daniel-doenig"},{name:"",title:"VP Business Development",li:""}],email:"info@phonecheck.com",why:"Industry standard for device certification. Partners with every major refurbisher and marketplace. Exhibitor or Speaker slot = high-value brand placement."},  {name:"Likewize (Brightstar)",site:"likewize.com",linkedin:"linkedin.com/company/likewize",geo:"UK / Global",cat:"Telecom",pkg:"Stage Partner",fit:88,dm:[{name:"Rod Millar",title:"CEO",li:"linkedin.com/in/rod-millar-likewize"},{name:"",title:"Chief Commercial Officer",li:""}],email:"info@likewize.com",why:"Global device lifecycle and insurance giant. Telco clients across EU and US. Stage Partner would give Likewize massive authority in the circular device space.",hot:true},  {name:"Vodafone",site:"vodafone.com",linkedin:"linkedin.com/company/vodafone",geo:"UK / Global",cat:"Telecom",pkg:"Stage Partner / Core Partner",fit:86,dm:[{name:"Margherita Della Valle",title:"CEO",li:"linkedin.com/in/margherita-della-valle"},{name:"Johannes Ametsreiter",title:"CEO Vodafone Germany",li:"linkedin.com/in/johannes-ametsreiter"}],email:"partnerships@vodafone.com",why:"Vodafone Germany is a key player in device-as-a-service and circular economy. GITEX Berlin is their home market — natural fit for a Stage Partner.",hot:false},  {name:"Orange",site:"orange.com",linkedin:"linkedin.com/company/orange",geo:"France / EU",cat:"Telecom",pkg:"Core Partner / Stage Partner",fit:83,dm:[{name:"Christel Heydemann",title:"CEO",li:"linkedin.com/in/christel-heydemann"},{name:"",title:"VP Sustainability & Circular Economy",li:""}],email:"partnerships@orange.com",why:"Orange has one of Europe's most active device circular economy programs. Stage Partner slot aligns perfectly with their sustainability KPIs."},  {name:"Carbon Trust",site:"carbontrust.com",linkedin:"linkedin.com/company/the-carbon-trust",geo:"UK / Global",cat:"ESG",pkg:"Speaker Only",fit:88,dm:[{name:"Tom Delay",title:"CEO",li:"linkedin.com/in/tom-delay-carbontrust"},{name:"Gareth Baker",title:"Director, Technology",li:""}],email:"enquiries@carbontrust.com",why:"Global authority on net zero and circular economy. Speaker slot gives the hub independent credibility and attracts enterprise ESG buyers. Named in the sales doc.",hot:true},  {name:"Circularise",site:"circularise.com",linkedin:"linkedin.com/company/circularise",geo:"Netherlands",cat:"ESG",pkg:"Exhibitor / Speaker",fit:81,dm:[{name:"Mesbah Sabur",title:"CEO & Co-Founder",li:"linkedin.com/in/mesbah-sabur"},{name:"Jordi de Vos",title:"Co-Founder & CTO",li:"linkedin.com/in/jordi-de-vos-circularise"}],email:"info@circularise.com",why:"Blockchain-based circular supply chain platform. Strong fit with enterprise ITAD and OEM brands attending. Exhibitor or Speaker would boost their EU BD.",hot:false},  {name:"GSMA",site:"gsma.com",linkedin:"linkedin.com/company/gsma",geo:"UK / Global",cat:"ESG",pkg:"Speaker Only",fit:85,dm:[{name:"John Hoffman",title:"CEO",li:"linkedin.com/in/john-hoffman-gsma"},{name:"",title:"Head of Connected Device Sustainability",li:""}],email:"info@gsma.com",why:"GSMA drives industry-wide sustainability and circular device programs across telcos. Named in the sales doc as ideal Speaker. Perfect credibility builder."},  {name:"Houlihan Lokey",site:"hl.com",linkedin:"linkedin.com/company/houlihan-lokey",geo:"US / EU",cat:"ESG",pkg:"Speaker Only",fit:80,dm:[{name:"Scott Beiser",title:"CEO",li:""},{name:"",title:"Managing Director, Technology M&A",li:""}],email:"info@hl.com",why:"Named in the sales doc. M&A advisor actively covering circular tech and device lifecycle deals in Europe. Speaker slot adds financial intelligence to the stage program.",hot:true},  {name:"HP Inc (HP Renew / ITAD)",site:"hp.com",linkedin:"linkedin.com/company/hewlett-packard",geo:"US / EU",cat:"OEM",pkg:"Stage Partner",fit:84,dm:[{name:"Enrique Lores",title:"CEO",li:"linkedin.com/in/enrique-lores"},{name:"",title:"VP Global Device Services",li:""}],email:"hprenew@hp.com",why:"HP Renew is one of the world's largest certified refurb OEM programs. Stage Partner would be a significant EU-facing brand play aligned to their sustainability goals.",hot:false},  {name:"Lenovo",site:"lenovo.com",linkedin:"linkedin.com/company/lenovo",geo:"China / EU",cat:"OEM",pkg:"Stage Partner",fit:82,dm:[{name:"Yang Yuanqing",title:"CEO",li:""},{name:"",title:"VP EMEA Device Lifecycle",li:""}],email:"partnerships@lenovo.com",why:"Lenovo has an active refurb and circular economy program in EMEA. Named in the sales doc. Stage Partner gives them premium ESG positioning in Berlin — their EU HQ city.",hot:true},  {name:"Sims Lifecycle Services",site:"simslifecycle.com",linkedin:"linkedin.com/company/sims-lifecycle-services",geo:"US / UK / EU",cat:"ITAD",pkg:"Core Partner / Exhibitor",fit:85,dm:[{name:"Alistair Field",title:"CEO, Sims Metal",li:""},{name:"",title:"VP Commercial, Lifecycle Services",li:""}],email:"info@simslifecycle.com",why:"Global ITAD and electronics recycling giant. Circular Hub is exactly their buyer base — enterprise procurement, telco, OEM. High event attendance history."},  {name:"eRecycle / ERI",site:"eridirect.com",linkedin:"linkedin.com/company/electronic-recyclers-international",geo:"US / EU",cat:"ITAD",pkg:"Exhibitor",fit:78,dm:[{name:"John Shegerian",title:"Co-Founder & CEO",li:"linkedin.com/in/john-shegerian"},{name:"",title:"VP European Operations",li:""}],email:"info@eridirect.com",why:"World's largest ITAD and e-waste recycler. EU expansion is a priority. Exhibitor booth gives instant access to enterprise and OEM accounts."},  {name:"Asurion",site:"asurion.com",linkedin:"linkedin.com/company/asurion",geo:"US / EU",cat:"Telecom",pkg:"Exhibitor / Core Partner",fit:79,dm:[{name:"Tony Detter",title:"CEO",li:""},{name:"",title:"VP European Partnerships",li:""}],email:"bizdev@asurion.com",why:"World's largest device insurance and repair company. Expanding EU presence. Circular Hub audience includes telco and retail buyers who drive their volume."},  {name:"Circular Connect",site:"circularconnect.eu",linkedin:"linkedin.com/company/circular-connect",geo:"EU",cat:"ESG",pkg:"Speaker Only / Exhibitor",fit:82,dm:[{name:"",title:"CEO",li:""},{name:"",title:"Head of Events & Partnerships",li:""}],email:"hello@circularconnect.eu",why:"Named in the sales doc. EU circular economy industry network. Speaker slot amplifies their platform and drives member awareness. Natural audience fit."},  {name:"Rubicon",site:"rubicon.com",linkedin:"linkedin.com/company/rubicon",geo:"US / EU",cat:"ESG",pkg:"Exhibitor / Speaker",fit:76,dm:[{name:"Marc Spiegel",title:"CEO",li:""},{name:"",title:"VP Sustainability Solutions",li:""}],email:"info@rubicon.com",why:"Smart waste and circular economy software. Strong ESG narrative. Exhibitor presence aligns with their enterprise sales motion targeting logistics and tech companies."},  {name:"Breezy",site:"breezy.com",linkedin:"linkedin.com/company/breezy",geo:"EU",cat:"Refurbisher",pkg:"SME / Core Partner",fit:75,dm:[{name:"",title:"CEO",li:""},{name:"",title:"Head of B2B",li:""}],email:"info@breezy.com",why:"Named in sales doc. Fast-growing refurb SME. SME pod is perfect entry point — high conversion probability at the right price point."},];
 
 const scripts = [  {id:"cold-email",label:"Cold Email",channel:"Email",title:"Cold email — Core Partner (refurbisher)",body:`Subject: Your position at GITEX Berlin — Circular Tech Hub
@@ -879,14 +1114,13 @@ function filterCompanies(val) {
 
 function showTab(id) {
   // Hide all main content tabs
-  ['companies','playbook','scripts','templates'].forEach(t => {
+  ['companies','playbook','scripts','templates', 'custom-templates'].forEach(t => {
     document.getElementById('tab-'+t).style.display = t===id ? '' : 'none';
   });
   
-  // Update sidebar active states
-  const tabsIds = ['companies','playbook','scripts','templates'];
-  document.querySelectorAll('.nav-item').forEach((btn, index) => {
-      if (tabsIds[index] === id) {
+  // Update sidebar active states safely (ignoring anchor links)
+  document.querySelectorAll('#mainTabs button.nav-item').forEach(btn => {
+      if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(id)) {
           btn.classList.add('active');
       } else {
           btn.classList.remove('active');
@@ -995,10 +1229,159 @@ function filterTemplates(type, btn) {
   renderTemplates();
 }
 
+// ---------- NEW: CUSTOM TEMPLATE BUILDER LOGIC ----------
+
+let customTemplates = [];
+let activeCTId = null;
+let ctTimeout;
+
+function initCustomTemplates() {
+    const saved = localStorage.getItem('gitex_custom_templates');
+    if (saved) {
+        customTemplates = JSON.parse(saved);
+    } else {
+        // Load default samples if empty
+        customTemplates = [
+            {
+                id: 'ct_sample_1',
+                type: 'Email',
+                title: 'Quick Follow Up',
+                body: 'Hi [Name],\n\nJust floating this to the top of your inbox. We only have a few spots left for the Circular Tech Hub at GITEX Berlin.\n\nLet me know if you have 5 mins this week to chat.\n\nBest,\n[Your Name]'
+            },
+            {
+                id: 'ct_sample_2',
+                type: 'LinkedIn',
+                title: 'Event Connection',
+                body: 'Hi [Name],\n\nI noticed your work in the circular tech space. I\'ll be at the GITEX Circular Tech Hub in Berlin this July and would love to connect and share insights.\n\nBest,\n[Your Name]'
+            }
+        ];
+        localStorage.setItem('gitex_custom_templates', JSON.stringify(customTemplates));
+    }
+    renderCTList();
+    if(customTemplates.length > 0) {
+        loadCT(customTemplates[0].id);
+    }
+}
+
+function renderCTList() {
+    const list = document.getElementById('ctList');
+    list.innerHTML = customTemplates.map(ct => `
+        <div class="ct-item ${ct.id === activeCTId ? 'active' : ''}" onclick="loadCT('${ct.id}')">
+            <div class="ct-item-title">${ct.title || 'Untitled Template'}</div>
+            <div class="ct-item-type">${ct.type}</div>
+            <button class="ct-item-del" onclick="deleteCT('${ct.id}', event)" title="Delete"><i class="ti ti-trash"></i></button>
+        </div>
+    `).join('');
+}
+
+function loadCT(id) {
+    const ct = customTemplates.find(t => t.id === id);
+    if (!ct) return;
+    activeCTId = id;
+    document.getElementById('ctType').value = ct.type;
+    document.getElementById('ctTitle').value = ct.title;
+    document.getElementById('ctBody').value = ct.body;
+    document.getElementById('ctStatus').innerText = 'Loaded';
+    renderCTList();
+}
+
+function newCT() {
+    activeCTId = null;
+    document.getElementById('ctType').value = 'Email';
+    document.getElementById('ctTitle').value = '';
+    document.getElementById('ctBody').value = '';
+    document.getElementById('ctTitle').focus();
+    document.getElementById('ctStatus').innerText = 'Draft mode...';
+    renderCTList();
+}
+
+function autoSaveCT() {
+    const type = document.getElementById('ctType').value;
+    const title = document.getElementById('ctTitle').value;
+    const body = document.getElementById('ctBody').value;
+
+    if (!title && !body) return;
+
+    document.getElementById('ctStatus').innerText = 'Saving...';
+    document.getElementById('ctStatus').style.color = '#86868b';
+
+    clearTimeout(ctTimeout);
+    ctTimeout = setTimeout(() => {
+        if (!activeCTId) {
+            activeCTId = 'ct_' + Date.now();
+            customTemplates.unshift({ id: activeCTId, type, title, body });
+        } else {
+            const idx = customTemplates.findIndex(t => t.id === activeCTId);
+            if (idx > -1) {
+                customTemplates[idx] = { id: activeCTId, type, title, body };
+            }
+        }
+        localStorage.setItem('gitex_custom_templates', JSON.stringify(customTemplates));
+        renderCTList();
+        document.getElementById('ctStatus').innerText = 'Auto-saved';
+        document.getElementById('ctStatus').style.color = '#34c759';
+    }, 500);
+}
+
+function copyCustomTemplate(btn) {
+    const text = document.getElementById('ctBody').value;
+    if(!text) return;
+    fallbackCopyTextToClipboard(text, btn);
+}
+
+function deleteCT(id, event) {
+    event.stopPropagation(); // Prevent triggering loadCT
+    customTemplates = customTemplates.filter(t => t.id !== id);
+    localStorage.setItem('gitex_custom_templates', JSON.stringify(customTemplates));
+    if (activeCTId === id) {
+        newCT();
+    } else {
+        renderCTList();
+    }
+}
+
+
 // Initial render
 renderCompanies();
 renderScripts();
 renderTemplates();
+initCustomTemplates();
+
+// ---------- NEW: LIVE COUNTDOWN LOGIC ----------
+function startCountdown() {
+    // Target date for GITEX Berlin (June 30, 2026, 09:00:00 AM)
+    const targetDate = new Date("June 30, 2026 09:00:00").getTime();
+    const daysEl = document.getElementById("countdown-days");
+    const timerEl = document.getElementById("countdown-timer");
+
+    function updateTimer() {
+        const now = new Date().getTime();
+        const distance = targetDate - now;
+
+        if (distance < 0) {
+            daysEl.innerHTML = "Event Started";
+            timerEl.innerHTML = '<i class="ti ti-clock-check" style="font-size: 14px; color: #34c759;"></i> Live Now';
+            return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        daysEl.innerHTML = days + " <span style='font-size: 16px; font-weight: 500;'>Days</span>";
+        timerEl.innerHTML = 
+            '<i class="ti ti-clock-hour-4" style="font-size: 14px;"></i> ' + 
+            String(hours).padStart(2, '0') + ":" + 
+            String(minutes).padStart(2, '0') + ":" + 
+            String(seconds).padStart(2, '0');
+    }
+    
+    updateTimer(); // Call immediately to avoid initial 1-second delay
+    setInterval(updateTimer, 1000);
+}
+
+startCountdown();
 </script>
 
 </body>
