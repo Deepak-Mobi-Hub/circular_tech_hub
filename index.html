@@ -54,13 +54,11 @@
             width: 100%;
         }
 
-        /* Sidebar Styling */
+        /* Sidebar Styling - Updated to Premium Dark */
         .sidebar {
             width: 280px;
-            background-color: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-right: 1px solid var(--color-border);
+            background-color: #1d1d1f; /* Dark background for the logo */
+            border-right: 1px solid #2d2d2f;
             display: flex;
             flex-direction: column;
             padding: 24px 16px;
@@ -92,7 +90,7 @@
             border-radius: var(--radius-sm);
             border: none;
             background: transparent;
-            color: var(--color-text-secondary);
+            color: #a1a1a6; /* Adjusted for dark sidebar */
             font-size: 14px;
             font-weight: 500;
             text-align: left;
@@ -106,8 +104,8 @@
         }
 
         .nav-item:hover {
-            background-color: var(--color-bg-hover);
-            color: var(--color-text-primary);
+            background-color: #2d2d2f;
+            color: #ffffff;
         }
 
         .nav-item.active {
@@ -119,30 +117,32 @@
         .main-content {
             flex: 1;
             overflow-y: auto;
-            padding: 32px 48px;
             position: relative;
+            background-color: var(--color-bg-app);
         }
 
-        /* Hero Banner */
+        .content-wrapper {
+            padding: 32px 48px;
+        }
+
+        /* Hero Banner - Unrestrained */
         .hero-banner {
             width: 100%;
-            height: 240px;
-            border-radius: var(--radius-lg);
+            height: 280px;
             background-image: url('hero.jpg');
             background-size: cover;
             background-position: center;
             background-color: #1d1d1f; /* Fallback */
             position: relative;
-            margin-bottom: 32px;
-            overflow: hidden;
-            box-shadow: var(--shadow-subtle);
+            margin-bottom: 0;
+            /* Removed border-radius and box-shadow to let it bleed to edges */
         }
 
         .hero-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(90deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 100%);
-            padding: 40px;
+            background: linear-gradient(90deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.1) 100%);
+            padding: 48px 48px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -150,14 +150,14 @@
         }
 
         .hero-overlay h1 {
-            font-size: 32px;
+            font-size: 36px;
             font-weight: 700;
             margin-bottom: 8px;
             letter-spacing: -0.5px;
         }
 
         .hero-overlay p {
-            font-size: 16px;
+            font-size: 18px;
             opacity: 0.85;
             font-weight: 400;
         }
@@ -550,7 +550,7 @@
     <aside class="sidebar">
         <div class="logo-container">
             <!-- Using the requested logo -->
-            <img src="mobihubevent.png" alt="Mobihub Events" class="logo" onerror="this.onerror=null; this.src='https://via.placeholder.com/150x40/f5f5f7/86868b?text=Mobihub+Events';">
+            <img src="mobihubevent.png" alt="Mobihub Events" class="logo" onerror="this.onerror=null; this.src='https://via.placeholder.com/150x40/1d1d1f/ffffff?text=Mobihub+Events';">
         </div>
         
         <nav class="nav-menu" id="mainTabs">
@@ -580,140 +580,141 @@
             </div>
         </div>
         
-        <!-- Top Stats Row -->
-        <div class="stat-row">
-            <div class="stat">
-                <div class="stat-label">Target Revenue</div>
-                <div class="stat-val">€345,700</div>
-            </div>
-            <div class="stat">
-                <div class="stat-label">Confirmed</div>
-                <div class="stat-val green">€96,200</div>
-            </div>
-            <div class="stat">
-                <div class="stat-label">To Close</div>
-                <div class="stat-val orange">€249,500</div>
-            </div>
-            <div class="stat">
-                <div class="stat-label">Days Remaining</div>
-                <div class="stat-val red">30</div>
-            </div>
-        </div>
-        
-        <!-- Tab 1: Companies -->
-        <div id="tab-companies">
-            <div class="filters">
-                <input class="search" type="text" placeholder="Search companies..." oninput="filterCompanies(this.value)" id="searchBox">
-                <button class="filter-btn active" onclick="filterCat('all',this)">All</button>
-                <button class="filter-btn" onclick="filterCat('Refurbisher',this)">Refurbishers</button>
-                <button class="filter-btn" onclick="filterCat('ITAD',this)">ITAD</button>
-                <button class="filter-btn" onclick="filterCat('Marketplace',this)">Marketplaces</button>
-                <button class="filter-btn" onclick="filterCat('Telecom',this)">Telecom</button>
-                <button class="filter-btn" onclick="filterCat('OEM',this)">OEM</button>
-                <button class="filter-btn" onclick="filterCat('ESG',this)">ESG</button>
-            </div>
-            <div class="grid" id="companyGrid"></div>
-        </div>
-        
-        <!-- Tab 2: Playbook -->
-        <div id="tab-playbook" style="display:none">
-            <div class="playbook">
-                <div class="pb-section">
-                    <div class="pb-title"><i class="ti ti-target" aria-hidden="true" style="color:var(--color-accent)"></i>Ideal Customer Profile</div>
-                    <div class="pb-grid">
-                        <div>
-                            <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:12px;font-weight:600;letter-spacing:0.5px;">COMPANY SIGNALS</div>
-                            <div class="pb-item"><strong>Revenue €5M–€500M+</strong> in circular tech / refurb / ITAD</div>
-                            <div class="pb-item"><strong>Has a marketing / BD budget</strong> for events and sponsorships</div>
-                            <div class="pb-item"><strong>Already attends</strong> MWC, CES, IFA, eReBirth, Tech.AD</div>
-                            <div class="pb-item"><strong>Has ESG goals</strong> or circular economy mandate</div>
-                            <div class="pb-item"><strong>Expanding into Europe</strong> or hiring in DE/UK/FR</div>
-                            <div class="pb-item"><strong>Active on LinkedIn</strong> — posts about circularity, refurb, sustainability</div>
-                        </div>
-                        <div>
-                            <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:12px;font-weight:600;letter-spacing:0.5px;">BUYER PERSONAS</div>
-                            <div class="pb-item"><strong>CMO / Head of Marketing</strong> — owns events budget, wants brand visibility</div>
-                            <div class="pb-item"><strong>CEO / Founder (SMEs)</strong> — decides fast, motivated by deal flow</div>
-                            <div class="pb-item"><strong>VP Partnerships / BD</strong> — wants stage access, industry relationships</div>
-                            <div class="pb-item"><strong>Head of Sustainability</strong> — needs ESG positioning wins</div>
-                            <div class="pb-item"><strong>VP Sales / Revenue</strong> — motivated by qualified buyer access</div>
-                            <div class="pb-item"><strong>Country Manager DACH/EU</strong> — needs regional presence fast</div>
-                        </div>
-                    </div>
+        <div class="content-wrapper">
+            <!-- Top Stats Row -->
+            <div class="stat-row">
+                <div class="stat">
+                    <div class="stat-label">Target Revenue</div>
+                    <div class="stat-val">€345,700</div>
                 </div>
-                <div class="pb-section">
-                    <div class="pb-title"><i class="ti ti-flame" aria-hidden="true" style="color:#ff9500"></i>Pain Points & Value Alignment</div>
-                    <div class="pb-grid">
-                        <div>
-                            <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:12px;font-weight:600;letter-spacing:0.5px;">THEIR PAINS</div>
-                            <div class="pb-item">Hard to reach <strong>qualified circular economy buyers</strong> in one room</div>
-                            <div class="pb-item">Generic tech events have <strong>wrong audience</strong> — no vertical fit</div>
-                            <div class="pb-item">Building brand in Europe is <strong>expensive and slow</strong></div>
-                            <div class="pb-item">Want to <strong>close deals at events</strong>, not just collect cards</div>
-                            <div class="pb-item">Need <strong>speaking credibility</strong> to win enterprise contracts</div>
-                            <div class="pb-item"><strong>Regulatory pressure</strong> on sustainability is creating urgency to be seen</div>
-                        </div>
-                        <div>
-                            <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:12px;font-weight:600;letter-spacing:0.5px;">YOUR VALUE PROPOSITION</div>
-                            <div class="pb-item"><strong>Only dedicated circular tech hub</strong> inside GITEX Europe Berlin</div>
-                            <div class="pb-item"><strong>2,000+ targeted visitors</strong> — buyers, investors, regulators</div>
-                            <div class="pb-item"><strong>Stage time = category authority</strong> — position as industry voice</div>
-                            <div class="pb-item"><strong>GITEX brand</strong> — €0 to build the same credibility independently</div>
-                            <div class="pb-item"><strong>1 week of meetings</strong> compressed into 2 days of curated access</div>
-                            <div class="pb-item"><strong>Circular Show media</strong> — content that lives beyond the event</div>
-                        </div>
-                    </div>
+                <div class="stat">
+                    <div class="stat-label">Confirmed</div>
+                    <div class="stat-val green">€96,200</div>
                 </div>
-                <div class="pb-section">
-                    <div class="pb-title"><i class="ti ti-shield-check" aria-hidden="true" style="color:#34c759"></i>Objection Handling</div>
-                    <div class="objection">
-                        <div class="obj-q">"We don't have budget right now."</div>
-                        <div class="obj-a">"I hear you — and that's exactly why I want to talk now, not next quarter. The companies locking in spots this week are doing it because they know the circular tech conversation at GITEX Berlin will define partnerships for 2026–27. This isn't a cost, it's a pipeline investment. What does one new enterprise client mean to your revenue?"</div>
-                    </div>
-                    <div class="objection">
-                        <div class="obj-q">"We're not sure GITEX Berlin is the right fit."</div>
-                        <div class="obj-a">"That's a fair question — and it's exactly why I wanted to reach out personally. The Circular Hub is the only vertical hub at GITEX EU dedicated to this industry. It's not a general tech floor — it's your buyers, your competitors, and your future partners in 6 sqm of focused space. Who do you currently target at events?"</div>
-                    </div>
-                    <div class="objection">
-                        <div class="obj-q">"We already attend MWC / IFA / CES."</div>
-                        <div class="obj-a">"Those are great for broad reach. This is different — it's the only event in Europe built specifically around circular tech, refurb and device lifecycle. The audience here is your ICP, not noise. I'd argue this is a complement, not a competition."</div>
-                    </div>
-                    <div class="objection">
-                        <div class="obj-q">"Can we get a discount?"</div>
-                        <div class="obj-a">"I respect you for asking directly. We don't do personal discounts — the packages are built around value, not negotiation. But what I can do is make sure you get the right package for your goals. If €15K feels heavy, the €10K Exhibitor gives you a solid floor presence with great ROI. Want me to walk you through it?"</div>
-                    </div>
-                    <div class="objection">
-                        <div class="obj-q">"Send me the deck and I'll have a look."</div>
-                        <div class="obj-a">"Happy to — but I want to save you time. The deck is 6 pages, but your decision really comes down to one thing: is getting in front of 2,000 circular tech buyers in Berlin in July worth the investment? Can we do a 10-minute call first so I can match you to the right option?"</div>
-                    </div>
+                <div class="stat">
+                    <div class="stat-label">To Close</div>
+                    <div class="stat-val orange">€249,500</div>
                 </div>
-                <div class="pb-section">
-                    <div class="pb-title"><i class="ti ti-clock-bolt" aria-hidden="true" style="color:#ff3b30"></i>Follow-up Cadence (per lead)</div>
-                    <div class="cadence-row"><div class="cadence-day">Day 0</div><div class="cadence-action">LinkedIn connection + personalised intro note OR cold email with specific hook</div></div>
-                    <div class="cadence-row"><div class="cadence-day">Day 2</div><div class="cadence-action">LinkedIn DM follow-up — reference their content or recent company news</div></div>
-                    <div class="cadence-row"><div class="cadence-day">Day 4</div><div class="cadence-action">Email follow-up — add social proof (Sunstrike, confirmed partners), light urgency</div></div>
-                    <div class="cadence-row"><div class="cadence-day">Day 6</div><div class="cadence-action">WhatsApp voice note (30–45 sec) — personal, warm, not a pitch</div></div>
-                    <div class="cadence-row"><div class="cadence-day">Day 8</div><div class="cadence-action">Cold call — use the opener script, keep to 3 min discovery</div></div>
-                    <div class="cadence-row"><div class="cadence-day">Day 11</div><div class="cadence-action">Final value email — new angle (e.g. their competitor is confirmed / 2 spots left)</div></div>
-                    <div class="cadence-row"><div class="cadence-day">Day 14</div><div class="cadence-action">FOMO close — final message, remove from active sequence if no response</div></div>
+                <div class="stat">
+                    <div class="stat-label">Days Remaining</div>
+                    <div class="stat-val red">30</div>
                 </div>
             </div>
-        </div>
-        
-        <!-- Tab 3: Scripts -->
-        <div id="tab-scripts" style="display:none">
-            <div class="scripts">
-                <div class="script-tabs" id="scriptTabs"></div>
-                <div id="scriptContent"></div>
+            
+            <!-- Tab 1: Companies -->
+            <div id="tab-companies">
+                <div class="filters">
+                    <input class="search" type="text" placeholder="Search companies..." oninput="filterCompanies(this.value)" id="searchBox">
+                    <button class="filter-btn active" onclick="filterCat('all',this)">All</button>
+                    <button class="filter-btn" onclick="filterCat('Refurbisher',this)">Refurbishers</button>
+                    <button class="filter-btn" onclick="filterCat('ITAD',this)">ITAD</button>
+                    <button class="filter-btn" onclick="filterCat('Marketplace',this)">Marketplaces</button>
+                    <button class="filter-btn" onclick="filterCat('Telecom',this)">Telecom</button>
+                    <button class="filter-btn" onclick="filterCat('OEM',this)">OEM</button>
+                    <button class="filter-btn" onclick="filterCat('ESG',this)">ESG</button>
+                </div>
+                <div class="grid" id="companyGrid"></div>
+            </div>
+            
+            <!-- Tab 2: Playbook -->
+            <div id="tab-playbook" style="display:none">
+                <div class="playbook">
+                    <div class="pb-section">
+                        <div class="pb-title"><i class="ti ti-target" aria-hidden="true" style="color:var(--color-accent)"></i>Ideal Customer Profile</div>
+                        <div class="pb-grid">
+                            <div>
+                                <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:12px;font-weight:600;letter-spacing:0.5px;">COMPANY SIGNALS</div>
+                                <div class="pb-item"><strong>Revenue €5M–€500M+</strong> in circular tech / refurb / ITAD</div>
+                                <div class="pb-item"><strong>Has a marketing / BD budget</strong> for events and sponsorships</div>
+                                <div class="pb-item"><strong>Already attends</strong> MWC, CES, IFA, eReBirth, Tech.AD</div>
+                                <div class="pb-item"><strong>Has ESG goals</strong> or circular economy mandate</div>
+                                <div class="pb-item"><strong>Expanding into Europe</strong> or hiring in DE/UK/FR</div>
+                                <div class="pb-item"><strong>Active on LinkedIn</strong> — posts about circularity, refurb, sustainability</div>
+                            </div>
+                            <div>
+                                <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:12px;font-weight:600;letter-spacing:0.5px;">BUYER PERSONAS</div>
+                                <div class="pb-item"><strong>CMO / Head of Marketing</strong> — owns events budget, wants brand visibility</div>
+                                <div class="pb-item"><strong>CEO / Founder (SMEs)</strong> — decides fast, motivated by deal flow</div>
+                                <div class="pb-item"><strong>VP Partnerships / BD</strong> — wants stage access, industry relationships</div>
+                                <div class="pb-item"><strong>Head of Sustainability</strong> — needs ESG positioning wins</div>
+                                <div class="pb-item"><strong>VP Sales / Revenue</strong> — motivated by qualified buyer access</div>
+                                <div class="pb-item"><strong>Country Manager DACH/EU</strong> — needs regional presence fast</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pb-section">
+                        <div class="pb-title"><i class="ti ti-flame" aria-hidden="true" style="color:#ff9500"></i>Pain Points & Value Alignment</div>
+                        <div class="pb-grid">
+                            <div>
+                                <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:12px;font-weight:600;letter-spacing:0.5px;">THEIR PAINS</div>
+                                <div class="pb-item">Hard to reach <strong>qualified circular economy buyers</strong> in one room</div>
+                                <div class="pb-item">Generic tech events have <strong>wrong audience</strong> — no vertical fit</div>
+                                <div class="pb-item">Building brand in Europe is <strong>expensive and slow</strong></div>
+                                <div class="pb-item">Want to <strong>close deals at events</strong>, not just collect cards</div>
+                                <div class="pb-item">Need <strong>speaking credibility</strong> to win enterprise contracts</div>
+                                <div class="pb-item"><strong>Regulatory pressure</strong> on sustainability is creating urgency to be seen</div>
+                            </div>
+                            <div>
+                                <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:12px;font-weight:600;letter-spacing:0.5px;">YOUR VALUE PROPOSITION</div>
+                                <div class="pb-item"><strong>Only dedicated circular tech hub</strong> inside GITEX Europe Berlin</div>
+                                <div class="pb-item"><strong>2,000+ targeted visitors</strong> — buyers, investors, regulators</div>
+                                <div class="pb-item"><strong>Stage time = category authority</strong> — position as industry voice</div>
+                                <div class="pb-item"><strong>GITEX brand</strong> — €0 to build the same credibility independently</div>
+                                <div class="pb-item"><strong>1 week of meetings</strong> compressed into 2 days of curated access</div>
+                                <div class="pb-item"><strong>Circular Show media</strong> — content that lives beyond the event</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pb-section">
+                        <div class="pb-title"><i class="ti ti-shield-check" aria-hidden="true" style="color:#34c759"></i>Objection Handling</div>
+                        <div class="objection">
+                            <div class="obj-q">"We don't have budget right now."</div>
+                            <div class="obj-a">"I hear you — and that's exactly why I want to talk now, not next quarter. The companies locking in spots this week are doing it because they know the circular tech conversation at GITEX Berlin will define partnerships for 2026–27. This isn't a cost, it's a pipeline investment. What does one new enterprise client mean to your revenue?"</div>
+                        </div>
+                        <div class="objection">
+                            <div class="obj-q">"We're not sure GITEX Berlin is the right fit."</div>
+                            <div class="obj-a">"That's a fair question — and it's exactly why I wanted to reach out personally. The Circular Hub is the only vertical hub at GITEX EU dedicated to this industry. It's not a general tech floor — it's your buyers, your competitors, and your future partners in 6 sqm of focused space. Who do you currently target at events?"</div>
+                        </div>
+                        <div class="objection">
+                            <div class="obj-q">"We already attend MWC / IFA / CES."</div>
+                            <div class="obj-a">"Those are great for broad reach. This is different — it's the only event in Europe built specifically around circular tech, refurb and device lifecycle. The audience here is your ICP, not noise. I'd argue this is a complement, not a competition."</div>
+                        </div>
+                        <div class="objection">
+                            <div class="obj-q">"Can we get a discount?"</div>
+                            <div class="obj-a">"I respect you for asking directly. We don't do personal discounts — the packages are built around value, not negotiation. But what I can do is make sure you get the right package for your goals. If €15K feels heavy, the €10K Exhibitor gives you a solid floor presence with great ROI. Want me to walk you through it?"</div>
+                        </div>
+                        <div class="objection">
+                            <div class="obj-q">"Send me the deck and I'll have a look."</div>
+                            <div class="obj-a">"Happy to — but I want to save you time. The deck is 6 pages, but your decision really comes down to one thing: is getting in front of 2,000 circular tech buyers in Berlin in July worth the investment? Can we do a 10-minute call first so I can match you to the right option?"</div>
+                        </div>
+                    </div>
+                    <div class="pb-section">
+                        <div class="pb-title"><i class="ti ti-clock-bolt" aria-hidden="true" style="color:#ff3b30"></i>Follow-up Cadence (per lead)</div>
+                        <div class="cadence-row"><div class="cadence-day">Day 0</div><div class="cadence-action">LinkedIn connection + personalised intro note OR cold email with specific hook</div></div>
+                        <div class="cadence-row"><div class="cadence-day">Day 2</div><div class="cadence-action">LinkedIn DM follow-up — reference their content or recent company news</div></div>
+                        <div class="cadence-row"><div class="cadence-day">Day 4</div><div class="cadence-action">Email follow-up — add social proof (Sunstrike, confirmed partners), light urgency</div></div>
+                        <div class="cadence-row"><div class="cadence-day">Day 6</div><div class="cadence-action">WhatsApp voice note (30–45 sec) — personal, warm, not a pitch</div></div>
+                        <div class="cadence-row"><div class="cadence-day">Day 8</div><div class="cadence-action">Cold call — use the opener script, keep to 3 min discovery</div></div>
+                        <div class="cadence-row"><div class="cadence-day">Day 11</div><div class="cadence-action">Final value email — new angle (e.g. their competitor is confirmed / 2 spots left)</div></div>
+                        <div class="cadence-row"><div class="cadence-day">Day 14</div><div class="cadence-action">FOMO close — final message, remove from active sequence if no response</div></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tab 3: Scripts -->
+            <div id="tab-scripts" style="display:none">
+                <div class="scripts">
+                    <div class="script-tabs" id="scriptTabs"></div>
+                    <div id="scriptContent"></div>
+                </div>
+            </div>
+            
+            <!-- Tab 4: Templates -->
+            <div id="tab-templates" style="display:none">
+                <div class="filters" id="templateFilters" style="margin-bottom: 24px;"></div>
+                <div class="templates-grid" id="templateGrid"></div>
             </div>
         </div>
-        
-        <!-- Tab 4: Templates -->
-        <div id="tab-templates" style="display:none">
-            <div class="filters" id="templateFilters" style="margin-bottom: 24px;"></div>
-            <div class="templates-grid" id="templateGrid"></div>
-        </div>
-        
     </main>
 </div>
 
